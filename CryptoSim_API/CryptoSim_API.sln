@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSim_API", "CryptoSim_API.csproj", "{47F539FE-5AB3-4FA3-9509-CE5F0180E903}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSim_Lib", "..\CryptoSim_Lib\CryptoSim_Lib.csproj", "{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47F539FE-5AB3-4FA3-9509-CE5F0180E903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F539FE-5AB3-4FA3-9509-CE5F0180E903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F539FE-5AB3-4FA3-9509-CE5F0180E903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F539FE-5AB3-4FA3-9509-CE5F0180E903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B65A5D36-31E7-40F3-BE47-267FBE3DECA1}
+	EndGlobalSection
+EndGlobal
