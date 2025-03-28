@@ -3,6 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSim_API", "CryptoSim_API.csproj", "{47F539FE-5AB3-4FA3-9509-CE5F0180E903}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08D6F2BC-54D2-4692-9E1A-1204E010C9DF} = {08D6F2BC-54D2-4692-9E1A-1204E010C9DF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoSim_Lib", "..\CryptoSim_Lib\CryptoSim_Lib.csproj", "{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}"
 EndProject
