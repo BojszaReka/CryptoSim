@@ -4,7 +4,7 @@
 	public class Crypto
     {
 		[Required, Key]
-		public Guid Id { get; set; }
+		public Guid Id { get; set; } = Guid.NewGuid();
 		public string Name { get; set; }
         public double StartingRate { get; set; } //kezdő árfolyam -10eladás +10vétel
 		public double CurrentPrice { get; set; } //jelenlegi árfolyam -10eladás +10vétel

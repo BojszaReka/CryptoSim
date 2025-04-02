@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace CryptoSim_Lib.Models
 {
-    public class CryptoItem
+    [Table("CryptoItems")]
+	public class CryptoItem
     {
-        public Guid CryptoId { get; set; }
+		[Required, Key]
+		public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid WalletId { get; set; }
+		public Wallet? Wallet { get; set; }
+		public Guid CryptoId { get; set; }
         public Crypto? Crypto { get; set; }
 		public double Quantity { get; set; }
 	}

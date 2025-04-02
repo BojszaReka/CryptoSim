@@ -4,7 +4,7 @@
 	public class User
     {
         [Required, Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string UserName { get; set; }
         [EmailAddress]
 		public string Email { get; set; }

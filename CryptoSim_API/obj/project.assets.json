@@ -1113,6 +1113,16 @@
             "rid": "win"
           }
         }
+      },
+      "CryptoSim_Lib/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/CryptoSim_Lib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CryptoSim_Lib.dll": {}
+        }
       }
     }
   },
@@ -3256,10 +3266,16 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "CryptoSim_Lib/1.0.0": {
+      "type": "project",
+      "path": "../CryptoSim_Lib/CryptoSim_Lib.csproj",
+      "msbuildProject": "../CryptoSim_Lib/CryptoSim_Lib.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "CryptoSim_Lib >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 9.0.3",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.3",
       "Newtonsoft.Json >= 13.0.3",
@@ -3300,7 +3316,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\CryptoSim_Lib.csproj": {
+              "projectPath": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\CryptoSim_Lib.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
