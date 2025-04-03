@@ -6,19 +6,19 @@ namespace CryptoSim_API.Controllers
 	[ApiController]
 	public class WalletController : Controller
     {
-		[HttpGet("{Id}")] //user id
+		[HttpGet("{UserId}")] //user id
 		public async Task<IActionResult> GetWallet() {
 			//TODO: Implement get wallet
 			return null;
 		}
 
-		[HttpPut("{Id}")] //user id
+		[HttpPut("{UserId}")] //user id
 		public async Task<IActionResult> UpdateWallet() {
 			//TODO: Implement update wallet
 			return null;
 		}
 
-		[HttpDelete("{Id}")] //user id
+		[HttpDelete("{UserId}")] //user id
 		public async Task<IActionResult> DeleteWallett() {
 			//TODO: Implement delete wallet
 			return null;

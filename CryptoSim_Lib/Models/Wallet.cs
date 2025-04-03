@@ -4,6 +4,7 @@
 	public class Wallet
     {
 		[Required, Key]
+		public Guid Id { get; set; } = Guid.NewGuid();
 		public Guid UserId { get; set; } 
 		public decimal Balance { get; set; }
 		public List<CryptoItem>? Cryptos { get; set; }

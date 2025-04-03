@@ -14,21 +14,21 @@ namespace CryptoSim_API.Controllers
 			return null;
 		}
 
-		[HttpGet("{Id}")]
+		[HttpGet("{UserId}")]
 		public async Task<IActionResult> GetUser(String Id)
 		{
 			//TODO: Implement get user
 			return null;
 		}
 
-		[HttpPut("{Id}")]
+		[HttpPut("{UserId}")]
 		public async Task<IActionResult> UpdateUser()
 		{
 			//TODO: Implement update user
 			return null;
 		}
 
-		[HttpDelete("{Id}")]
+		[HttpDelete("{UserId}")]
 		public async Task<IActionResult> DeleteUser()
 		{
 			//TODO: Implement delete user

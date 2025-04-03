@@ -13,7 +13,7 @@ namespace CryptoSim_API.Controllers
 			return null;
 		}
 
-		[HttpGet("{Id}")]
+		[HttpGet("{CryptoId}")]
 		public async Task<IActionResult> GetCrypto()
 		{
 			//TOFO: Implement get crypto
@@ -26,7 +26,7 @@ namespace CryptoSim_API.Controllers
 			return null;
 		}
 
-		[HttpDelete("{Id}")]
+		[HttpDelete("{CryptoId}")]
 		public async Task<IActionResult> DeleteCrypto() {
 			//TODO: Implement delete crypto
 			return null;

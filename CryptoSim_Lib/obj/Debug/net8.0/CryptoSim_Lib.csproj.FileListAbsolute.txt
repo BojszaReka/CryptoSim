@@ -1,0 +1,14 @@
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\bin\Debug\net8.0\CryptoSim_Lib.deps.json
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\bin\Debug\net8.0\CryptoSim_Lib.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\bin\Debug\net8.0\CryptoSim_Lib.pdb
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.GeneratedMSBuildEditorConfig.editorconfig
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.AssemblyInfoInputs.cache
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.AssemblyInfo.cs
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.csproj.CoreCompileInputs.cache
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.sourcelink.json
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\refint\CryptoSim_Lib.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.pdb
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\ref\CryptoSim_Lib.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\bin\Debug\net8.0\CryptoSim_Lib.runtimeconfig.json
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_Lib\obj\Debug\net8.0\CryptoSim_Lib.genruntimeconfig.cache

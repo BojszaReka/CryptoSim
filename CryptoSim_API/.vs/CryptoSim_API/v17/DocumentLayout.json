@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\_imports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:_imports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\controllers\\tradecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:controllers\\tradecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\controllers\\tranzactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:controllers\\tranzactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\lib\\database\\cryptocontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -14,24 +26,24 @@
       "AbsoluteMoniker": "D:0:0:{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}|..\\CryptoSim_Lib\\CryptoSim_Lib.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_lib\\models\\wallet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}|..\\CryptoSim_Lib\\CryptoSim_Lib.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_lib\\models\\cryptoitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}|..\\CryptoSim_Lib\\CryptoSim_Lib.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_lib\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}|..\\CryptoSim_Lib\\CryptoSim_Lib.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_lib\\models\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}|..\\CryptoSim_Lib\\CryptoSim_Lib.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_lib\\models\\cryptoitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{08D6F2BC-54D2-4692-9E1A-1204E010C9DF}|..\\CryptoSim_Lib\\CryptoSim_Lib.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_lib\\models\\crypto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\controllers\\cryptocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:controllers\\cryptocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|c:\\adatok\\egyetem\\haladoprog\\cryptosim\\cryptosim_api\\lib\\services\\cryptomanagerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47F539FE-5AB3-4FA3-9509-CE5F0180E903}|CryptoSim_API.csproj|solutionrelative:lib\\services\\cryptomanagerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -41,125 +53,164 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_imports.cs",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\_imports.cs",
-              "RelativeDocumentMoniker": "_imports.cs",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\_imports.cs",
-              "RelativeToolTip": "_imports.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T09:10:38.784Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-28T09:09:26.77Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T09:08:47.241Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CryptoContext.cs",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Lib\\Database\\CryptoContext.cs",
-              "RelativeDocumentMoniker": "Lib\\Database\\CryptoContext.cs",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Lib\\Database\\CryptoContext.cs",
-              "RelativeToolTip": "Lib\\Database\\CryptoContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T09:07:20.166Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Wallet.cs",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Wallet.cs",
-              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\Wallet.cs",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Wallet.cs",
-              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\Wallet.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T09:03:45.925Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\User.cs",
-              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\User.cs",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\User.cs",
-              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T09:03:45.054Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Transaction.cs",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Transaction.cs",
-              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\Transaction.cs",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Transaction.cs",
-              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\Transaction.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T09:03:44.152Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Crypto.cs",
-              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Crypto.cs",
-              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\Crypto.cs",
-              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Crypto.cs",
-              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\Crypto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-28T09:03:43.048Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TradeController.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Controllers\\TradeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TradeController.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Controllers\\TradeController.cs",
+              "RelativeToolTip": "Controllers\\TradeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-03T09:33:19.914Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TranzactionsController.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Controllers\\TranzactionsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TranzactionsController.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Controllers\\TranzactionsController.cs",
+              "RelativeToolTip": "Controllers\\TranzactionsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-03T09:32:06.531Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-03T09:25:10.106Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CryptoController.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Controllers\\CryptoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CryptoController.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Controllers\\CryptoController.cs",
+              "RelativeToolTip": "Controllers\\CryptoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-02T16:29:44.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CryptoManagerService.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Lib\\Services\\CryptoManagerService.cs",
+              "RelativeDocumentMoniker": "Lib\\Services\\CryptoManagerService.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Lib\\Services\\CryptoManagerService.cs",
+              "RelativeToolTip": "Lib\\Services\\CryptoManagerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-02T16:29:35.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T09:08:47.241Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CryptoContext.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Lib\\Database\\CryptoContext.cs",
+              "RelativeDocumentMoniker": "Lib\\Database\\CryptoContext.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_API\\Lib\\Database\\CryptoContext.cs",
+              "RelativeToolTip": "Lib\\Database\\CryptoContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T09:07:20.166Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 5,
+              "Title": "Wallet.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Wallet.cs",
+              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\Wallet.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Wallet.cs",
+              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\Wallet.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T09:03:45.925Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\User.cs",
+              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\User.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\User.cs",
+              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T09:03:45.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Transaction.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Transaction.cs",
+              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\Transaction.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Transaction.cs",
+              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T09:03:44.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Crypto.cs",
+              "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Crypto.cs",
+              "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\Crypto.cs",
+              "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\Crypto.cs",
+              "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\Crypto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T09:03:43.048Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "CryptoItem.cs",
               "DocumentMoniker": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\CryptoItem.cs",
               "RelativeDocumentMoniker": "..\\CryptoSim_Lib\\Models\\CryptoItem.cs",
               "ToolTip": "C:\\ADATOK\\Egyetem\\HaladoProg\\CryptoSim\\CryptoSim_Lib\\Models\\CryptoItem.cs",
               "RelativeToolTip": "..\\CryptoSim_Lib\\Models\\CryptoItem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-28T09:03:42.064Z",
               "EditorCaption": ""

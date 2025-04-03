@@ -15,7 +15,7 @@ namespace CryptoSim_API.Controllers
 			return null;
 		}
 
-		[HttpGet("price/history/{Id}")] //crypto id
+		[HttpGet("price/history/{CryptoId}")] //crypto id
 		public async Task<IActionResult> GetCryptoPriceHistoy()
 		{
 			//TODO: Implement get crypto price history

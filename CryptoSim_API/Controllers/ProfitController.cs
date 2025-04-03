@@ -6,13 +6,13 @@ namespace CryptoSim_API.Controllers
 	[ApiController]
 	public class ProfitController : Controller
     {
-		[HttpGet("profit/{Id}")] //user id
+		[HttpGet("profit/{UserId}")] //user id
 		public async Task<IActionResult> GetUserProfit() {
 			//TODO: Implement get user profit
 			return null;
 		}
 
-		[HttpGet("profit/detail/{Id}")] //user id
+		[HttpGet("profit/detail/{UserId}")] //user id
 		public async Task<IActionResult> GetDetailedUserProfit()
 		{
 			//TODO: Implement get user profit

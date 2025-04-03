@@ -8,11 +8,6 @@ namespace CryptoSim_API
             var builder = WebApplication.CreateBuilder(args);
 			Program.ConnectionString = builder.Configuration.GetConnectionString("SQL");
 
-			builder.Services.AddDbContext<CryptoContext>(options =>
-			{
-				options.UseSqlServer(builder.Configuration.GetConnectionString("CryptoSimDbContext"));
-			});
-
 			// Add services to the container.
 
 			builder.Services.AddControllers();

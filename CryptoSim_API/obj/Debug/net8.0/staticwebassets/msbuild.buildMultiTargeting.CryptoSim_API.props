@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\CryptoSim_API.props" />
+</Project>
