@@ -6,20 +6,31 @@
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "cryptoId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "price",
+        "Type": "System.Double",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "CryptoSim_API.Controllers.CryptoController",
     "Method": "GetCryptoPriceHistoy",
-    "RelativePath": "api/Crypto/price/history/{Id}",
+    "RelativePath": "api/Crypto/price/history/{CryptoId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "",
+        "Name": "cryptoId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -48,13 +59,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.CryptosController",
     "Method": "GetCrypto",
-    "RelativePath": "api/Cryptos/{Id}",
+    "RelativePath": "api/Cryptos/{CryptoId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "CryptoId",
         "Type": "",
         "IsRequired": true
       }
@@ -64,13 +75,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.CryptosController",
     "Method": "DeleteCrypto",
-    "RelativePath": "api/Cryptos/{Id}",
+    "RelativePath": "api/Cryptos/{CryptoId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "CryptoId",
         "Type": "",
         "IsRequired": true
       }
@@ -80,13 +91,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.ProfitController",
     "Method": "GetUserProfit",
-    "RelativePath": "api/Profit/profit/{Id}",
+    "RelativePath": "api/Profit/profit/{UserId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -96,13 +107,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.ProfitController",
     "Method": "GetDetailedUserProfit",
-    "RelativePath": "api/Profit/profit/detail/{Id}",
+    "RelativePath": "api/Profit/profit/detail/{UserId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -122,13 +133,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.TradeController",
     "Method": "PrortfolioOfUser",
-    "RelativePath": "api/Trade/portfolio/{Id}",
+    "RelativePath": "api/Trade/portfolio/{UserId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -148,13 +159,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.TranzactionsController",
     "Method": "GetTransationDetails",
-    "RelativePath": "api/Tranzactions/GetTransationDetails/{Id}",
+    "RelativePath": "api/Tranzactions/GetTransationDetails/{TransationId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "TransationId",
         "Type": "",
         "IsRequired": true
       }
@@ -164,13 +175,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.TranzactionsController",
     "Method": "GetUserTransactions",
-    "RelativePath": "api/Tranzactions/GetUserTransactions/{Id}",
+    "RelativePath": "api/Tranzactions/GetUserTransactions/{UserId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -180,7 +191,7 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.UsersController",
     "Method": "GetUser",
-    "RelativePath": "api/Users/{Id}",
+    "RelativePath": "api/Users/{UserId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -188,6 +199,11 @@
       {
         "Name": "Id",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "UserId",
+        "Type": "",
         "IsRequired": true
       }
     ],
@@ -196,13 +212,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.UsersController",
     "Method": "UpdateUser",
-    "RelativePath": "api/Users/{Id}",
+    "RelativePath": "api/Users/{UserId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -212,13 +228,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.UsersController",
     "Method": "DeleteUser",
-    "RelativePath": "api/Users/{Id}",
+    "RelativePath": "api/Users/{UserId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -254,13 +270,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.WalletController",
     "Method": "GetWallet",
-    "RelativePath": "api/Wallet/{Id}",
+    "RelativePath": "api/Wallet/{UserId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -270,13 +286,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.WalletController",
     "Method": "UpdateWallet",
-    "RelativePath": "api/Wallet/{Id}",
+    "RelativePath": "api/Wallet/{UserId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }
@@ -286,13 +302,13 @@
   {
     "ContainingType": "CryptoSim_API.Controllers.WalletController",
     "Method": "DeleteWallett",
-    "RelativePath": "api/Wallet/{Id}",
+    "RelativePath": "api/Wallet/{UserId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
+        "Name": "UserId",
         "Type": "",
         "IsRequired": true
       }

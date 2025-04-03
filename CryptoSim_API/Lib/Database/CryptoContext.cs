@@ -11,9 +11,8 @@ namespace CryptoSim_API.Lib.Database
 		public DbSet<Wallet> Wallets { get; set; }
 		public DbSet<CryptoItem> CryptoItems { get; set; }
 
-		public CryptoContext() : base(new DbContextOptionsBuilder().UseSqlServer(Program.ConnectionString).Options)
+		public CryptoContext(DbContextOptions<CryptoContext> options) : base(options)
 		{
-
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

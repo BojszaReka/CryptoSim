@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CryptoSim_Lib.DTO;
+using CryptoSim_Lib.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace CryptoSim_API.Controllers
 {
@@ -7,19 +10,46 @@ namespace CryptoSim_API.Controllers
 	public class CryptoController : Controller
 	{
 		//cryptosmanager-ben kell implementálni
+		CryptoManagerService cryptoManager;
+		public CryptoController(CryptoContext dbContext, IDistributedCache cache)
+		{
+			cryptoManager = new CryptoManagerService(dbContext, cache);
+		}
 
 		[HttpPut("price")] 
-		public async Task<IActionResult> UpdateCryptoPrice()
+		public async Task<IActionResult> UpdateCryptoPrice([FromBody] string cryptoId, double price)
 		{
-			//TODO: Implement update crypto price	
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await cryptoManager.UpdateCryptoPrice(cryptoId, price);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		[HttpGet("price/history/{CryptoId}")] //crypto id
-		public async Task<IActionResult> GetCryptoPriceHistoy()
+		public async Task<IActionResult> GetCryptoPriceHistoy(string cryptoId)
 		{
-			//TODO: Implement get crypto price history
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await cryptoManager.GetPriceHistory(cryptoId);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 	}
 }

@@ -15,7 +15,12 @@ namespace CryptoSim_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<CryptoManagerService>();
+			// Register CryptoContext
+			builder.Services.AddDbContext<CryptoContext>(options =>
+				options.UseSqlServer(Program.ConnectionString));
+			builder.Services.AddDistributedMemoryCache();
+
+			builder.Services.AddScoped<CryptoManagerService>();
             builder.Services.AddScoped<PriceFlowManagerBackService>();
             builder.Services.AddScoped<ProfitManagerService>();
             builder.Services.AddScoped<TradeManagerService>();
