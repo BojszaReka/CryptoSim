@@ -13,9 +13,23 @@ namespace CryptoSim_API.Lib.Services
 			_cache = cache;
 		}
 
+		public async Task<User> getUser(string Id)
+		{
+			throw new NotImplementedException("UserManagerService.getUser not implemented");
+		}
+
 		public async Task<string> getUserName(string Id)
 		{
 			throw new NotImplementedException("UserManagerService.getUserName not implemented");
+		}
+
+		public async Task<bool> doesUserExists(string Id)
+		{
+			/*
+			var crypto = await GetCrypto(Id);
+			return crypto != null;
+			*/
+			throw new NotImplementedException("UserManagerService.doesUserExists not implemented");
 		}
 	}
 }

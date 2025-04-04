@@ -24,7 +24,7 @@ namespace CryptoSim_API
             builder.Services.AddScoped<PriceFlowManagerBackService>();
             builder.Services.AddScoped<ProfitManagerService>();
             builder.Services.AddScoped<TradeManagerService>();
-            builder.Services.AddScoped<TransationManagerService>();
+            builder.Services.AddScoped<TransactionManagerService>();
             builder.Services.AddScoped<UserManagerService>();
             builder.Services.AddScoped<WalletManagerService>();
 

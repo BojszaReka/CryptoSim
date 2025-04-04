@@ -37,15 +37,14 @@ namespace CryptoSim_API.Lib.Services
 			await _cache.SetStringAsync("cryptos", serializedData, cacheOptions);
 			return _dbContext.Cryptos.OrderBy(c => c.Id).Include(c => c.Transactions);
 		}
-		//TODO: Implement crypto manager service
 
-		private async Task<bool> doesCryptoExists(string Id)
+		public async Task<bool> doesCryptoExists(string Id)
 		{
 			var crypto = await GetCrypto(Id);
 			return crypto != null;
 		}
 
-		private async Task<Crypto> GetCrypto(string Id)
+		public async Task<Crypto> GetCrypto(string Id)
 		{
 			var cryptos = await getCryptoCache();
 			if (cryptos == null)
@@ -74,7 +73,6 @@ namespace CryptoSim_API.Lib.Services
 		}
 
 		//public methods:
-
 		public async Task<String> UpdateCryptoPrice(string cryptoId, double price)
 		{
 			if(await doesCryptoExists(cryptoId))
@@ -178,6 +176,20 @@ namespace CryptoSim_API.Lib.Services
 				return crypto.Name;
 			}
 			return null;
+		}
+
+		public async Task DecreaseCryptoQuantity(string cryptoID, int quantity)
+		{
+			var crypto = await GetCrypto(cryptoID);
+			crypto.Quantity -= quantity;
+			UpdateCrypto(crypto);
+		}
+
+		public async Task IncreaseCryptoQuantity(string cryptoID, int quantity)
+		{
+			var crypto = await GetCrypto(cryptoID);
+			crypto.Quantity += quantity;
+			UpdateCrypto(crypto);
 		}
 	}
 }

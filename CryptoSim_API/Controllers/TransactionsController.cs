@@ -4,7 +4,7 @@ namespace CryptoSim_API.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class TranzactionsController : Controller
+	public class TransactionsController : Controller
     {
 		[HttpGet("{UserId}")] //user id
 		public async Task<IActionResult> GetUserTransactions() {

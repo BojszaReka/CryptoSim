@@ -2,7 +2,7 @@
 {
     public enum ETransactionType
     {
-        Sold = 1,
-		Bought = 2
+        Sell = 1,
+		Buy = 2
     }
 }

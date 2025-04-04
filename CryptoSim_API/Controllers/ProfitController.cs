@@ -13,7 +13,7 @@ namespace CryptoSim_API.Controllers
 			profitManager = new ProfitManagerService(dbContext, cache);
 		}
 
-		[HttpGet("profit/{UserId}")] //user id
+		[HttpGet("profit/{UserId}")] 
 		public async Task<IActionResult> GetUserProfit(string Id) {
 			ApiResponse response = new ApiResponse();
 			try
