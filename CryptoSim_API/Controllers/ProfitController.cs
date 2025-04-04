@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace CryptoSim_API.Controllers
 {
@@ -6,17 +7,45 @@ namespace CryptoSim_API.Controllers
 	[ApiController]
 	public class ProfitController : Controller
     {
-		[HttpGet("profit/{UserId}")] //user id
-		public async Task<IActionResult> GetUserProfit() {
-			//TODO: Implement get user profit
-			return null;
+		ProfitManagerService profitManager;
+		public ProfitController(CryptoContext dbContext, IDistributedCache cache)
+		{
+			profitManager = new ProfitManagerService(dbContext, cache);
 		}
 
-		[HttpGet("profit/detail/{UserId}")] //user id
-		public async Task<IActionResult> GetDetailedUserProfit()
+		[HttpGet("profit/{UserId}")] //user id
+		public async Task<IActionResult> GetUserProfit(string Id) {
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await profitManager.GetUserProfit(Id);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
+		}
+
+		[HttpGet("profit/detail/{UserId}")]
+		public async Task<IActionResult> GetDetailedUserProfit(string Id)
 		{
-			//TODO: Implement get user profit
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await profitManager.GetDetailedUserProfit(Id);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 	}
 }

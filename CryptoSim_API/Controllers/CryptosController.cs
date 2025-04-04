@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CryptoSim_Lib.DTO;
+using CryptoSim_Lib.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace CryptoSim_API.Controllers
 {
@@ -6,30 +9,80 @@ namespace CryptoSim_API.Controllers
 	[ApiController]
 	public class CryptosController : Controller
 	{
+		CryptoManagerService cryptoManager;
+		public CryptosController(CryptoContext dbContext, IDistributedCache cache)
+		{
+			cryptoManager = new CryptoManagerService(dbContext, cache);
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> GetCryptos()
 		{
-			//TODO: Implement get cryptos
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await cryptoManager.ListCryptosDTO();
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		[HttpGet("{CryptoId}")]
-		public async Task<IActionResult> GetCrypto()
+		public async Task<IActionResult> GetCrypto(string Id)
 		{
-			//TOFO: Implement get crypto
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await cryptoManager.GetCryptoDTO(Id);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CreateCrypto() {
-			//TODO: Implement create crypto
-			return null;
+		public async Task<IActionResult> CreateCrypto([FromBody] NewCrypto newCrypto) {
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await cryptoManager.CreateCrypto(newCrypto);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		[HttpDelete("{CryptoId}")]
-		public async Task<IActionResult> DeleteCrypto() {
-			//TODO: Implement delete crypto
-			return null;
+		public async Task<IActionResult> DeleteCrypto(string cryptoId) {
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await cryptoManager.DeleteCrypto(cryptoId);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 	}

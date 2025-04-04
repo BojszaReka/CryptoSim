@@ -9,7 +9,6 @@ namespace CryptoSim_API.Controllers
 	[ApiController]
 	public class CryptoController : Controller
 	{
-		//cryptosmanager-ben kell implementálni
 		CryptoManagerService cryptoManager;
 		public CryptoController(CryptoContext dbContext, IDistributedCache cache)
 		{
@@ -34,7 +33,7 @@ namespace CryptoSim_API.Controllers
 			return BadRequest(response);
 		}
 
-		[HttpGet("price/history/{CryptoId}")] //crypto id
+		[HttpGet("price/history/{CryptoId}")]
 		public async Task<IActionResult> GetCryptoPriceHistoy(string cryptoId)
 		{
 			ApiResponse response = new ApiResponse();

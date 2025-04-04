@@ -63,6 +63,16 @@ namespace CryptoSim_API.Lib.Services
 			await _cache.RemoveAsync("cryptos");
 		}
 
+		public async Task<IEnumerable<Crypto>> ListCryptos()
+		{
+			var cryptos = await getCryptoCache();
+			if (cryptos == null)
+			{
+				cryptos = await getCryptosDB();
+			}
+			return cryptos;
+		}
+
 		//public methods:
 
 		public async Task<String> UpdateCryptoPrice(string cryptoId, double price)
@@ -83,6 +93,7 @@ namespace CryptoSim_API.Lib.Services
 			if (await doesCryptoExists(cryptoId))
 			{
 				Crypto c = await GetCrypto(cryptoId);
+				c.PriceHistory.Add(c.CurrentPrice);
 				return new PriceHistoryDTO { 
 					CryptoId = c.Id,
 					CryptoName = c.Name,
@@ -90,6 +101,83 @@ namespace CryptoSim_API.Lib.Services
 				};
 			}
 			return null;
-		}	
+		}
+		
+		public async Task<IEnumerable<CryptoDTO>> ListCryptosDTO()
+		{
+			var cryptos = await ListCryptos();
+			IEnumerable<CryptoDTO> response = cryptos.Select(c => new CryptoDTO
+			{
+				Id = c.Id,
+				Name = c.Name,
+				Rate = c.CurrentPrice
+			}).ToList();
+			return response;
+		}
+
+		public async Task<CryptoDTO> GetCryptoDTO(string Id)
+		{
+			var crypto = await GetCrypto(Id);
+			if (crypto != null)
+			{
+				return new CryptoDTO
+				{
+					Id = crypto.Id,
+					Name = crypto.Name,
+					Rate = crypto.CurrentPrice
+				};
+			}
+			return null;
+		}
+
+		public async Task<string> CreateCrypto(NewCrypto newCrypto)
+		{
+			Crypto crypto = new Crypto
+			{
+				Id = Guid.NewGuid(),
+				Name = newCrypto.Name,
+				StartingRate = newCrypto.StartingRate,
+				CurrentPrice = newCrypto.StartingRate,
+				PriceHistory = new List<double>(),
+				Quantity = newCrypto.Quantity,
+			};
+			await _dbContext.Cryptos.AddAsync(crypto);
+			await _dbContext.SaveChangesAsync();
+			await _cache.RemoveAsync("cryptos");
+			return $"New crypto currency successfuly created with Id: {crypto.Id.ToString()} and Name: {crypto.Name}";
+		}
+
+		public async Task<string> DeleteCrypto(string Id)
+		{
+			if(await doesCryptoExists(Id))
+			{
+				var crypto = await GetCrypto(Id);
+				_dbContext.Cryptos.Remove(crypto);
+				await _dbContext.SaveChangesAsync();
+				await _cache.RemoveAsync("cryptos");
+				return $"Crypto currency ({crypto.Name}) successfully deleted";
+			}
+			return "The crypto currency with the provided ID does not exist";
+		}
+
+		public async Task<double> GetCurrentRate(Guid cryptoId)
+		{
+			var crypto = await GetCrypto(cryptoId.ToString());
+			if (crypto != null)
+			{
+				return crypto.CurrentPrice;
+			}
+			return 0;
+		}
+
+		public async Task<string> GetCryptoName(Guid cryptoId)
+		{
+			var crypto = await GetCrypto(cryptoId.ToString());
+			if (crypto != null)
+			{
+				return crypto.Name;
+			}
+			return null;
+		}
 	}
 }

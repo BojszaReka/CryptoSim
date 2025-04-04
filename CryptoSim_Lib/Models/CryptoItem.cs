@@ -16,5 +16,6 @@ namespace CryptoSim_Lib.Models
 		public Guid CryptoId { get; set; }
         public Crypto? Crypto { get; set; }
 		public double Quantity { get; set; }
+		public double BoughtAtRate { get; set; }
 	}
 }
