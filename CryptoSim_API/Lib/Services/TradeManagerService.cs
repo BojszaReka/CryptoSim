@@ -68,6 +68,8 @@ namespace CryptoSim_API.Lib.Services
 					var crypto = await cryptoManager.GetCrypto(tradeRequest.CryptoId.ToString());
 					double cost = tradeRequest.Quantity * crypto.CurrentPrice;
 
+					//TODO: check if user has enough currency to sell
+
 					await cryptoManager.IncreaseCryptoQuantity(tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
 					await walletManager.IncreaseUserBalance(tradeRequest.UserId.ToString(), cost);
 					await walletManager.RemoveCryptoFromUserWallet(tradeRequest.UserId.ToString(), tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);

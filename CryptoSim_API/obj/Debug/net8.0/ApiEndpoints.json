@@ -10,7 +10,7 @@
       {
         "Name": "cryptoId",
         "Type": "System.String",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "price",
@@ -71,13 +71,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "CryptoId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -92,8 +87,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "CryptoId",
-        "Type": "",
+        "Name": "cryptoId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -109,7 +104,7 @@
     "Parameters": [
       {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -125,7 +120,7 @@
     "Parameters": [
       {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -138,7 +133,13 @@
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "tradeRequest",
+        "Type": "CryptoSim_Lib.DTO.TradeRequestDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -150,8 +151,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "UserId",
-        "Type": "",
+        "Name": "userId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -164,36 +165,42 @@
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CryptoSim_API.Controllers.TranzactionsController",
-    "Method": "GetTransationDetails",
-    "RelativePath": "api/Tranzactions/GetTransationDetails/{TransationId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
     "Parameters": [
       {
-        "Name": "TransationId",
-        "Type": "",
+        "Name": "tradeRequest",
+        "Type": "CryptoSim_Lib.DTO.TradeRequestDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "CryptoSim_API.Controllers.TranzactionsController",
-    "Method": "GetUserTransactions",
-    "RelativePath": "api/Tranzactions/GetUserTransactions/{UserId}",
+    "ContainingType": "CryptoSim_API.Controllers.TransactionsController",
+    "Method": "GetTransationDetails",
+    "RelativePath": "api/Transactions/GetTransationDetails/{TransactionId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "UserId",
-        "Type": "",
+        "Name": "transactionId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CryptoSim_API.Controllers.TransactionsController",
+    "Method": "GetUserTransactions",
+    "RelativePath": "api/Transactions/GetUserTransactions/{UserId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

@@ -1,8 +1,9 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "CryptoSim_API",
-    "version": "1.0"
+    "title": "Crypto Simulation API",
+    "description": "An ASP.NET Core Web API for the simulation of buying and selling of crypto currency",
+    "version": "v1"
   },
   "paths": {
     "/api/Crypto/price": {
@@ -10,35 +11,26 @@
         "tags": [
           "Crypto"
         ],
+        "summary": "Updates the price of a crypto currency",
         "parameters": [
+          {
+            "name": "cryptoId",
+            "in": "query",
+            "description": "Id of the crypto currency to modify",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "price",
             "in": "query",
+            "description": "The new price of the crpyto currency",
             "schema": {
               "type": "number",
               "format": "double"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -51,10 +43,12 @@
         "tags": [
           "Crypto"
         ],
+        "summary": "Returns the price history of the crypto currency",
         "parameters": [
           {
             "name": "cryptoId",
             "in": "path",
+            "description": "Id of the crypto currency",
             "required": true,
             "schema": {
               "type": "string"
@@ -73,6 +67,7 @@
         "tags": [
           "Cryptos"
         ],
+        "summary": "Retrieves a list of all available crypto currencies.",
         "responses": {
           "200": {
             "description": "OK"
@@ -83,7 +78,9 @@
         "tags": [
           "Cryptos"
         ],
+        "summary": "Creates a new crypto currency with the provided details.",
         "requestBody": {
+          "description": "The data of the new crypto currency to be created.",
           "content": {
             "application/json": {
               "schema": {
@@ -114,17 +111,12 @@
         "tags": [
           "Cryptos"
         ],
+        "summary": "Retrieves a specific crypto currency by its ID.",
         "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "CryptoId",
             "in": "path",
+            "description": "The ID of the crypto currency to retrieve.",
             "required": true,
             "schema": {
               "type": "string"
@@ -141,10 +133,12 @@
         "tags": [
           "Cryptos"
         ],
+        "summary": "Deletes a crypto currency based on the provided ID.",
         "parameters": [
           {
-            "name": "CryptoId",
+            "name": "cryptoId",
             "in": "path",
+            "description": "The ID of the crypto currency to delete.",
             "required": true,
             "schema": {
               "type": "string"
@@ -163,10 +157,12 @@
         "tags": [
           "Profit"
         ],
+        "summary": "Retrieves the total profit for a specific user.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The ID of the user whose profit is being requested.",
             "required": true,
             "schema": {
               "type": "string"
@@ -185,10 +181,12 @@
         "tags": [
           "Profit"
         ],
+        "summary": "Retrieves a detailed breakdown of the user's profit, including transaction history or specific gains.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The ID of the user for whom detailed profit information is requested.",
             "required": true,
             "schema": {
               "type": "string"
@@ -207,6 +205,27 @@
         "tags": [
           "Trade"
         ],
+        "summary": "Executes a crypto buy transaction for a user.",
+        "requestBody": {
+          "description": "The details of the trade including user ID, crypto ID, and quantity.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -219,6 +238,27 @@
         "tags": [
           "Trade"
         ],
+        "summary": "Executes a crypto sell transaction for a user.",
+        "requestBody": {
+          "description": "The details of the trade including user ID, crypto ID, and quantity.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -231,10 +271,12 @@
         "tags": [
           "Trade"
         ],
+        "summary": "Retrieves the crypto portfolio for a specific user, including their owned assets and quantities.",
         "parameters": [
           {
-            "name": "UserId",
+            "name": "userId",
             "in": "path",
+            "description": "The ID of the user whose portfolio is being requested.",
             "required": true,
             "schema": {
               "type": "string"
@@ -248,15 +290,17 @@
         }
       }
     },
-    "/api/Tranzactions/GetUserTransactions/{UserId}": {
+    "/api/Transactions/GetUserTransactions/{UserId}": {
       "get": {
         "tags": [
-          "Tranzactions"
+          "Transactions"
         ],
+        "summary": "Retrieves all transactions made by a specific user.",
         "parameters": [
           {
-            "name": "UserId",
+            "name": "userId",
             "in": "path",
+            "description": "The ID of the user whose transaction history is requested.",
             "required": true,
             "schema": {
               "type": "string"
@@ -270,15 +314,17 @@
         }
       }
     },
-    "/api/Tranzactions/GetTransationDetails/{TransationId}": {
+    "/api/Transactions/GetTransationDetails/{TransactionId}": {
       "get": {
         "tags": [
-          "Tranzactions"
+          "Transactions"
         ],
+        "summary": "Retrieves detailed information about a specific transaction.",
         "parameters": [
           {
-            "name": "TransationId",
+            "name": "transactionId",
             "in": "path",
+            "description": "The ID of the transaction to retrieve details for.",
             "required": true,
             "schema": {
               "type": "string"
@@ -475,6 +521,24 @@
           "quantity": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TradeRequestDTO": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cryptoId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoSim_Lib.DTO
+namespace CryptoSim_Lib.Classes
 {
     public class ApiResponse
     {

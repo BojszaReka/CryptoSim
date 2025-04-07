@@ -15,7 +15,9 @@ namespace CryptoSim_Lib.Models
 		public Wallet? Wallet { get; set; }
 		public Guid CryptoId { get; set; }
         public Crypto? Crypto { get; set; }
+		[Range(0, double.MaxValue)]
 		public double Quantity { get; set; }
+		[Range(0, double.MaxValue)]
 		public double BoughtAtRate { get; set; }
 	}
 }

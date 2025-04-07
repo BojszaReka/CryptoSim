@@ -1,3 +1,9 @@
+using CryptoSim_Lib.Classes;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+
 namespace CryptoSim_API
 {
     public class Program
@@ -8,17 +14,28 @@ namespace CryptoSim_API
             var builder = WebApplication.CreateBuilder(args);
 			Program.ConnectionString = builder.Configuration.GetConnectionString("SQL");
 
-			// Add services to the container.
-
 			builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+			builder.Services.AddSwaggerGen(options =>
+			{
+				var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+				options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
-			// Register CryptoContext
-			builder.Services.AddDbContext<CryptoContext>(options =>
-				options.UseSqlServer(Program.ConnectionString));
+				options.SwaggerDoc("v1", new OpenApiInfo
+				{
+					Version = "v1",
+					Title = "Crypto Simulation API",
+					Description = "An ASP.NET Core Web API for the simulation of buying and selling of crypto currency"
+				});
+			});
+
+			builder.Services.AddDbContext<CryptoContext>(options =>options.UseSqlServer(Program.ConnectionString));
 			builder.Services.AddDistributedMemoryCache();
+
+			var timeoutOptions = new CacheTimeoutOptions();
+			builder.Configuration.GetSection(CacheTimeoutOptions.SectionName).Bind(timeoutOptions);
+			var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(timeoutOptions.MediumLivedTimeInSeconds));
 
 			builder.Services.AddScoped<CryptoManagerService>();
             builder.Services.AddScoped<PriceFlowManagerBackService>();
@@ -41,7 +58,6 @@ namespace CryptoSim_API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

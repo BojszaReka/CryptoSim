@@ -14,7 +14,7 @@ namespace CryptoSim_API.Lib.Services
 			_cache = cache;
 		}
 
-		private async Task<IQueryable<Crypto>> getCryptoCache()
+		public async Task<IQueryable<Crypto>> getCryptoCache()
 		{
 			var cachedCryptos = await _cache.GetStringAsync("cryptos");
 			if (!string.IsNullOrEmpty(cachedCryptos))
@@ -25,7 +25,7 @@ namespace CryptoSim_API.Lib.Services
 			return null;
 		}
 
-		private async Task<IQueryable<Crypto>> getCryptosDB()
+		public async Task<IQueryable<Crypto>> getCryptosDB()
 		{
 			var cryptosfFromDb = await _dbContext.Cryptos.OrderBy(c => c.Id).ToListAsync();
 			var cacheOptions = new DistributedCacheEntryOptions
@@ -38,44 +38,9 @@ namespace CryptoSim_API.Lib.Services
 			return _dbContext.Cryptos.OrderBy(c => c.Id).Include(c => c.Transactions);
 		}
 
-		public async Task<bool> doesCryptoExists(string Id)
+		public async Task<string> UpdateCryptoPrice(string cryptoId, double price)
 		{
-			var crypto = await GetCrypto(Id);
-			return crypto != null;
-		}
-
-		public async Task<Crypto> GetCrypto(string Id)
-		{
-			var cryptos = await getCryptoCache();
-			if (cryptos == null)
-			{
-				cryptos = await getCryptosDB();
-			}
-			var crypto = cryptos.Where(c => Id.Equals(c.Id.ToString())).FirstOrDefault();
-			return crypto;
-		}
-
-		private async Task UpdateCrypto(Crypto crypto)
-		{
-			_dbContext.Update(crypto);
-			await _dbContext.SaveChangesAsync();
-			await _cache.RemoveAsync("cryptos");
-		}
-
-		public async Task<IEnumerable<Crypto>> ListCryptos()
-		{
-			var cryptos = await getCryptoCache();
-			if (cryptos == null)
-			{
-				cryptos = await getCryptosDB();
-			}
-			return cryptos;
-		}
-
-		//public methods:
-		public async Task<String> UpdateCryptoPrice(string cryptoId, double price)
-		{
-			if(await doesCryptoExists(cryptoId))
+			if (await doesCryptoExists(cryptoId))
 			{
 				Crypto c = await GetCrypto(cryptoId);
 				c.PriceHistory.Add(c.CurrentPrice);
@@ -92,7 +57,8 @@ namespace CryptoSim_API.Lib.Services
 			{
 				Crypto c = await GetCrypto(cryptoId);
 				c.PriceHistory.Add(c.CurrentPrice);
-				return new PriceHistoryDTO { 
+				return new PriceHistoryDTO
+				{
 					CryptoId = c.Id,
 					CryptoName = c.Name,
 					PriceHistory = c.PriceHistory
@@ -100,7 +66,7 @@ namespace CryptoSim_API.Lib.Services
 			}
 			return null;
 		}
-		
+
 		public async Task<IEnumerable<CryptoDTO>> ListCryptosDTO()
 		{
 			var cryptos = await ListCryptos();
@@ -139,23 +105,66 @@ namespace CryptoSim_API.Lib.Services
 				PriceHistory = new List<double>(),
 				Quantity = newCrypto.Quantity,
 			};
+			var transaction = _dbContext.Database.BeginTransaction();
 			await _dbContext.Cryptos.AddAsync(crypto);
 			await _dbContext.SaveChangesAsync();
 			await _cache.RemoveAsync("cryptos");
+			transaction.Commit();
 			return $"New crypto currency successfuly created with Id: {crypto.Id.ToString()} and Name: {crypto.Name}";
 		}
 
 		public async Task<string> DeleteCrypto(string Id)
 		{
-			if(await doesCryptoExists(Id))
+			if (await doesCryptoExists(Id))
 			{
+				var transaction = _dbContext.Database.BeginTransaction();			
 				var crypto = await GetCrypto(Id);
 				_dbContext.Cryptos.Remove(crypto);
 				await _dbContext.SaveChangesAsync();
 				await _cache.RemoveAsync("cryptos");
+				transaction.Commit();
 				return $"Crypto currency ({crypto.Name}) successfully deleted";
 			}
 			return "The crypto currency with the provided ID does not exist";
+		}
+
+
+
+
+		public async Task<bool> doesCryptoExists(string Id)
+		{
+			var crypto = await GetCrypto(Id);
+			return crypto != null;
+		}
+
+		public async Task<Crypto> GetCrypto(string Id)
+		{
+			var cryptos = await getCryptoCache();
+			if (cryptos == null)
+			{
+				cryptos = await getCryptosDB();
+			}
+			var crypto = cryptos.Where(c => Id.Equals(c.Id.ToString())).FirstOrDefault();
+			return crypto;
+		}
+
+		private async Task UpdateCrypto(Crypto crypto)
+		{
+			var transaction = _dbContext.Database.BeginTransaction();
+			_dbContext.Update(crypto);
+			await _dbContext.SaveChangesAsync();
+			await _cache.RemoveAsync("cryptos");
+			transaction.Commit();
+		}
+
+		public async Task<IEnumerable<Crypto>> ListCryptos()
+		{
+			var cryptos = await getCryptoCache();
+			if (cryptos == null)
+			{
+				cryptos = await getCryptosDB();
+			}
+			return cryptos;
 		}
 
 		public async Task<double> GetCurrentRate(Guid cryptoId)
