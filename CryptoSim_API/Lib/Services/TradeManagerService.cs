@@ -37,7 +37,7 @@ namespace CryptoSim_API.Lib.Services
 						return "Not enough crypto in the market";
 					}
 					double cost = tradeRequest.Quantity * crypto.CurrentPrice;
-					if (await walletManager.doesUserHasBalance(tradeRequest.UserId.ToString()))
+					if (await walletManager.doesUserHasBalance(tradeRequest.UserId.ToString(), cost))
 					{
 						await cryptoManager.DecreaseCryptoQuantity(tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
 						await walletManager.DecreaseUserBalance(tradeRequest.UserId.ToString(), cost);

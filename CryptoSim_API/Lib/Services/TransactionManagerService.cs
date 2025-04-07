@@ -92,7 +92,8 @@ namespace CryptoSim_API.Lib.Services
 			await _dbContext.Transactions.AddAsync(t);
 			await _dbContext.SaveChangesAsync();
 			await _cache.RemoveAsync("transactions");
-			transaction.Commit();
+			await transaction.CommitAsync();
+			await transaction.DisposeAsync();
 		}
 
 

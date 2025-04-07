@@ -111,12 +111,15 @@ namespace CryptoSim_API.Lib.Services
 			await _dbContext.Cryptos.AddAsync(crypto);
 			await _dbContext.SaveChangesAsync();
 			await _cache.RemoveAsync("cryptos");
-			transaction.Commit();
+			await transaction.CommitAsync();
+			await transaction.DisposeAsync();
 			return $"New crypto currency successfuly created with Id: {crypto.Id.ToString()} and Name: {crypto.Name}";
 		}
 
 		public async Task<string> DeleteCrypto(string Id)
 		{
+			//TODO: add "isDeleted" field to crypto, then switch it to true instead of deleting it
+			//TODO: add to the doesExists method to check if the crypto is deleted
 			if (await doesCryptoExists(Id))
 			{
 				var transaction = _dbContext.Database.BeginTransaction();			
@@ -124,14 +127,12 @@ namespace CryptoSim_API.Lib.Services
 				_dbContext.Cryptos.Remove(crypto);
 				await _dbContext.SaveChangesAsync();
 				await _cache.RemoveAsync("cryptos");
-				transaction.Commit();
+				await transaction.CommitAsync();
+				await transaction.DisposeAsync();
 				return $"Crypto currency ({crypto.Name}) successfully deleted";
 			}
 			return "The crypto currency with the provided ID does not exist";
 		}
-
-
-
 
 		public async Task<bool> doesCryptoExists(string Id)
 		{
@@ -156,7 +157,8 @@ namespace CryptoSim_API.Lib.Services
 			_dbContext.Update(crypto);
 			await _dbContext.SaveChangesAsync();
 			await _cache.RemoveAsync("cryptos");
-			transaction.Commit();
+			await transaction.CommitAsync();
+			await transaction.DisposeAsync();
 		}
 
 		public async Task<IEnumerable<Crypto>> ListCryptos()
