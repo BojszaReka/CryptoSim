@@ -215,13 +215,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Id",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -237,7 +232,7 @@
     "Parameters": [
       {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -253,7 +248,7 @@
     "Parameters": [
       {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -295,7 +290,7 @@
     "Parameters": [
       {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -311,7 +306,7 @@
     "Parameters": [
       {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -327,7 +322,7 @@
     "Parameters": [
       {
         "Name": "UserId",
-        "Type": "",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

@@ -5,15 +5,14 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace CryptoSim_API.Controllers
 {
+	/// <summary>
+	/// Controller responsible for handling trade operations including buying, selling, and retrieving the user's crypto portfolio.
+	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class TradeController : Controller
+	public class TradeController(IUnitOfWork unitOfWork) : Controller
 	{
-		private IUnitOfWork _unitOfWork;
-		public TradeController(IUnitOfWork unitOfWork)
-		{
-			_unitOfWork = unitOfWork;
-		}
+		private IUnitOfWork _unitOfWork = unitOfWork;
 
 		/// <summary>
 		/// Executes a crypto buy transaction for a user.

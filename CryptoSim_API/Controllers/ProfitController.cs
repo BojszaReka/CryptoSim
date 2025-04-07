@@ -5,15 +5,14 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace CryptoSim_API.Controllers
 {
+	/// <summary>
+	/// Controller for managing user profit-related operations: retrieving total and detailed profit information for users.
+	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class ProfitController : Controller
+	public class ProfitController(IUnitOfWork unitOfWork) : Controller
     {
-		private IUnitOfWork _unitOfWork;
-		public ProfitController(IUnitOfWork unitOfWork)
-		{
-			_unitOfWork = unitOfWork;
-		}
+		private IUnitOfWork _unitOfWork = unitOfWork;
 
 		/// <summary>
 		/// Retrieves the total profit for a specific user.

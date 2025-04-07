@@ -6,15 +6,14 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace CryptoSim_API.Controllers
 {
+	/// <summary>
+	/// Controller for managing cryptocurrency operations: updating prices and retrieving price history.
+	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class CryptoController : Controller
+	public class CryptoController(IUnitOfWork unitOfWork) : Controller
 	{
-		private IUnitOfWork _unitOfWork;
-		public CryptoController(IUnitOfWork unitOfWork)
-		{
-			_unitOfWork = unitOfWork;
-		}
+		private IUnitOfWork _unitOfWork = unitOfWork;
 
 
 		/// <summary>

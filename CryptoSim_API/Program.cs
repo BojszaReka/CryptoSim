@@ -4,11 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 namespace CryptoSim_API
 {
     public class Program
     {
-		public static string ConnectionString { get; private set; }
+		internal static string? ConnectionString { get; private set; }
 		public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);

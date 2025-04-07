@@ -4,17 +4,17 @@ using CryptoSim_Lib.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 
+
 namespace CryptoSim_API.Controllers
 {
+	/// <summary>
+	/// Controller for managing transaction-related operations: retrieve user transaction history and individual transaction details.
+	/// </summary>
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class TransactionsController : Controller
+	public class TransactionsController(IUnitOfWork unitOfWork) : Controller
     {
-		private IUnitOfWork _unitOfWork;
-		public TransactionsController(IUnitOfWork unitOfWork)
-		{
-			_unitOfWork = unitOfWork;
-		}
+		private IUnitOfWork _unitOfWork = unitOfWork;
 
 		/// <summary>
 		/// Retrieves all transactions made by a specific user.

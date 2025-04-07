@@ -6,15 +6,14 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace CryptoSim_API.Controllers
 {
+	/// <summary>
+	/// Controller for managing crypto currencies: retrieve, create, and delete crypto currency data.
+	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class CryptosController : Controller
+	public class CryptosController(IUnitOfWork unitOfWork) : Controller
 	{
-		private IUnitOfWork _unitOfWork;
-		public CryptosController(IUnitOfWork unitOfWork)
-		{
-			_unitOfWork = unitOfWork;
-		}
+		private IUnitOfWork _unitOfWork = unitOfWork;
 
 		/// <summary>
 		/// Retrieves a list of all available crypto currencies.

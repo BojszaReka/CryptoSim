@@ -343,10 +343,12 @@
         "tags": [
           "Users"
         ],
+        "summary": "Registers a new user with the specified username, email, and password.",
         "parameters": [
           {
             "name": "username",
             "in": "query",
+            "description": "The username for the new user.",
             "schema": {
               "type": "string"
             }
@@ -354,6 +356,7 @@
           {
             "name": "email",
             "in": "query",
+            "description": "The email address of the new user.",
             "schema": {
               "type": "string"
             }
@@ -361,6 +364,7 @@
           {
             "name": "password",
             "in": "query",
+            "description": "The password for the new user.",
             "schema": {
               "type": "string"
             }
@@ -378,17 +382,12 @@
         "tags": [
           "Users"
         ],
+        "summary": "Retrieves the details of a user by their user ID.",
         "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "UserId",
             "in": "path",
+            "description": "The unique identifier of the user to retrieve.",
             "required": true,
             "schema": {
               "type": "string"
@@ -405,10 +404,12 @@
         "tags": [
           "Users"
         ],
+        "summary": "Updates the information of a specific user by their user ID.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The unique identifier of the user to update.",
             "required": true,
             "schema": {
               "type": "string"
@@ -425,10 +426,12 @@
         "tags": [
           "Users"
         ],
+        "summary": "Deletes a user by their user ID.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The unique identifier of the user to delete.",
             "required": true,
             "schema": {
               "type": "string"
@@ -447,10 +450,12 @@
         "tags": [
           "Wallet"
         ],
+        "summary": "Retrieves the wallet details of a specific user.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The unique identifier of the user whose wallet is being retrieved.",
             "required": true,
             "schema": {
               "type": "string"
@@ -467,10 +472,12 @@
         "tags": [
           "Wallet"
         ],
+        "summary": "Updates the wallet details for a specific user.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The unique identifier of the user whose wallet is being updated.",
             "required": true,
             "schema": {
               "type": "string"
@@ -487,10 +494,12 @@
         "tags": [
           "Wallet"
         ],
+        "summary": "Deletes a user's wallet.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The unique identifier of the user whose wallet is being deleted.",
             "required": true,
             "schema": {
               "type": "string"

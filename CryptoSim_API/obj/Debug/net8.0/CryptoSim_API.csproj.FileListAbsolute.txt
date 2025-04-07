@@ -176,3 +176,16 @@ C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\zh-Hant\Mi
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\CryptoSim_API.xml
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\obj\Debug\net8.0\CryptoSim_API.xml
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\AutoMapper.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\AutoMapper.AspNetCore.OData.EFCore.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\AutoMapper.Collection.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\AutoMapper.Collection.EntityFrameworkCore.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\AutoMapper.Extensions.ExpressionMapping.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\LogicBuilder.Expressions.Utils.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\LogicBuilder.Structures.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.AspNetCore.OData.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.OData.Core.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.OData.Edm.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.OData.ModelBuilder.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.Spatial.dll
