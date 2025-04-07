@@ -9,6 +9,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 		IProfitRepository ProfitRepository { get; }
 		ITradeRepository TradeRepository { get; }
 		ITransactionRepository TransactionRepository { get; }
+		IWalletRepository WalletRepository { get; }
 		Task Save();
 	}
 }

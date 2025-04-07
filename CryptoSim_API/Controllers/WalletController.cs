@@ -1,4 +1,6 @@
 ﻿using CryptoSim_API.Lib.UnitOfWork;
+using CryptoSim_Lib.Classes;
+using CryptoSim_Lib.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CryptoSim_API.Controllers
@@ -19,19 +21,41 @@ namespace CryptoSim_API.Controllers
 		/// <returns>A response containing the user's wallet information.</returns>
 		[HttpGet("{UserId}")] //user id
 		public async Task<IActionResult> GetWallet(string UserId) {
-			//TODO: Implement get wallet
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await _unitOfWork.WalletRepository.GetWallet(UserId);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		/// <summary>
 		/// Updates the wallet details for a specific user.
 		/// </summary>
-		/// <param name="UserId">The unique identifier of the user whose wallet is being updated.</param>
+		/// <param name="updateDTO">The ID of the user whose wallet is being updated and the new balance.</param>
 		/// <returns>A response indicating whether the wallet update was successful.</returns>
 		[HttpPut("{UserId}")] //user id
-		public async Task<IActionResult> UpdateWallet(string UserId) {
-			//TODO: Implement update wallet
-			return null;
+		public async Task<IActionResult> UpdateWallet(WalletUpdateDTO updateDTO) {
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await _unitOfWork.WalletRepository.UpdateWallet(updateDTO);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		/// <summary>
@@ -41,8 +65,19 @@ namespace CryptoSim_API.Controllers
 		/// <returns>A response indicating whether the wallet deletion was successful.</returns>
 		[HttpDelete("{UserId}")] //user id
 		public async Task<IActionResult> DeleteWallett(string UserId) {
-			//TODO: Implement delete wallet
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await _unitOfWork.WalletRepository.DeleteWallet(UserId);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 	}
 }

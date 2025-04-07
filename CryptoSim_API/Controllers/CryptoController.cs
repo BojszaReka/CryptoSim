@@ -39,6 +39,7 @@ namespace CryptoSim_API.Controllers
 			}
 			return BadRequest(response);
 		}
+
 		/// <summary>
 		/// Returns the price history of the crypto currency
 		/// </summary>

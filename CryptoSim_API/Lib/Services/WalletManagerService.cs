@@ -211,5 +211,24 @@ namespace CryptoSim_API.Lib.Services
 			}
 			return portfolio;
 		}
+
+		public async Task<string> DeleteWallet(string userId)
+		{
+			//TODO: implement delete wallet
+			//doesnt deletes the wallett only wipes all the data
+			return null;
+		}
+
+		public async Task<string> UpdateWallet(WalletUpdateDTO walletUpdate) //userid + balance
+		{
+			//TODO: implement update wallet
+			//only updates the balance
+			return null;
+		}
+
+		internal async Task<WalletViewDTO> GetWalletViewDTO(string userId)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

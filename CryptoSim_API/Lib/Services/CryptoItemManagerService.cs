@@ -13,7 +13,17 @@ namespace CryptoSim_API.Lib.Services
 			_cache = cache;
 		}
 
+		internal async Task CreateCryptoItem(CryptoItem newCryptoItem)
+		{
+			throw new NotImplementedException();
+		}
+
 		internal async Task<IEnumerable<CryptoItem>> GetItemsWith(string walletId)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal async Task UpdateCryptoItem(CryptoItem cryptoItem)
 		{
 			throw new NotImplementedException();
 		}

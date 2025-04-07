@@ -13,6 +13,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 		public IProfitRepository ProfitRepository { get; }
 		public ITradeRepository TradeRepository { get; }
 		public ITransactionRepository TransactionRepository { get; }
+		public IWalletRepository WalletRepository { get; }
 
 		public ProductionUnitOfWork(CryptoContext dbContext, IDistributedCache cache)
 		{
@@ -22,6 +23,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 			ProfitRepository = new ProfitRepository(_dbContext, _cache);
 			TradeRepository = new TradeRepository(_dbContext, _cache);
 			TransactionRepository = new TransactionRepository(_dbContext, _cache);
+			WalletRepository = new WalletRepository(_dbContext, _cache);
 		}
 		
 		public async Task Save()
