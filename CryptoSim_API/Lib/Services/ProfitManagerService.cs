@@ -47,17 +47,20 @@ namespace CryptoSim_API.Lib.Services
 			var ci = await walletManager.getCryptoItems(userId);
 			foreach (var cryptoItem in ci)
 			{
-				double currentrate = await cryptoManager.GetCurrentRate(cryptoItem.CryptoId);
-				if (currentrate != 0)
-				{
-					ProfitItem pi = new ProfitItem();
-					pi.CryptoName = await cryptoManager.GetCryptoName(cryptoItem.Id);
-					pi.Profit = (currentrate - cryptoItem.BoughtAtRate) * cryptoItem.Quantity;
-					userProfit.Profits.Add(pi);
-				}
-				else
-				{
-					throw new Exception($"Crypto with id {cryptoItem.CryptoId} does not have rate");
+				var cryptoExists = await cryptoManager.doesCryptoExists(cryptoItem.CryptoId.ToString());
+				if (cryptoExists) {
+					double currentrate = await cryptoManager.GetCurrentRate(cryptoItem.CryptoId);
+					if (currentrate != 0)
+					{
+						ProfitItem pi = new ProfitItem();
+						pi.CryptoName = await cryptoManager.GetCryptoName(cryptoItem.Id);
+						pi.Profit = (currentrate - cryptoItem.BoughtAtRate) * cryptoItem.Quantity;
+						userProfit.Profits.Add(pi);
+					}
+					else
+					{
+						throw new Exception($"Crypto with id {cryptoItem.CryptoId} does not have rate");
+					}
 				}
 			}
 

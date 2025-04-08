@@ -17,16 +17,19 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<User> getUser(string Id)
 		{
+			//TODO: Implement getUser
 			throw new NotImplementedException("UserManagerService.getUser not implemented");
 		}
 
 		public async Task<string> getUserName(string Id)
 		{
+			//TODO: Implement getUserName
 			throw new NotImplementedException("UserManagerService.getUserName not implemented");
 		}
 
 		public async Task<bool> doesUserExists(string Id)
 		{
+			//TODO: Implement doesUserExists
 			/*
 			var crypto = await GetCrypto(Id);
 			return crypto != null;
@@ -36,21 +39,25 @@ namespace CryptoSim_API.Lib.Services
 
 		internal async Task<string> DeleteUser(string userId)
 		{
+			//TODO: Implement DeleteUser
 			throw new NotImplementedException();
 		}
 
 		internal async Task<UserViewDTO> GetUserViewDTO(string userId)
 		{
+			//TODO: Implement GetUserViewDTO
 			throw new NotImplementedException();
 		}
 
 		internal async Task<string> Register(string username, string email, string password)
 		{
+			//TODO: Implement Register
 			throw new NotImplementedException();
 		}
 
 		internal async Task<string> UpdateUser(string userId, string password)
 		{
+			//TODO: Implement UpdateUser
 			throw new NotImplementedException();
 		}
 	}

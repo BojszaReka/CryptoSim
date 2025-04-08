@@ -48,7 +48,7 @@ namespace CryptoSim_API.Lib.Services
 			}
 			return transactions;
 		}
-		//TODOs: implement transaction manager service
+		
 		public async Task<UserTransactionsDTO?> GetUserTransactionsDTO(string userId)
 		{
 			var transactions = await ListTransactions();

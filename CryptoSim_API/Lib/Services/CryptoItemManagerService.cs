@@ -95,9 +95,29 @@ namespace CryptoSim_API.Lib.Services
 			transaction.Dispose();
 		}
 
-		internal async Task DeleteCryptoItemsByWalletId(string v)
+		internal async Task DeleteCryptoItemsByWalletId(string walletId)
 		{
-			throw new NotImplementedException();
+			var items = await GetItemsWith(walletId);
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				foreach (var item in items)
+				{
+					var existingCryptoItem = await _dbContext.CryptoItems.FindAsync(item.Id);
+					if (existingCryptoItem != null)
+					{
+						_dbContext.CryptoItems.Remove(existingCryptoItem);
+					}
+				}
+				await _dbContext.SaveChangesAsync();
+				await _cache.RemoveAsync("cryptoItems");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error deleting CryptoItem", ex);
+			}
 		}
 	}
 }
