@@ -13,6 +13,7 @@
 		public double CurrentPrice { get; set; } //jelenlegi árfolyam -10eladás +10vétel
 		[Range(0, double.MaxValue)]
 		public double Quantity { get; set; } //mennyiség	
+		public bool isDeleted { get; set; } = false; //törölve van-e
 		public List<double> PriceHistory { get; set; } = new List<double>(); //árfolyam történet
 		public List<Transaction>? Transactions { get; set; } = new List<Transaction>(); //tranzakciók
 	}

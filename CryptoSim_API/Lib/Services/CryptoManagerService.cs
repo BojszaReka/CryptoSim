@@ -118,8 +118,6 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<string> DeleteCrypto(string Id)
 		{
-			//TODO: add "isDeleted" field to crypto, then switch it to true instead of deleting it
-			//TODO: add to the doesExists method to check if the crypto is deleted
 			if (await doesCryptoExists(Id))
 			{
 				var transaction = _dbContext.Database.BeginTransaction();			
@@ -137,6 +135,10 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<bool> doesCryptoExists(string Id)
 		{
 			var crypto = await GetCrypto(Id);
+			if (crypto == null)
+			{
+				return !crypto.isDeleted;
+			}
 			return crypto != null;
 		}
 

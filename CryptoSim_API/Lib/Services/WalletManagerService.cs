@@ -101,7 +101,17 @@ namespace CryptoSim_API.Lib.Services
 			if(await doesWalletExists(walletId))
 			{
 				var cryptoItems = await _cryptoItemManager.GetItemsWith(walletId);
-				return cryptoItems;
+				List<CryptoItem> cryptoItemsList = cryptoItems.ToList();
+				foreach (var cryptoItem in cryptoItems)
+				{
+					var crypto = await _cryptoManager.GetCrypto(cryptoItem.CryptoId.ToString());
+					if(!crypto.isDeleted)
+					{
+						cryptoItemsList.Add(cryptoItem);
+					}
+
+				}
+				return cryptoItemsList.AsEnumerable();
 			}
 			return null;
 		}
@@ -208,6 +218,7 @@ namespace CryptoSim_API.Lib.Services
 					Quantity = cryptoItem.Quantity,
 					CurrentValue = crypto.CurrentPrice * cryptoItem.Quantity
 				});
+				
 			}
 			return portfolio;
 		}
