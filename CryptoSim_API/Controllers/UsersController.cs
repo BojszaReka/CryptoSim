@@ -1,4 +1,6 @@
 ﻿using CryptoSim_API.Lib.UnitOfWork;
+using CryptoSim_Lib.Classes;
+using CryptoSim_Lib.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CryptoSim_API.Controllers
@@ -22,8 +24,18 @@ namespace CryptoSim_API.Controllers
 		[HttpPost("register")]
         public async Task<IActionResult> Register(string username, string email, string password)
 		{
-			//TODO: Implement register
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await _unitOfWork.UserRepository.Register(username, email, password);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		/// <summary>
@@ -34,20 +46,41 @@ namespace CryptoSim_API.Controllers
 		[HttpGet("{UserId}")]
 		public async Task<IActionResult> GetUser(string UserId)
 		{
-			//TODO: Implement get user
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await _unitOfWork.UserRepository.GetUser(UserId);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		/// <summary>
-		/// Updates the information of a specific user by their user ID.
+		/// Updates the password of a specific user by their user ID.
 		/// </summary>
 		/// <param name="UserId">The unique identifier of the user to update.</param>
+		/// <param name="newPassword">The new password of the user</param>
 		/// <returns>A response indicating whether the update was successful.</returns>
 		[HttpPut("{UserId}")]
-		public async Task<IActionResult> UpdateUser(string UserId)
+		public async Task<IActionResult> UpdateUser(string UserId, string newPassword)
 		{
-			//TODO: Implement update user
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await _unitOfWork.UserRepository.UpdateUser(UserId, newPassword);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 		/// <summary>
@@ -58,8 +91,18 @@ namespace CryptoSim_API.Controllers
 		[HttpDelete("{UserId}")]
 		public async Task<IActionResult> DeleteUser(string UserId)
 		{
-			//TODO: Implement delete user
-			return null;
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await _unitOfWork.UserRepository.DeleteUser(UserId);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
 		}
 
 	}

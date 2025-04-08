@@ -33,5 +33,25 @@ namespace CryptoSim_API.Lib.Services
 			*/
 			throw new NotImplementedException("UserManagerService.doesUserExists not implemented");
 		}
+
+		internal async Task<string> DeleteUser(string userId)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal async Task<UserViewDTO> GetUserViewDTO(string userId)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal async Task<string> Register(string username, string email, string password)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal async Task<string> UpdateUser(string userId, string password)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -94,5 +94,10 @@ namespace CryptoSim_API.Lib.Services
 			}
 			transaction.Dispose();
 		}
+
+		internal async Task DeleteCryptoItemsByWalletId(string v)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

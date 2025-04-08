@@ -17,7 +17,7 @@ namespace CryptoSim_API.Lib.Repositories
 		}
 		public async Task<string> DeleteWallet(string userId)
 		{
-			return await _walletManager.DeleteWallet(userId);
+			return await _walletManager.DeleteWalletData(userId);
 		}
 
 		public async Task<WalletViewDTO> GetWallet(string userId)
