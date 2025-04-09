@@ -123,43 +123,53 @@ namespace CryptoSim_API.Lib.Services
 
 		internal async Task<string> Register(string username, string email, string password)
 		{
-			WalletManagerService _walletManager = new WalletManagerService(_dbContext, _cache);
 
 			var unique = await isEmailFree(email);
 			if (unique)
 			{ 
-				var id = CreateUser(username, email, password);
-				Guid walletId = await _walletManager.CreateUserWallet(id.ToString());
-				return $"User created successfully with UserId: {id}, users walletId: {walletId}";
+				Guid id = await CreateUser(username, email, password);
+				return $"User created successfully with UserId: {id}";
 			}
 			throw new Exception("Email already in use");
 		}
 
 		private async Task<Guid> CreateUser(string username, string email, string password)
 		{
+			WalletManagerService walletManager = new WalletManagerService(_dbContext, _cache);
+
 			User u = new User
 			{
+				Id = Guid.NewGuid(),
 				UserName = username,
 				Email = email,
 				Password = password
 			};
 
+			Wallet wallet = new Wallet
+			{
+				Id = Guid.NewGuid(),
+				UserId = u.Id,
+				Balance = 10000
+			};
+
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				_dbContext.Users.Add(u);
+				await _dbContext.Users.AddAsync(u);
+				await _dbContext.SaveChangesAsync();
+				await _dbContext.Wallets.AddAsync(wallet);
 				await _dbContext.SaveChangesAsync();
 				_cache.Remove("users");
+				_cache.Remove("wallets");
 				await transaction.CommitAsync();
 			}
 			catch (Exception ex)
 			{
 				await transaction.RollbackAsync();
-				throw new Exception("Error creating User:", ex);
+				throw new Exception($"Error creating User and their Wallet: {ex.InnerException.Message}");
 			}
 			await transaction.DisposeAsync();
 			return u.Id;
-
 		}
 
 		private async Task<bool> isEmailFree(string email)
@@ -196,6 +206,21 @@ namespace CryptoSim_API.Lib.Services
 				return $"User with id: {userId} updated successfully";
 			}
 			throw new Exception($"User with id: {userId} not found");
+		}
+
+		internal async Task<string?> Login(string email, string password)
+		{
+			var users = await ListUsers();
+			var user = users.FirstOrDefault(u => u.Email == email);
+			if(user != null)
+			{
+				if (user.Password == password)
+				{
+					return $"User successfully logged in with ID: {user.Id.ToString()}, and Username: {user.UserName}";
+				}
+				throw new Exception("Invalid password");
+			}
+			throw new Exception("User with email not found");
 		}
 	}
 }

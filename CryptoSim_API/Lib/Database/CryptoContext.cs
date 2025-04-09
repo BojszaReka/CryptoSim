@@ -28,6 +28,7 @@ namespace CryptoSim_API.Lib.Database
 			modelBuilder.Entity<Transaction>().HasOne(t => t.User).WithMany(u => u.Transactions).HasForeignKey(t => t.UserId);
 			modelBuilder.Entity<Transaction>().HasOne(t => t.Crypto).WithMany(c => c.Transactions).HasForeignKey(t => t.CryptoId);
 			modelBuilder.Entity<CryptoItem>().HasOne(c => c.Wallet).WithMany(w => w.Cryptos).HasForeignKey(c => c.WalletId);
+			modelBuilder.Entity<User>().HasOne(u => u.Wallet).WithOne(w => w.User).HasForeignKey<Wallet>(w => w.UserId);
 
 			modelBuilder.Entity<Crypto>().ToTable("Cryptos");
 			modelBuilder.Entity<CryptoItem>().ToTable("CryptoItems");

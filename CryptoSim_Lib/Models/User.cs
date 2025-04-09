@@ -1,4 +1,6 @@
-﻿namespace CryptoSim_Lib.Models
+﻿using System.Text.Json.Serialization;
+
+namespace CryptoSim_Lib.Models
 {
     [Table("Users")]
 	public class User
@@ -11,6 +13,8 @@
 		public string Email { get; set; }
 		[StringLength(70, MinimumLength = 10)]
 		public string Password { get; set; }
-        public List<Transaction>? Transactions { get; set; }
+        public List<Transaction>? Transactions { get; set; } = new List<Transaction>();
+		[JsonIgnore]
+		public Wallet? Wallet { get; set; }
 	}
 }

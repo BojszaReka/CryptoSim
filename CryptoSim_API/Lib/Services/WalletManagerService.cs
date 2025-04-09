@@ -296,6 +296,7 @@ namespace CryptoSim_API.Lib.Services
 			WalletViewDTO walletView = new WalletViewDTO
 			{
 				UserName = await _userManager.getUserName(userId),
+				WalletId = wallet.Id,
 				Balance = wallet.Balance,
 				Cryptos = new List<string>()
 			};
@@ -326,18 +327,19 @@ namespace CryptoSim_API.Lib.Services
 			return false;
 		}
 
-		internal async Task<Guid> CreateUserWallet(string? userId)
+		internal async Task<Guid> CreateUserWallet(Guid userId)
 		{
 			Wallet wallet = new Wallet
 			{
 				Id = Guid.NewGuid(),
-				UserId = Guid.Parse(userId)
+				UserId = userId,
+				Balance = 10000
 			};
 
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				_dbContext.Wallets.Add(wallet);
+				await _dbContext.Wallets.AddAsync(wallet);
 				await _dbContext.SaveChangesAsync();
 				_cache.Remove("wallets");
 				await transaction.CommitAsync();

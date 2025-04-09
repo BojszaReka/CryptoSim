@@ -150,12 +150,7 @@ namespace CryptoSim_API.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Wallets", (string)null);
                 });

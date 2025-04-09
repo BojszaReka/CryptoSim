@@ -39,6 +39,29 @@ namespace CryptoSim_API.Controllers
 		}
 
 		/// <summary>
+		/// An existing user can log in using their email and password, then they can view their userID
+		/// </summary>
+		/// <param name="email">The email address of the user.</param>
+		/// <param name="password">The password for the user.</param>
+		/// <returns>A result indicating whether the login was successful with the user's ID.</returns>
+		[HttpPost("login")]
+		public async Task<IActionResult> Login(string email, string password)
+		{
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await _unitOfWork.UserRepository.Login(email, password);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
+		}
+
+		/// <summary>
 		/// Retrieves the details of a user by their user ID.
 		/// </summary>
 		/// <param name="UserId">The unique identifier of the user to retrieve.</param>

@@ -82,6 +82,11 @@
         "requestBody": {
           "description": "The data of the new crypto currency to be created.",
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewCrypto"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/NewCrypto"
@@ -209,6 +214,11 @@
         "requestBody": {
           "description": "The details of the trade including user ID, crypto ID, and quantity.",
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TradeRequestDTO"
@@ -242,6 +252,11 @@
         "requestBody": {
           "description": "The details of the trade including user ID, crypto ID, and quantity.",
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TradeRequestDTO"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TradeRequestDTO"
@@ -365,6 +380,37 @@
             "name": "password",
             "in": "query",
             "description": "The password for the new user.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "An existing user can log in using their email and password, then they can view their userID",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The email address of the user.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for the user.",
             "schema": {
               "type": "string"
             }
@@ -508,6 +554,11 @@
         "requestBody": {
           "description": "The ID of the user whose wallet is being updated and the new balance.",
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletUpdateDTO"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/WalletUpdateDTO"

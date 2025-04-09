@@ -27,6 +27,11 @@ namespace CryptoSim_API.Lib.Repositories
 			return await _userManager.GetUserViewDTO(UserId);
 		}
 
+		public async Task<string?> Login(string email, string password)
+		{
+			return await _userManager.Login(email, password);
+		}
+
 		public async Task<string> Register(string username, string email, string password)
 		{
 			return await _userManager.Register(username, email, password);

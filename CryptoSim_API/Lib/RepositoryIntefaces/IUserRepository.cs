@@ -1,4 +1,6 @@
-﻿namespace CryptoSim_API.Lib.RepositoryIntefaces
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+namespace CryptoSim_API.Lib.RepositoryIntefaces
 {
 	public interface IUserRepository
 	{
@@ -6,5 +8,6 @@
 		Task<UserViewDTO> GetUser(string UserId);
 		Task<string> UpdateUser(string UserId, string password);
 		Task<string> DeleteUser(string UserId);
+		Task<string?> Login(string email, string password);
 	}
 }

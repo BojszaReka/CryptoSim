@@ -76,15 +76,14 @@ namespace CryptoSim_API.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Wallets", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Wallets_Users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Wallets_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);

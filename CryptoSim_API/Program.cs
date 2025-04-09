@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
@@ -52,8 +53,8 @@ namespace CryptoSim_API
             builder.Services.AddScoped<WalletManagerService>();
 			builder.Services.AddScoped<IUnitOfWork, ProductionUnitOfWork>();
 
-			
-
+			// Update the following code block to ensure the Newtonsoft.Json package is used correctly
+			builder.Services.AddControllers().AddNewtonsoftJson(options =>{	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;});
 
 			var app = builder.Build();
 
