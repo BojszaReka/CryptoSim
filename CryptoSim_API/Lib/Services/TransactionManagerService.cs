@@ -1,4 +1,5 @@
 ﻿using CryptoSim_Lib.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
@@ -74,21 +75,29 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task CreateTransaction(NewTransactionDTO newTransaction)
 		{
-			var transaction = _dbContext.Database.BeginTransaction();
-			Transaction t = new Transaction
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
 			{
-				Id = Guid.NewGuid(),
-				UserId = newTransaction.UserId,
-				CryptoId = newTransaction.CryptoId,
-				Quantity = newTransaction.Quantity,
-				Price = newTransaction.Price,
-				Type = newTransaction.Type,
-				Date = newTransaction.Date
-			};
-			await _dbContext.Transactions.AddAsync(t);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("transactions");
-			await transaction.CommitAsync();
+				Transaction t = new Transaction
+				{
+					Id = Guid.NewGuid(),
+					UserId = newTransaction.UserId,
+					CryptoId = newTransaction.CryptoId,
+					Quantity = newTransaction.Quantity,
+					Price = newTransaction.Price,
+					Type = newTransaction.Type,
+					Date = newTransaction.Date
+				};
+				await _dbContext.Transactions.AddAsync(t);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("transactions");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error creating New Transaction:", ex);
+			}
 			await transaction.DisposeAsync();
 		}
 
@@ -100,11 +109,19 @@ namespace CryptoSim_API.Lib.Services
 			{
 				throw new Exception("User transactions not found");
 			}
-			var transaction = _dbContext.Database.BeginTransaction();
-			_dbContext.Transactions.RemoveRange(userTransactions);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("transactions");
-			await transaction.CommitAsync();
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				_dbContext.Transactions.RemoveRange(userTransactions);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("transactions");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error deleting user's Transaction:", ex);
+			}
 			await transaction.DisposeAsync();
 		}
 	}

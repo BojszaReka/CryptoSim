@@ -46,7 +46,7 @@
         "summary": "Returns the price history of the crypto currency",
         "parameters": [
           {
-            "name": "cryptoId",
+            "name": "CryptoId",
             "in": "path",
             "description": "Id of the crypto currency",
             "required": true,
@@ -274,7 +274,7 @@
         "summary": "Retrieves the crypto portfolio for a specific user, including their owned assets and quantities.",
         "parameters": [
           {
-            "name": "userId",
+            "name": "UserId",
             "in": "path",
             "description": "The ID of the user whose portfolio is being requested.",
             "required": true,
@@ -298,7 +298,7 @@
         "summary": "Retrieves all transactions made by a specific user.",
         "parameters": [
           {
-            "name": "userId",
+            "name": "UserId",
             "in": "path",
             "description": "The ID of the user whose transaction history is requested.",
             "required": true,
@@ -322,7 +322,7 @@
         "summary": "Retrieves detailed information about a specific transaction.",
         "parameters": [
           {
-            "name": "transactionId",
+            "name": "TransactionId",
             "in": "path",
             "description": "The ID of the transaction to retrieve details for.",
             "required": true,
@@ -476,21 +476,35 @@
           }
         }
       },
-      "put": {
+      "delete": {
         "tags": [
           "Wallet"
         ],
-        "summary": "Updates the wallet details for a specific user.",
+        "summary": "Deletes a user's wallet.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
+            "description": "The unique identifier of the user whose wallet is being deleted.",
             "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Wallet": {
+      "put": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "Updates the wallet details for a specific user.",
         "requestBody": {
           "description": "The ID of the user whose wallet is being updated and the new balance.",
           "content": {
@@ -511,28 +525,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Wallet"
-        ],
-        "summary": "Deletes a user's wallet.",
-        "parameters": [
-          {
-            "name": "UserId",
-            "in": "path",
-            "description": "The unique identifier of the user whose wallet is being deleted.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"

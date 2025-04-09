@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using CryptoSim_Lib.Models;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace CryptoSim_API.Lib.Services
 {
@@ -29,10 +31,18 @@ namespace CryptoSim_API.Lib.Services
 					var jsonData = await File.ReadAllTextAsync(filePath);
 					var cryptos = JsonConvert.DeserializeObject<List<Crypto>>(jsonData);
 
-					var transaction = _context.Database.BeginTransaction();
-					_context.Cryptos.AddRange(cryptos);
-					await _context.SaveChangesAsync();
-					await transaction.CommitAsync();
+					var transaction = await _context.Database.BeginTransactionAsync();
+					try
+					{
+						_context.Cryptos.AddRange(cryptos);
+						await _context.SaveChangesAsync();
+						await transaction.CommitAsync();
+					}
+					catch (Exception ex)
+					{
+						await transaction.RollbackAsync();
+						throw new Exception("Error seeding Crypto Mock Data", ex);
+					}			
 					await transaction.DisposeAsync();
 				}
 			}

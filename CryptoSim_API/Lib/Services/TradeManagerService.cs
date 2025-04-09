@@ -32,7 +32,7 @@ namespace CryptoSim_API.Lib.Services
 					var crypto = await cryptoManager.GetCrypto(tradeRequest.CryptoId.ToString());
 					if(crypto.Quantity < tradeRequest.Quantity)
 					{
-						return "Not enough crypto in the market";
+						throw new Exception("Not enough crypto in the market");
 					}
 					double cost = tradeRequest.Quantity * crypto.CurrentPrice;
 					if (await walletManager.doesUserHasBalance(tradeRequest.UserId.ToString(), cost))
@@ -52,11 +52,11 @@ namespace CryptoSim_API.Lib.Services
 						await transactionManager.CreateTransaction(nt);
 						return "Trade created successfully";
 					}
-					else { return "The user does not have enough balance"; }
+					else { throw new Exception("The user does not have enough balance"); }
 				}
-				else { return "The user with the provided ID does not exist"; }
+				else { throw new Exception("The user with the provided ID does not exist"); }
 			}
-			else { return "The crypto currency with the provided ID does not exist"; }
+			else { throw new Exception("The crypto currency with the provided ID does not exist"); }
 			
 		}
 
@@ -75,7 +75,7 @@ namespace CryptoSim_API.Lib.Services
 					double cost = tradeRequest.Quantity * crypto.CurrentPrice;
 
 					var hasEnoughCrypto = await walletManager.doesUserHasCryptoBalance(tradeRequest.UserId.ToString(), tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
-					if(!hasEnoughCrypto) { return "The user does not have enough of the crypto currency to sell";}
+					if(!hasEnoughCrypto) { throw new Exception("The user does not have enough of the crypto currency to sell");}
 
 					await cryptoManager.IncreaseCryptoQuantity(tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
 					await walletManager.IncreaseUserBalance(tradeRequest.UserId.ToString(), cost);
@@ -92,9 +92,9 @@ namespace CryptoSim_API.Lib.Services
 					await transactionManager.CreateTransaction(nt);
 					return "Trade created successfully";
 				}
-				else { return "The user with the provided ID does not exist"; }
+				else { throw new Exception("The user with the provided ID does not exist"); }
 			}
-			else { return "The crypto currency with the provided ID does not exist"; }
+			else { throw new Exception("The crypto currency with the provided ID does not exist"); }
 		}
 
 		public async Task<UserPortfolioDTO> getUserPortfolio(string userId)

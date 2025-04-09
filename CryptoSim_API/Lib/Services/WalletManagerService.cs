@@ -151,10 +151,18 @@ namespace CryptoSim_API.Lib.Services
 		public async Task UpdateWallet(Wallet wallet)
 		{
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
-			_dbContext.Wallets.Update(wallet);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("wallets");
-			await transaction.CommitAsync();
+			try
+			{
+				_dbContext.Wallets.Update(wallet);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("wallets");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error while updating Wallet:", ex);
+			}
 			await transaction.DisposeAsync();
 		}
 
@@ -225,7 +233,6 @@ namespace CryptoSim_API.Lib.Services
 					Quantity = cryptoItem.Quantity,
 					CurrentValue = crypto.CurrentPrice * cryptoItem.Quantity
 				});
-				
 			}
 			return portfolio;
 		}
@@ -247,14 +254,21 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<string> DeleteWallet(string userId)
 		{
 			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
-
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
-			var wallet = await GetWalletByUserId(userId);
-			_dbContext.Wallets.Remove(wallet);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("wallets");
-			await _cryptoItemManager.DeleteCryptoItemsByWalletId(wallet.Id.ToString());
-			await transaction.CommitAsync();
+			try
+			{
+				var wallet = await GetWalletByUserId(userId);
+				_dbContext.Wallets.Remove(wallet);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("wallets");
+				await _cryptoItemManager.DeleteCryptoItemsByWalletId(wallet.Id.ToString());
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error while deleting Wallet:", ex);
+			}
 			await transaction.DisposeAsync();
 			return "Wallet deleted successfully";
 		}
@@ -314,16 +328,25 @@ namespace CryptoSim_API.Lib.Services
 
 		internal async Task<Guid> CreateUserWallet(string? userId)
 		{
-			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			Wallet wallet = new Wallet
 			{
 				Id = Guid.NewGuid(),
 				UserId = Guid.Parse(userId)
 			};
-			_dbContext.Wallets.Add(wallet);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("wallets");
-			await transaction.CommitAsync();
+
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				_dbContext.Wallets.Add(wallet);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("wallets");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error creating user's Wallet:", ex);
+			}
 			await transaction.DisposeAsync();
 			return wallet.Id;
 		}

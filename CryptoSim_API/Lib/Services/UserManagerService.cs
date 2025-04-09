@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using CryptoSim_Lib.Models;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using System.Transactions;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
@@ -77,21 +79,29 @@ namespace CryptoSim_API.Lib.Services
 
 			if (await doesUserExists(userId))
 			{
-				var transaction = _dbContext.Database.BeginTransaction();
-				User u = await getUser(userId);
-				_dbContext.Users.Remove(u);
-				await _dbContext.SaveChangesAsync();
-				_cache.Remove("users");
+				var transaction = await _dbContext.Database.BeginTransactionAsync();
+				try
+				{
+					User u = await getUser(userId);
+					_dbContext.Users.Remove(u);
+					await _dbContext.SaveChangesAsync();
+					_cache.Remove("users");
 
-				await _walletManager.DeleteWallet(userId);
-				await _transactionManager.DeleteUserTransactions(userId);
+					await _walletManager.DeleteWallet(userId);
+					await _transactionManager.DeleteUserTransactions(userId);
 
-				await transaction.CommitAsync();
+					await transaction.CommitAsync();
+				}
+				catch (Exception ex)
+				{
+					await transaction.RollbackAsync();
+					throw new Exception("Error deleting User:", ex);
+				}
 				await transaction.DisposeAsync();
 
 				return $"User with id: {userId} deleted successfully";
 			}
-			return $"User with id: {userId} not found";
+			throw new Exception($"User with id: {userId} not found");
 		}
 
 		internal async Task<UserViewDTO> GetUserViewDTO(string userId)
@@ -122,22 +132,31 @@ namespace CryptoSim_API.Lib.Services
 				Guid walletId = await _walletManager.CreateUserWallet(id.ToString());
 				return $"User created successfully with UserId: {id}, users walletId: {walletId}";
 			}
-			return "Email already in use";
+			throw new Exception("Email already in use");
 		}
 
 		private async Task<Guid> CreateUser(string username, string email, string password)
 		{
-			var transaction = _dbContext.Database.BeginTransaction();
 			User u = new User
 			{
 				UserName = username,
 				Email = email,
 				Password = password
 			};
-			_dbContext.Users.Add(u);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("users");
-			await transaction.CommitAsync();
+
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				_dbContext.Users.Add(u);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("users");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error creating User:", ex);
+			}
 			await transaction.DisposeAsync();
 			return u.Id;
 
@@ -158,17 +177,25 @@ namespace CryptoSim_API.Lib.Services
 		{
 			if (await doesUserExists(userId))
 			{
-				var transaction = _dbContext.Database.BeginTransaction();
-				User u = await getUser(userId);
-				u.Password = password;
-				_dbContext.Users.Update(u);
-				await _dbContext.SaveChangesAsync();
-				_cache.Remove("users");
-				await transaction.CommitAsync();
+				var transaction = await _dbContext.Database.BeginTransactionAsync();
+				try
+				{
+					User u = await getUser(userId);
+					u.Password = password;
+					_dbContext.Users.Update(u);
+					await _dbContext.SaveChangesAsync();
+					_cache.Remove("users");
+					await transaction.CommitAsync();
+				}
+				catch (Exception ex)
+				{
+					await transaction.RollbackAsync();
+					throw new Exception("Error updating User:", ex);
+				}
 				await transaction.DisposeAsync();
 				return $"User with id: {userId} updated successfully";
 			}
-			return $"User with id: {userId} not found";
+			throw new Exception($"User with id: {userId} not found");
 		}
 	}
 }

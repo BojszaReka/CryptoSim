@@ -49,7 +49,7 @@ namespace CryptoSim_API.Lib.Services
 				await transaction.RollbackAsync();
 				throw new Exception("Error creating CryptoItem", ex);
 			}
-			transaction.Dispose();
+			await transaction.DisposeAsync();
 		}
 
 		public async Task<IQueryable<CryptoItem>> ListCryptoItems()
@@ -82,6 +82,7 @@ namespace CryptoSim_API.Lib.Services
 					await _dbContext.SaveChangesAsync();
 					_cache.Remove("cryptoItems");
 					await transaction.CommitAsync();
+					
 				}
 			}
 			catch (Exception ex)
@@ -89,7 +90,7 @@ namespace CryptoSim_API.Lib.Services
 				await transaction.RollbackAsync();
 				throw new Exception("Error updating CryptoItem", ex);
 			}
-			transaction.Dispose();
+			await transaction.DisposeAsync();
 		}
 
 		internal async Task DeleteCryptoItemsByWalletId(string walletId)
@@ -115,6 +116,7 @@ namespace CryptoSim_API.Lib.Services
 				await transaction.RollbackAsync();
 				throw new Exception("Error deleting CryptoItem", ex);
 			}
+			await transaction.DisposeAsync();
 		}
 	}
 }

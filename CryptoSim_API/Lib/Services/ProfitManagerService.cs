@@ -63,7 +63,6 @@ namespace CryptoSim_API.Lib.Services
 					}
 				}
 			}
-
 			return userProfit;
 		}
 	}

@@ -19,15 +19,15 @@ namespace CryptoSim_API.Controllers
 		/// <summary>
 		/// Retrieves all transactions made by a specific user.
 		/// </summary>
-		/// <param name="userId">The ID of the user whose transaction history is requested.</param>
+		/// <param name="UserId">The ID of the user whose transaction history is requested.</param>
 		/// <returns>A response containing a list of the user's transactions.</returns>
 		[HttpGet("{UserId}")] 
-		public async Task<IActionResult> GetUserTransactions(string userId) {
+		public async Task<IActionResult> GetUserTransactions([FromRoute] string UserId) {
 			ApiResponse response = new ApiResponse();
 			try
 			{
 				response.StatusCode = 200;
-				response.Data = await _unitOfWork.TransactionRepository.GetUserTransactionsDTO(userId);
+				response.Data = await _unitOfWork.TransactionRepository.GetUserTransactionsDTO(UserId);
 				return Ok(response);
 			}
 			catch (Exception e)
@@ -41,15 +41,15 @@ namespace CryptoSim_API.Controllers
 		/// <summary>
 		/// Retrieves detailed information about a specific transaction.
 		/// </summary>
-		/// <param name="transactionId">The ID of the transaction to retrieve details for.</param>
+		/// <param name="TransactionId">The ID of the transaction to retrieve details for.</param>
 		/// <returns>A response containing the transaction details.</returns>
 		[HttpGet("{TransactionId}")] 
-		public async Task<IActionResult> GetTransationDetails(string transactionId) {
+		public async Task<IActionResult> GetTransationDetails([FromRoute] string TransactionId) {
 			ApiResponse response = new ApiResponse();
 			try
 			{
 				response.StatusCode = 200;
-				response.Data = await _unitOfWork.TransactionRepository.GetTransactionDetailsDTO(transactionId);
+				response.Data = await _unitOfWork.TransactionRepository.GetTransactionDetailsDTO(TransactionId);
 				return Ok(response);
 			}
 			catch (Exception e)

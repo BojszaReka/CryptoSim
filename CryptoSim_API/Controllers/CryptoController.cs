@@ -43,16 +43,16 @@ namespace CryptoSim_API.Controllers
 		/// <summary>
 		/// Returns the price history of the crypto currency
 		/// </summary>
-		/// <param name="cryptoId">Id of the crypto currency</param>
+		/// <param name="CryptoId">Id of the crypto currency</param>
 		/// <returns>A dataset containing the previous prices of the currency</returns>
 		[HttpGet("price/history/{CryptoId}")]
-		public async Task<IActionResult> GetCryptoPriceHistoy(string cryptoId)
+		public async Task<IActionResult> GetCryptoPriceHistoy([FromRoute] string CryptoId)
 		{
 			ApiResponse response = new ApiResponse();
 			try
 			{
 				response.StatusCode = 200;
-				response.Data = await _unitOfWork.CryptoRepository.GetPriceHistory(cryptoId);
+				response.Data = await _unitOfWork.CryptoRepository.GetPriceHistory(CryptoId);
 				return Ok(response);
 			}
 			catch (Exception e)

@@ -67,7 +67,7 @@ namespace CryptoSim_API.Controllers
 		/// <param name="newPassword">The new password of the user</param>
 		/// <returns>A response indicating whether the update was successful.</returns>
 		[HttpPut("{UserId}")]
-		public async Task<IActionResult> UpdateUser(string UserId, string newPassword)
+		public async Task<IActionResult> UpdateUser([FromRoute] string UserId, string newPassword)
 		{
 			ApiResponse response = new ApiResponse();
 			try

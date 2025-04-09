@@ -20,7 +20,7 @@ namespace CryptoSim_API.Controllers
 		/// <param name="UserId">The ID of the user whose profit is being requested.</param>
 		/// <returns>A response containing the user's total profit.</returns>
 		[HttpGet("profit/{UserId}")] 
-		public async Task<IActionResult> GetUserProfit(string UserId) {
+		public async Task<IActionResult> GetUserProfit([FromRoute] string UserId) {
 			ApiResponse response = new ApiResponse();
 			try
 			{
@@ -42,7 +42,7 @@ namespace CryptoSim_API.Controllers
 		/// <param name="UserId">The ID of the user for whom detailed profit information is requested.</param>
 		/// <returns>A response containing detailed profit data for the user.</returns>
 		[HttpGet("profit/detail/{UserId}")]
-		public async Task<IActionResult> GetDetailedUserProfit(string UserId)
+		public async Task<IActionResult> GetDetailedUserProfit([FromRoute] string UserId)
 		{
 			ApiResponse response = new ApiResponse();
 			try

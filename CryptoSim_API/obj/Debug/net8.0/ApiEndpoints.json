@@ -29,7 +29,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "cryptoId",
+        "Name": "CryptoId",
         "Type": "System.String",
         "IsRequired": true
       }
@@ -151,7 +151,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
+        "Name": "UserId",
         "Type": "System.String",
         "IsRequired": true
       }
@@ -183,7 +183,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "transactionId",
+        "Name": "TransactionId",
         "Type": "System.String",
         "IsRequired": true
       }
@@ -199,7 +199,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
+        "Name": "UserId",
         "Type": "System.String",
         "IsRequired": true
       }
@@ -287,6 +287,22 @@
   },
   {
     "ContainingType": "CryptoSim_API.Controllers.WalletController",
+    "Method": "UpdateWallet",
+    "RelativePath": "api/Wallet",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateDTO",
+        "Type": "CryptoSim_Lib.DTO.WalletUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CryptoSim_API.Controllers.WalletController",
     "Method": "GetWallet",
     "RelativePath": "api/Wallet/{UserId}",
     "HttpMethod": "GET",
@@ -296,27 +312,6 @@
       {
         "Name": "UserId",
         "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CryptoSim_API.Controllers.WalletController",
-    "Method": "UpdateWallet",
-    "RelativePath": "api/Wallet/{UserId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "updateDTO",
-        "Type": "CryptoSim_Lib.DTO.WalletUpdateDTO",
-        "IsRequired": true
-      },
-      {
-        "Name": "UserId",
-        "Type": "",
         "IsRequired": true
       }
     ],

@@ -46,7 +46,7 @@ namespace CryptoSim_API.Lib.Services
 				await UpdateCrypto(c);
 				return $"Crypto currency (id: {cryptoId}, name: {c.Name}) price updated successfully to {price}";
 			}
-			return "The crypto currency with the provided ID does not exist";
+			throw new Exception("The crypto currency with the provided ID does not exist");
 		}
 
 		public async Task<PriceHistoryDTO> GetPriceHistory(string cryptoId)
@@ -99,7 +99,7 @@ namespace CryptoSim_API.Lib.Services
 			var cryptos = await ListCryptos();
 			if (cryptos.Count() >= 15)
 			{
-				return "The maximum number of crypto currencies is 15";
+				throw new Exception("The maximum number of crypto currencies is 15");
 			}
 
 			Crypto crypto = new Crypto
@@ -111,13 +111,23 @@ namespace CryptoSim_API.Lib.Services
 				PriceHistory = new List<double>(),
 				Quantity = newCrypto.Quantity,
 			};
-			var transaction = _dbContext.Database.BeginTransaction();
-			await _dbContext.Cryptos.AddAsync(crypto);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("cryptos");
-			await transaction.CommitAsync();
+
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				await _dbContext.Cryptos.AddAsync(crypto);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("cryptos");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error creating Crypto Currency", ex);
+			}
 			await transaction.DisposeAsync();
 			return $"New crypto currency successfuly created with Id: {crypto.Id.ToString()} and Name: {crypto.Name}";
+
 		}
 
 		public async Task<string> DeleteCrypto(string Id)
@@ -125,20 +135,35 @@ namespace CryptoSim_API.Lib.Services
 			if (await doesCryptoExists(Id))
 			{
 				var crypto = await GetCrypto(Id);
-				var transaction = _dbContext.Database.BeginTransaction();			
-				if(crypto != null)
+
+				if (crypto != null)
 				{
-					_dbContext.Cryptos.Remove(crypto);
-					await _dbContext.SaveChangesAsync();
-					_cache.Remove("cryptos");
-					await transaction.CommitAsync();
+					var transaction = await _dbContext.Database.BeginTransactionAsync();
+					try
+					{
+						_dbContext.Cryptos.Remove(crypto);
+						await _dbContext.SaveChangesAsync();
+						_cache.Remove("cryptos");
+						await transaction.CommitAsync();
+					}
+					catch (Exception ex)
+					{
+						await transaction.RollbackAsync();
+						throw new Exception("Error deleting Crypto Currency:", ex);
+					}
 					await transaction.DisposeAsync();
 					return $"Crypto currency ({crypto.Name}) successfully deleted";
 				}
-				return "The crypto currency is null";
-
+				else
+				{
+					throw new Exception("The crypto currency is null");
+				}
 			}
-			return $"The crypto currency with the provided ID ({Id}) does not exist";
+			else
+			{
+				throw new Exception($"The crypto currency with the provided ID ({Id}) does not exist");
+			}
+			
 		}
 
 		public async Task<bool> doesCryptoExists(string Id)
@@ -149,7 +174,7 @@ namespace CryptoSim_API.Lib.Services
 				return false;
 				//return !crypto.isDeleted;
 			}
-			return true;
+			return !crypto.isDeleted;
 		}
 
 		public async Task<Crypto> GetCrypto(string cryptoId)
@@ -161,11 +186,19 @@ namespace CryptoSim_API.Lib.Services
 
 		private async Task UpdateCrypto(Crypto crypto)
 		{
-			var transaction = _dbContext.Database.BeginTransaction();
-			_dbContext.Update(crypto);
-			await _dbContext.SaveChangesAsync();
-			_cache.Remove("cryptos");
-			await transaction.CommitAsync();
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				_dbContext.Update(crypto);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("cryptos");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error updating Crypto currency", ex);
+			}			
 			await transaction.DisposeAsync();
 		}
 

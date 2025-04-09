@@ -41,7 +41,7 @@ namespace CryptoSim_API.Controllers
 		/// </summary>
 		/// <param name="updateDTO">The ID of the user whose wallet is being updated and the new balance.</param>
 		/// <returns>A response indicating whether the wallet update was successful.</returns>
-		[HttpPut("{UserId}")] //user id
+		[HttpPut]
 		public async Task<IActionResult> UpdateWallet(WalletUpdateDTO updateDTO) {
 			ApiResponse response = new ApiResponse();
 			try

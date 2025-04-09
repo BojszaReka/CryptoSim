@@ -62,15 +62,15 @@ namespace CryptoSim_API.Controllers
 		/// <summary>
 		/// Retrieves the crypto portfolio for a specific user, including their owned assets and quantities.
 		/// </summary>
-		/// <param name="userId">The ID of the user whose portfolio is being requested.</param>
+		/// <param name="UserId">The ID of the user whose portfolio is being requested.</param>
 		/// <returns>A response containing the user's crypto portfolio.</returns>
 		[HttpGet("portfolio/{UserId}")]
-		public async Task<IActionResult> PrortfolioOfUser(String userId) {
+		public async Task<IActionResult> PrortfolioOfUser([FromRoute] string UserId) {
 			ApiResponse response = new ApiResponse();
 			try
 			{
 				response.StatusCode = 200;
-				response.Data = await _unitOfWork.TradeRepository.getUserPortfolio(userId);
+				response.Data = await _unitOfWork.TradeRepository.getUserPortfolio(UserId);
 				return Ok(response);
 			}
 			catch (Exception e)
