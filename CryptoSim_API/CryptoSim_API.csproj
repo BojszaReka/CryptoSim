@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="CryptoMockData.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CryptoMockData.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="AutoMapper.AspNetCore.OData.EFCore" Version="7.0.0" />
     <PackageReference Include="AutoMapper.Collection" Version="11.0.0" />

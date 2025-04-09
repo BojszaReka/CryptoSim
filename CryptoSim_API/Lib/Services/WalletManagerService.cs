@@ -1,5 +1,5 @@
 ﻿using CryptoSim_Lib.Models;
-using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
@@ -8,25 +8,23 @@ namespace CryptoSim_API.Lib.Services
 	public class WalletManagerService
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
-		CryptoItemManagerService _cryptoItemManager;
-		CryptoManagerService _cryptoManager;
-		UserManagerService _userManager;
-		public WalletManagerService(CryptoContext dbContext, IDistributedCache cache)
+		private readonly IMemoryCache _cache;
+
+		
+		public WalletManagerService(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
-			_cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
-			_cryptoManager = new CryptoManagerService(_dbContext, _cache);
-			_userManager = new UserManagerService(_dbContext, _cache);
+			
 		}
 		
-		public async Task<IQueryable<Wallet>> getWalletsCache()
+		public IQueryable<Wallet> getWalletsCache()
 		{
-			var cachedWallets = await _cache.GetStringAsync("wallets");
-			if (!string.IsNullOrEmpty(cachedWallets))
+			var cachedWallets = _cache.Get("wallets");
+			
+			if (cachedWallets != null && !string.IsNullOrEmpty(cachedWallets.ToString()))
 			{
-				var wallets = JsonConvert.DeserializeObject<List<Wallet>>(cachedWallets);
+				var wallets = JsonConvert.DeserializeObject<List<Wallet>>(cachedWallets.ToString());
 				return wallets.AsQueryable<Wallet>().Include(w => w.Cryptos);
 			}
 			return null;
@@ -35,20 +33,15 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<IQueryable<Wallet>> getWalletsDB()
 		{
 			var walletsfFromDb = await _dbContext.Wallets.OrderBy(c => c.Id).ToListAsync();
-			var cacheOptions = new DistributedCacheEntryOptions
-			{
-				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-				SlidingExpiration = TimeSpan.FromMinutes(5)
-			};
 			var serializedData = JsonConvert.SerializeObject(walletsfFromDb);
-			await _cache.SetStringAsync("wallets", serializedData, cacheOptions);
+			_cache.Set("wallets", serializedData);
 			return _dbContext.Wallets.OrderBy(c => c.Id).Include(c => c.Cryptos);
 		}
 
 		public async Task<IQueryable<Wallet>> ListWallets()
 		{
 			
-			var wallets = await getWalletsCache();
+			var wallets = getWalletsCache();
 			if (wallets == null)
 			{
 				wallets = await getWalletsDB();
@@ -100,7 +93,10 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<IEnumerable<CryptoItem>> getCryptoItems(string walletId)
 		{
-			if(await doesWalletExists(walletId))
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+			CryptoManagerService _cryptoManager = new CryptoManagerService(_dbContext, _cache);
+
+			if (await doesWalletExists(walletId))
 			{
 				var cryptoItems = await _cryptoItemManager.GetItemsWith(walletId);
 				List<CryptoItem> cryptoItemsList = cryptoItems.ToList();
@@ -157,14 +153,17 @@ namespace CryptoSim_API.Lib.Services
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			_dbContext.Wallets.Update(wallet);
 			await _dbContext.SaveChangesAsync();
-			await _cache.RemoveAsync("wallets");
+			_cache.Remove("wallets");
 			await transaction.CommitAsync();
 			await transaction.DisposeAsync();
 		}
 
 		public async Task AddCryptoToUserWallet(string userId, string cryptoID, int quantity)
 		{
-			if(!await _cryptoManager.doesCryptoExists(cryptoID)) throw new Exception("The crypto currency with the provided ID does not exist");
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+			CryptoManagerService _cryptoManager = new CryptoManagerService(_dbContext, _cache);
+
+			if (!await _cryptoManager.doesCryptoExists(cryptoID)) throw new Exception("The crypto currency with the provided ID does not exist");
 			if(!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
 			var cryptoItems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
@@ -189,6 +188,9 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task RemoveCryptoFromUserWallet(string userId, string cryptoID, int quantity)
 		{
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+			CryptoManagerService _cryptoManager = new CryptoManagerService(_dbContext, _cache);
+
 			if (!await _cryptoManager.doesCryptoExists(cryptoID)) throw new Exception("The crypto currency with the provided ID does not exist");
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
@@ -207,6 +209,9 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<List<PortfolioItem>> getUserWalletAsPortfolioList(string userId)
 		{
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+			CryptoManagerService _cryptoManager = new CryptoManagerService(_dbContext, _cache);
+
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
 			var cryptoItems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
@@ -227,6 +232,8 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<string> DeleteWalletData(string userId)
 		{
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
 			wallet.Balance = 0;
@@ -239,14 +246,16 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<string> DeleteWallet(string userId)
 		{
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			var wallet = await GetWalletByUserId(userId);
 			_dbContext.Wallets.Remove(wallet);
 			await _dbContext.SaveChangesAsync();
-			await _cache.RemoveAsync("wallets");
+			_cache.Remove("wallets");
+			await _cryptoItemManager.DeleteCryptoItemsByWalletId(wallet.Id.ToString());
 			await transaction.CommitAsync();
 			await transaction.DisposeAsync();
-			await _cryptoItemManager.DeleteCryptoItemsByWalletId(wallet.Id.ToString());
 			return "Wallet deleted successfully";
 		}
 
@@ -262,6 +271,10 @@ namespace CryptoSim_API.Lib.Services
 
 		internal async Task<WalletViewDTO> GetWalletViewDTO(string userId)
 		{
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+			CryptoManagerService _cryptoManager = new CryptoManagerService(_dbContext, _cache);
+			UserManagerService _userManager = new UserManagerService(_dbContext, _cache);
+
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
 			if (wallet == null) throw new Exception("The wallet with the provided ID does not exist");
@@ -285,6 +298,8 @@ namespace CryptoSim_API.Lib.Services
 
 		internal async Task<bool> doesUserHasCryptoBalance(string userId, string cryptoId, int quantity)
 		{
+			CryptoItemManagerService _cryptoItemManager = new CryptoItemManagerService(_dbContext, _cache);
+
 			var wallet = await GetWalletByUserId(userId);
 			if (wallet == null) throw new Exception("The wallet with the provided ID does not exist");
 			var cryptoItems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
@@ -295,6 +310,22 @@ namespace CryptoSim_API.Lib.Services
 				return true;
 			}
 			return false;
+		}
+
+		internal async Task<Guid> CreateUserWallet(string? userId)
+		{
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			Wallet wallet = new Wallet
+			{
+				Id = Guid.NewGuid(),
+				UserId = Guid.Parse(userId)
+			};
+			_dbContext.Wallets.Add(wallet);
+			await _dbContext.SaveChangesAsync();
+			_cache.Remove("wallets");
+			await transaction.CommitAsync();
+			await transaction.DisposeAsync();
+			return wallet.Id;
 		}
 	}
 }

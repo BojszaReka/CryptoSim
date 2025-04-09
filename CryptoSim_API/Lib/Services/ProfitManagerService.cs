@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using System.Net.WebSockets;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -8,20 +10,14 @@ namespace CryptoSim_API.Lib.Services
 	public class ProfitManagerService
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
+		private readonly IMemoryCache _cache;
 
-		private UserManagerService userManager;
-		private WalletManagerService walletManager;
-		private CryptoManagerService cryptoManager;
+		
 
-		public ProfitManagerService(CryptoContext dbContext, IDistributedCache cache)
+		public ProfitManagerService(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
-
-			userManager = new UserManagerService(dbContext, cache);
-			walletManager = new WalletManagerService(dbContext, cache);
-			cryptoManager = new CryptoManagerService(dbContext, cache);
 		}
 
 		public async Task<UserProfitDTO> GetUserProfit(string userId)
@@ -41,6 +37,10 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<DetailedUserProfitDTO> GetDetailedUserProfit(string userId)
 		{
+			UserManagerService userManager = new UserManagerService(_dbContext, _cache);
+			WalletManagerService walletManager = new WalletManagerService(_dbContext, _cache);
+			CryptoManagerService cryptoManager = new CryptoManagerService(_dbContext, _cache);
+
 			DetailedUserProfitDTO userProfit = new DetailedUserProfitDTO();
 			userProfit.UserName = await userManager.getUserName(userId);
 

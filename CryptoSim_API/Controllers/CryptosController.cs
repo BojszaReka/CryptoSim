@@ -85,15 +85,15 @@ namespace CryptoSim_API.Controllers
 		/// <summary>
 		/// Deletes a crypto currency based on the provided ID.
 		/// </summary>
-		/// <param name="cryptoId">The ID of the crypto currency to delete.</param>
+		/// <param name="CryptoId">The ID of the crypto currency to delete.</param>
 		/// <returns>A response message indicating the result of the deletion.</returns>
 		[HttpDelete("{CryptoId}")]
-		public async Task<IActionResult> DeleteCrypto(string cryptoId) {
+		public async Task<IActionResult> DeleteCrypto([FromRoute] string CryptoId) {
 			ApiResponse response = new ApiResponse();
 			try
 			{
 				response.StatusCode = 200;
-				response.Message = await _unitOfWork.CryptoRepository.DeleteCrypto(cryptoId);
+				response.Message = await _unitOfWork.CryptoRepository.DeleteCrypto(CryptoId);
 				return Ok(response);
 			}
 			catch (Exception e)

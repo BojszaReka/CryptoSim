@@ -8,6 +8,9 @@ namespace CryptoSim_Lib.DTO
 {
     public class UserViewDTO
     {
-		//TODO: Add properties for the user view DTO
+		public Guid Id { get; set; }
+		public string UserName { get; set; }
+		public string Email { get; set; }
+		public string Password { get; set; } //TODO: remove password later
 	}
 }

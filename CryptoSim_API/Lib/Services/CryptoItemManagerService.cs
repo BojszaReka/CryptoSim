@@ -1,24 +1,26 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or members
 
+using Microsoft.Extensions.Caching.Memory;
+
 namespace CryptoSim_API.Lib.Services
 {
 	public class CryptoItemManagerService
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
+		private readonly IMemoryCache _cache;
 
-		public CryptoItemManagerService(CryptoContext dbContext, IDistributedCache cache)
+		public CryptoItemManagerService(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
 		}
 
-		public async Task<IQueryable<CryptoItem>> getCryptoItemsCache()
+		public IQueryable<CryptoItem> getCryptoItemsCache()
 		{
-			var cachedCryptoItems = await _cache.GetStringAsync("cryptoItems");
-			if (!string.IsNullOrEmpty(cachedCryptoItems))
+			var cachedCryptoItems = _cache.Get("cryptoItems");
+			if (cachedCryptoItems != null && !string.IsNullOrEmpty(cachedCryptoItems.ToString()))
 			{
-				var cryptoItems = JsonConvert.DeserializeObject<List<CryptoItem>>(cachedCryptoItems);
+				var cryptoItems = JsonConvert.DeserializeObject<List<CryptoItem>>(cachedCryptoItems.ToString());
 				return cryptoItems.AsQueryable<CryptoItem>();
 			}
 			return null;
@@ -27,13 +29,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<IQueryable<CryptoItem>> getCryptoItemsDB()
 		{
 			var cryptoItemssfFromDb = await _dbContext.CryptoItems.OrderBy(c => c.Id).ToListAsync();
-			var cacheOptions = new DistributedCacheEntryOptions
-			{
-				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-				SlidingExpiration = TimeSpan.FromMinutes(5)
-			};
 			var serializedData = JsonConvert.SerializeObject(cryptoItemssfFromDb);
-			await _cache.SetStringAsync("cryptoItems", serializedData, cacheOptions);
+			_cache.Set("cryptoItems", serializedData);
 			return _dbContext.CryptoItems.OrderBy(c => c.Id);
 		}
 
@@ -44,7 +41,7 @@ namespace CryptoSim_API.Lib.Services
 			{
 				await _dbContext.CryptoItems.AddAsync(newCryptoItem);
 				await _dbContext.SaveChangesAsync();
-				await _cache.RemoveAsync("cryptoItems");
+				_cache.Remove("cryptoItems");
 				await transaction.CommitAsync();
 			}
 			catch (Exception ex)
@@ -57,7 +54,7 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<IQueryable<CryptoItem>> ListCryptoItems()
 		{
-			var cryptoItems = await getCryptoItemsCache();
+			var cryptoItems = getCryptoItemsCache();
 			if (cryptoItems == null)
 			{
 				cryptoItems = await getCryptoItemsDB();
@@ -83,7 +80,7 @@ namespace CryptoSim_API.Lib.Services
 					existingCryptoItem.Quantity = cryptoItem.Quantity;
 					existingCryptoItem.BoughtAtRate = cryptoItem.BoughtAtRate;
 					await _dbContext.SaveChangesAsync();
-					await _cache.RemoveAsync("cryptoItems");
+					_cache.Remove("cryptoItems");
 					await transaction.CommitAsync();
 				}
 			}
@@ -110,7 +107,7 @@ namespace CryptoSim_API.Lib.Services
 					}
 				}
 				await _dbContext.SaveChangesAsync();
-				await _cache.RemoveAsync("cryptoItems");
+				_cache.Remove("cryptoItems");
 				await transaction.CommitAsync();
 			}
 			catch (Exception ex)

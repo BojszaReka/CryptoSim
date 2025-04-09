@@ -136,7 +136,7 @@
         "summary": "Deletes a crypto currency based on the provided ID.",
         "parameters": [
           {
-            "name": "cryptoId",
+            "name": "CryptoId",
             "in": "path",
             "description": "The ID of the crypto currency to delete.",
             "required": true,
@@ -404,13 +404,21 @@
         "tags": [
           "Users"
         ],
-        "summary": "Updates the information of a specific user by their user ID.",
+        "summary": "Updates the password of a specific user by their user ID.",
         "parameters": [
           {
             "name": "UserId",
             "in": "path",
             "description": "The unique identifier of the user to update.",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "newPassword",
+            "in": "query",
+            "description": "The new password of the user",
             "schema": {
               "type": "string"
             }
@@ -477,13 +485,32 @@
           {
             "name": "UserId",
             "in": "path",
-            "description": "The unique identifier of the user whose wallet is being updated.",
             "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "description": "The ID of the user whose wallet is being updated and the new balance.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletUpdateDTO"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -548,6 +575,20 @@
           "quantity": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WalletUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "balance": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

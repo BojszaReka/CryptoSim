@@ -1,6 +1,8 @@
+using CryptoSim_API.Lib.UnitOfWork;
 using CryptoSim_Lib.Classes;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -11,7 +13,7 @@ namespace CryptoSim_API
     public class Program
     {
 		internal static string? ConnectionString { get; private set; }
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 			Program.ConnectionString = builder.Configuration.GetConnectionString("SQL");
@@ -33,12 +35,14 @@ namespace CryptoSim_API
 			});
 
 			builder.Services.AddDbContext<CryptoContext>(options =>options.UseSqlServer(Program.ConnectionString));
-			builder.Services.AddDistributedMemoryCache();
+			builder.Services.AddMemoryCache();
 
 			var timeoutOptions = new CacheTimeoutOptions();
 			builder.Configuration.GetSection(CacheTimeoutOptions.SectionName).Bind(timeoutOptions);
 			var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(timeoutOptions.MediumLivedTimeInSeconds));
 
+			
+			builder.Services.AddScoped<DataSeederService>();
 			builder.Services.AddScoped<CryptoManagerService>();
             builder.Services.AddScoped<PriceFlowManagerBackService>();
             builder.Services.AddScoped<ProfitManagerService>();
@@ -46,12 +50,22 @@ namespace CryptoSim_API
             builder.Services.AddScoped<TransactionManagerService>();
             builder.Services.AddScoped<UserManagerService>();
             builder.Services.AddScoped<WalletManagerService>();
+			builder.Services.AddScoped<IUnitOfWork, ProductionUnitOfWork>();
+
+			
 
 
 			var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+			using (var scope = app.Services.CreateScope())
+			{
+				var seeder = scope.ServiceProvider.GetRequiredService<DataSeederService>();
+				await seeder.SeedAsync();
+			}
+
+
+			// Configure the HTTP request pipeline.
+			if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();

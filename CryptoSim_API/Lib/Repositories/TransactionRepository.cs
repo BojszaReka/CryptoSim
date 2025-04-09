@@ -1,4 +1,5 @@
 ﻿using CryptoSim_API.Lib.RepositoryIntefaces;
+using Microsoft.Extensions.Caching.Memory;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace CryptoSim_API.Lib.Repositories
@@ -6,9 +7,9 @@ namespace CryptoSim_API.Lib.Repositories
 	public class TransactionRepository : ITransactionRepository
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
+		private readonly IMemoryCache _cache;
 		TransactionManagerService _transactionManager;
-		public TransactionRepository(CryptoContext dbContext, IDistributedCache cache)
+		public TransactionRepository(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;

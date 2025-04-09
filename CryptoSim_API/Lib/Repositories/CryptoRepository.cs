@@ -1,13 +1,15 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
+using Microsoft.Extensions.Caching.Memory;
+
 namespace CryptoSim_API.Lib.Repositories
 {
 	public class CryptoRepository : ICryptoRespository
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
+		private readonly IMemoryCache _cache;
 		CryptoManagerService _cryptoManager;
-		public CryptoRepository(CryptoContext dbContext, IDistributedCache cache)
+		public CryptoRepository(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;

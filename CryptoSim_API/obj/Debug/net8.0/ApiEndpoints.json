@@ -87,7 +87,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "cryptoId",
+        "Name": "CryptoId",
         "Type": "System.String",
         "IsRequired": true
       }
@@ -234,6 +234,11 @@
         "Name": "UserId",
         "Type": "System.String",
         "IsRequired": true
+      },
+      {
+        "Name": "newPassword",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -305,8 +310,13 @@
     "Order": 0,
     "Parameters": [
       {
+        "Name": "updateDTO",
+        "Type": "CryptoSim_Lib.DTO.WalletUpdateDTO",
+        "IsRequired": true
+      },
+      {
         "Name": "UserId",
-        "Type": "System.String",
+        "Type": "",
         "IsRequired": true
       }
     ],

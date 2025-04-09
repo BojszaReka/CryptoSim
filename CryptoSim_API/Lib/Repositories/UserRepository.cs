@@ -1,13 +1,16 @@
 ﻿using CryptoSim_API.Lib.RepositoryIntefaces;
+using Microsoft.Extensions.Caching.Memory;
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace CryptoSim_API.Lib.Repositories
 {
 	public class UserRepository : IUserRepository
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
+		private readonly IMemoryCache _cache;
 		UserManagerService _userManager;
-		public UserRepository(CryptoContext dbContext, IDistributedCache cache)
+		public UserRepository(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;

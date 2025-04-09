@@ -188,3 +188,4 @@ C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.OData.Edm.dll
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.OData.ModelBuilder.dll
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.Spatial.dll
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

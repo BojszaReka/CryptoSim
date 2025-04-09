@@ -1,5 +1,6 @@
 ﻿using CryptoSim_Lib.Models;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -9,18 +10,18 @@ namespace CryptoSim_API.Lib.Services
 	public class TransactionManagerService
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
-		public TransactionManagerService(CryptoContext dbContext, IDistributedCache cache)
+		private readonly IMemoryCache _cache;
+		public TransactionManagerService(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
 		}
-		private async Task<IQueryable<Transaction>> getTransactionsCache()
+		private IQueryable<Transaction> getTransactionsCache()
 		{
-			var cachedTransactions = await _cache.GetStringAsync("transactions");
-			if (!string.IsNullOrEmpty(cachedTransactions))
+			var cachedTransactions = _cache.Get("transactions");
+			if (cachedTransactions != null && !string.IsNullOrEmpty(cachedTransactions.ToString()))
 			{
-				var transactions = JsonConvert.DeserializeObject<List<Transaction>>(cachedTransactions);
+				var transactions = JsonConvert.DeserializeObject<List<Transaction>>(cachedTransactions.ToString());
 				return transactions.AsQueryable<Transaction>();
 			}
 			return null;
@@ -29,19 +30,14 @@ namespace CryptoSim_API.Lib.Services
 		private async Task<IQueryable<Transaction>> getTransactionsDB()
 		{
 			var transactionsFromDb = await _dbContext.Transactions.OrderBy(c => c.Id).ToListAsync();
-			var cacheOptions = new DistributedCacheEntryOptions
-			{
-				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-				SlidingExpiration = TimeSpan.FromMinutes(5)
-			};
 			var serializedData = JsonConvert.SerializeObject(transactionsFromDb);
-			await _cache.SetStringAsync("transactions", serializedData, cacheOptions);
+			_cache.Set("transactions", serializedData);
 			return _dbContext.Transactions.OrderBy(c => c.Id).Include(t => t.User).Include(t => t.Crypto);
 		}
 
 		public async Task<IEnumerable<Transaction>> ListTransactions()
 		{
-			var transactions = await getTransactionsCache();
+			var transactions = getTransactionsCache();
 			if (transactions == null)
 			{
 				transactions = await getTransactionsDB();
@@ -91,11 +87,25 @@ namespace CryptoSim_API.Lib.Services
 			};
 			await _dbContext.Transactions.AddAsync(t);
 			await _dbContext.SaveChangesAsync();
-			await _cache.RemoveAsync("transactions");
+			_cache.Remove("transactions");
 			await transaction.CommitAsync();
 			await transaction.DisposeAsync();
 		}
 
-
+		internal async Task DeleteUserTransactions(string userId)
+		{
+			var transactions = await ListTransactions();
+			var userTransactions = transactions.Where(t => t.UserId.Equals(userId));
+			if (userTransactions == null)
+			{
+				throw new Exception("User transactions not found");
+			}
+			var transaction = _dbContext.Database.BeginTransaction();
+			_dbContext.Transactions.RemoveRange(userTransactions);
+			await _dbContext.SaveChangesAsync();
+			_cache.Remove("transactions");
+			await transaction.CommitAsync();
+			await transaction.DisposeAsync();
+		}
 	}
 }

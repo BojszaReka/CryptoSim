@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CryptoSim_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b535a9ea36398dd8fb30b7a57ef463bd8161991c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d0dc4c9f8bdbaa8a48690f3bcb7dc072f708f8a")]
 [assembly: System.Reflection.AssemblyProductAttribute("CryptoSim_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CryptoSim_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

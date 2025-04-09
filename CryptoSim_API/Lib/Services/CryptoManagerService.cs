@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -9,19 +10,19 @@ namespace CryptoSim_API.Lib.Services
 	public class CryptoManagerService
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
-		public CryptoManagerService(CryptoContext dbContext, IDistributedCache cache)
+		private readonly IMemoryCache _cache;
+		public CryptoManagerService(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
 		}
 
-		public async Task<IQueryable<Crypto>> getCryptoCache()
+		public IQueryable<Crypto> getCryptoCache()
 		{
-			var cachedCryptos = await _cache.GetStringAsync("cryptos");
-			if (!string.IsNullOrEmpty(cachedCryptos))
+			var cachedCryptos = _cache.Get("cryptos");
+			if (cachedCryptos != null && !string.IsNullOrEmpty(cachedCryptos.ToString()))
 			{
-				var cryptos = JsonConvert.DeserializeObject<List<Crypto>>(cachedCryptos);
+				var cryptos = JsonConvert.DeserializeObject<List<Crypto>>(cachedCryptos.ToString());
 				return cryptos.AsQueryable<Crypto>();
 			}
 			return null;
@@ -30,13 +31,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<IQueryable<Crypto>> getCryptosDB()
 		{
 			var cryptosfFromDb = await _dbContext.Cryptos.OrderBy(c => c.Id).ToListAsync();
-			var cacheOptions = new DistributedCacheEntryOptions
-			{
-				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-				SlidingExpiration = TimeSpan.FromMinutes(5)
-			};
 			var serializedData = JsonConvert.SerializeObject(cryptosfFromDb);
-			await _cache.SetStringAsync("cryptos", serializedData, cacheOptions);
+			_cache.Set("cryptos", serializedData);
 			return _dbContext.Cryptos.OrderBy(c => c.Id).Include(c => c.Transactions);
 		}
 
@@ -83,6 +79,7 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<CryptoDTO> GetCryptoDTO(string Id)
 		{
+			if (!await doesCryptoExists(Id)) throw new Exception("The crypto with the ID doesnt exists");
 			var crypto = await GetCrypto(Id);
 			if (crypto != null)
 			{
@@ -98,6 +95,13 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<string> CreateCrypto(NewCrypto newCrypto)
 		{
+			//A rendszer 15 féle kriptovalutát kezel maximum
+			var cryptos = await ListCryptos();
+			if (cryptos.Count() >= 15)
+			{
+				return "The maximum number of crypto currencies is 15";
+			}
+
 			Crypto crypto = new Crypto
 			{
 				Id = Guid.NewGuid(),
@@ -110,7 +114,7 @@ namespace CryptoSim_API.Lib.Services
 			var transaction = _dbContext.Database.BeginTransaction();
 			await _dbContext.Cryptos.AddAsync(crypto);
 			await _dbContext.SaveChangesAsync();
-			await _cache.RemoveAsync("cryptos");
+			_cache.Remove("cryptos");
 			await transaction.CommitAsync();
 			await transaction.DisposeAsync();
 			return $"New crypto currency successfuly created with Id: {crypto.Id.ToString()} and Name: {crypto.Name}";
@@ -120,16 +124,21 @@ namespace CryptoSim_API.Lib.Services
 		{
 			if (await doesCryptoExists(Id))
 			{
-				var transaction = _dbContext.Database.BeginTransaction();			
 				var crypto = await GetCrypto(Id);
-				_dbContext.Cryptos.Remove(crypto);
-				await _dbContext.SaveChangesAsync();
-				await _cache.RemoveAsync("cryptos");
-				await transaction.CommitAsync();
-				await transaction.DisposeAsync();
-				return $"Crypto currency ({crypto.Name}) successfully deleted";
+				var transaction = _dbContext.Database.BeginTransaction();			
+				if(crypto != null)
+				{
+					_dbContext.Cryptos.Remove(crypto);
+					await _dbContext.SaveChangesAsync();
+					_cache.Remove("cryptos");
+					await transaction.CommitAsync();
+					await transaction.DisposeAsync();
+					return $"Crypto currency ({crypto.Name}) successfully deleted";
+				}
+				return "The crypto currency is null";
+
 			}
-			return "The crypto currency with the provided ID does not exist";
+			return $"The crypto currency with the provided ID ({Id}) does not exist";
 		}
 
 		public async Task<bool> doesCryptoExists(string Id)
@@ -137,19 +146,16 @@ namespace CryptoSim_API.Lib.Services
 			var crypto = await GetCrypto(Id);
 			if (crypto == null)
 			{
-				return !crypto.isDeleted;
+				return false;
+				//return !crypto.isDeleted;
 			}
-			return crypto != null;
+			return true;
 		}
 
-		public async Task<Crypto> GetCrypto(string Id)
+		public async Task<Crypto> GetCrypto(string cryptoId)
 		{
-			var cryptos = await getCryptoCache();
-			if (cryptos == null)
-			{
-				cryptos = await getCryptosDB();
-			}
-			var crypto = cryptos.Where(c => Id.Equals(c.Id.ToString())).FirstOrDefault();
+			var cryptos = await ListCryptos();
+			Crypto crypto = cryptos.FirstOrDefault(c => cryptoId.Equals(c.Id.ToString()));
 			return crypto;
 		}
 
@@ -158,14 +164,14 @@ namespace CryptoSim_API.Lib.Services
 			var transaction = _dbContext.Database.BeginTransaction();
 			_dbContext.Update(crypto);
 			await _dbContext.SaveChangesAsync();
-			await _cache.RemoveAsync("cryptos");
+			_cache.Remove("cryptos");
 			await transaction.CommitAsync();
 			await transaction.DisposeAsync();
 		}
 
 		public async Task<IEnumerable<Crypto>> ListCryptos()
 		{
-			var cryptos = await getCryptoCache();
+			var cryptos = getCryptoCache();
 			if (cryptos == null)
 			{
 				cryptos = await getCryptosDB();
@@ -197,14 +203,14 @@ namespace CryptoSim_API.Lib.Services
 		{
 			var crypto = await GetCrypto(cryptoID);
 			crypto.Quantity -= quantity;
-			UpdateCrypto(crypto);
+			await UpdateCrypto(crypto);
 		}
 
 		public async Task IncreaseCryptoQuantity(string cryptoID, int quantity)
 		{
 			var crypto = await GetCrypto(cryptoID);
 			crypto.Quantity += quantity;
-			UpdateCrypto(crypto);
+			await UpdateCrypto(crypto);
 		}
 	}
 }

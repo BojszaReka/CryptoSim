@@ -1,5 +1,7 @@
 ﻿using CryptoSim_Lib.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using System.Transactions;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -9,25 +11,21 @@ namespace CryptoSim_API.Lib.Services
 	public class TradeManagerService
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
+		private readonly IMemoryCache _cache;
 
-		private UserManagerService userManager;
-		private CryptoManagerService cryptoManager;
-		private WalletManagerService walletManager;
-		private TransactionManagerService transactionManager;
-		public TradeManagerService(CryptoContext dbContext, IDistributedCache cache)
+		public TradeManagerService(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
-
-			userManager = new UserManagerService(dbContext, cache);
-			cryptoManager = new CryptoManagerService(dbContext, cache);
-			walletManager = new WalletManagerService(dbContext, cache);
-			transactionManager = new TransactionManagerService(dbContext, cache);
 		}
 		public async Task<string> BuyCrypto(TradeRequestDTO tradeRequest)
 		{
-			if(await cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
+			UserManagerService userManager = new UserManagerService(_dbContext, _cache);
+			CryptoManagerService cryptoManager = new CryptoManagerService(_dbContext, _cache);
+			WalletManagerService walletManager = new WalletManagerService(_dbContext, _cache);
+			TransactionManagerService transactionManager = new TransactionManagerService(_dbContext, _cache);
+
+			if (await cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
 			{
 				if(await userManager.doesUserExists(tradeRequest.UserId.ToString()))
 				{
@@ -59,10 +57,16 @@ namespace CryptoSim_API.Lib.Services
 				else { return "The user with the provided ID does not exist"; }
 			}
 			else { return "The crypto currency with the provided ID does not exist"; }
+			
 		}
 
 		public async Task<string> SellCrypto(TradeRequestDTO tradeRequest)
 		{
+			UserManagerService userManager = new UserManagerService(_dbContext, _cache);
+			CryptoManagerService cryptoManager = new CryptoManagerService(_dbContext, _cache);
+			WalletManagerService walletManager = new WalletManagerService(_dbContext, _cache);
+			TransactionManagerService transactionManager = new TransactionManagerService(_dbContext, _cache);
+
 			if (await cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
 			{
 				if (await userManager.doesUserExists(tradeRequest.UserId.ToString()))
@@ -95,6 +99,9 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<UserPortfolioDTO> getUserPortfolio(string userId)
 		{
+			WalletManagerService walletManager = new WalletManagerService(_dbContext, _cache);
+			UserManagerService userManager = new UserManagerService(_dbContext, _cache);
+
 			if (!await userManager.doesUserExists(userId)) throw new Exception("The user with the provided ID does not exist");
 			UserPortfolioDTO userPortfolio = new UserPortfolioDTO();
 			userPortfolio.UserName = await userManager.getUserName(userId);

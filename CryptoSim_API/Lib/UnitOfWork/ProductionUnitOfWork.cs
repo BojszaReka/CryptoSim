@@ -1,4 +1,5 @@
 ﻿using CryptoSim_API.Lib.RepositoryIntefaces;
+using Microsoft.Extensions.Caching.Memory;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
@@ -7,7 +8,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 	public class ProductionUnitOfWork : IUnitOfWork
 	{
 		private readonly CryptoContext _dbContext;
-		private readonly IDistributedCache _cache;
+		private readonly IMemoryCache _cache;
 
 		public ICryptoRespository CryptoRepository { get; }
 		public IProfitRepository ProfitRepository { get; }
@@ -16,7 +17,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 		public IWalletRepository WalletRepository { get; }
 		public IUserRepository UserRepository { get; }
 
-		public ProductionUnitOfWork(CryptoContext dbContext, IDistributedCache cache)
+		public ProductionUnitOfWork(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
