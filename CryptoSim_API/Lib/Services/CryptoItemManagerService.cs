@@ -1,10 +1,11 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or members
 
+using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace CryptoSim_API.Lib.Services
 {
-	public class CryptoItemManagerService
+	public class CryptoItemManagerService : ICryptoItemService
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;

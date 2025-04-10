@@ -1,4 +1,4 @@
-﻿using CryptoSim_API.Lib.RepositoryIntefaces;
+﻿using CryptoSim_API.Lib.Interfaces.RepositoryIntefaces;
 using Microsoft.Extensions.Caching.Memory;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

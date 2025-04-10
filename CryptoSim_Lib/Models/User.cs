@@ -5,7 +5,7 @@ namespace CryptoSim_Lib.Models
     [Table("Users")]
 	public class User
     {
-        [Required, Key]
+		[Required, Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 		[StringLength(70, MinimumLength = 5)]
 		public string UserName { get; set; }
@@ -14,7 +14,6 @@ namespace CryptoSim_Lib.Models
 		[StringLength(70, MinimumLength = 10)]
 		public string Password { get; set; }
         public List<Transaction>? Transactions { get; set; } = new List<Transaction>();
-		[JsonIgnore]
-		public Wallet? Wallet { get; set; }
+		public List<UserWallet>? UserWallets { get; set; } = new List<UserWallet>();
 	}
 }

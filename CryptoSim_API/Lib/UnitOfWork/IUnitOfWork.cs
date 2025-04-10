@@ -1,4 +1,5 @@
-﻿using CryptoSim_API.Lib.RepositoryIntefaces;
+﻿using CryptoSim_API.Lib.Interfaces.RepositoryIntefaces;
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace CryptoSim_API.Lib.UnitOfWork

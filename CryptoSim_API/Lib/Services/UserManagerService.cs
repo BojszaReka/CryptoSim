@@ -1,4 +1,5 @@
-﻿using CryptoSim_Lib.Models;
+﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+using CryptoSim_Lib.Models;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using System.Transactions;
@@ -7,7 +8,7 @@ using System.Transactions;
 
 namespace CryptoSim_API.Lib.Services
 {
-	public class UserManagerService
+	public class UserManagerService : IUserService
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
@@ -148,7 +149,6 @@ namespace CryptoSim_API.Lib.Services
 			Wallet wallet = new Wallet
 			{
 				Id = Guid.NewGuid(),
-				UserId = u.Id,
 				Balance = 10000
 			};
 

@@ -9,6 +9,6 @@ namespace CryptoSim_Lib.DTO
     public class WalletUpdateDTO
     {
 		public string UserId { get; set; }
-		public decimal Balance { get; set; }
+		public double Balance { get; set; }
 	}
 }

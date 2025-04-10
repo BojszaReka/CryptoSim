@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoSim_API.Migrations
 {
     [DbContext(typeof(CryptoContext))]
-    [Migration("20250403092603_InitialSetup")]
-    partial class InitialSetup
+    [Migration("20250410220434_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,9 @@ namespace CryptoSim_API.Migrations
                     b.Property<double>("StartingRate")
                         .HasColumnType("float");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Cryptos", (string)null);
@@ -58,6 +61,9 @@ namespace CryptoSim_API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("BoughtAtRate")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("CryptoId")
                         .HasColumnType("uniqueidentifier");
@@ -122,35 +128,44 @@ namespace CryptoSim_API.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("CryptoSim_Lib.Models.Wallet", b =>
+            modelBuilder.Entity("CryptoSim_Lib.Models.UserWallet", b =>
                 {
                     b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "WalletId");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("UserWallets", (string)null);
+                });
+
+            modelBuilder.Entity("CryptoSim_Lib.Models.Wallet", b =>
+                {
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("UserId1");
+                    b.HasKey("Id");
 
                     b.ToTable("Wallets", (string)null);
                 });
@@ -193,15 +208,23 @@ namespace CryptoSim_API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CryptoSim_Lib.Models.Wallet", b =>
+            modelBuilder.Entity("CryptoSim_Lib.Models.UserWallet", b =>
                 {
                     b.HasOne("CryptoSim_Lib.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
+                        .WithMany("UserWallets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CryptoSim_Lib.Models.Wallet", "Wallet")
+                        .WithMany("UserWallets")
+                        .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("CryptoSim_Lib.Models.Crypto", b =>
@@ -212,11 +235,15 @@ namespace CryptoSim_API.Migrations
             modelBuilder.Entity("CryptoSim_Lib.Models.User", b =>
                 {
                     b.Navigation("Transactions");
+
+                    b.Navigation("UserWallets");
                 });
 
             modelBuilder.Entity("CryptoSim_Lib.Models.Wallet", b =>
                 {
                     b.Navigation("Cryptos");
+
+                    b.Navigation("UserWallets");
                 });
 #pragma warning restore 612, 618
         }

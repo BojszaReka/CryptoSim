@@ -7,10 +7,8 @@ namespace CryptoSim_Lib.Models
     {
 		[Required, Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
-		public Guid UserId { get; set; }
-		public decimal Balance { get; set; } = 10000;
+		public double Balance { get; set; } = 10000;
 		public List<CryptoItem>? Cryptos { get; set; } = new List<CryptoItem>();
-		[JsonIgnore]
-		public User? User { get; set; }
+		public List<UserWallet>? UserWallets { get; set; } = new List<UserWallet>();
 	}
 }

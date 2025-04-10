@@ -1,17 +1,18 @@
-﻿using CryptoSim_Lib.Models;
+﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+using CryptoSim_Lib.Models;
 using Microsoft.Extensions.Caching.Memory;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace CryptoSim_API.Lib.Services
 {
-	public class WalletManagerService
+	public class WalletManagerService : IWalletService
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
 
 		
-		public WalletManagerService(CryptoContext dbContext, IMemoryCache cache)
+		public WalletManagerService(CryptoContext dbContext, IMemoryCache cache) 
 		{
 			_dbContext = dbContext;
 			_cache = cache;
@@ -30,12 +31,42 @@ namespace CryptoSim_API.Lib.Services
 			return null;
 		}
 
+		public IQueryable<UserWallet> getUserWalletsCache()
+		{
+			var cachedWallets = _cache.Get("userWallets");
+
+			if (cachedWallets != null && !string.IsNullOrEmpty(cachedWallets.ToString()))
+			{
+				var wallets = JsonConvert.DeserializeObject<List<UserWallet>>(cachedWallets.ToString());
+				return wallets.AsQueryable<UserWallet>();
+			}
+			return null;
+		}
+
 		public async Task<IQueryable<Wallet>> getWalletsDB()
 		{
 			var walletsfFromDb = await _dbContext.Wallets.OrderBy(c => c.Id).ToListAsync();
 			var serializedData = JsonConvert.SerializeObject(walletsfFromDb);
 			_cache.Set("wallets", serializedData);
 			return _dbContext.Wallets.OrderBy(c => c.Id).Include(c => c.Cryptos);
+		}
+
+		public async Task<IQueryable<UserWallet>> getUserWalletsDB()
+		{
+			var walletsfFromDb = await _dbContext.UserWallets.ToListAsync();
+			var serializedData = JsonConvert.SerializeObject(walletsfFromDb);
+			_cache.Set("wallets", serializedData);
+			return _dbContext.UserWallets;
+		}
+
+		public async Task<IQueryable<UserWallet>> ListUserWallets()
+		{
+			var userwallets = getUserWalletsCache();
+			if (userwallets == null)
+			{
+				userwallets = await getUserWalletsDB();
+			}
+			return userwallets;
 		}
 
 		public async Task<IQueryable<Wallet>> ListWallets()
@@ -58,8 +89,11 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<Wallet> GetWalletByUserId(string userId)
 		{
+			var userWallets = await ListUserWallets();
+			var userWallet = userWallets.Where(w => userId.Equals(w.UserId.ToString())).FirstOrDefault();
+
 			var wallets = await ListWallets();
-			var wallet = wallets.Where(w => userId.Equals(w.UserId.ToString())).FirstOrDefault();
+			var wallet = wallets.Where(w => w.Id.Equals(userWallet.WalletId)).FirstOrDefault();
 			return wallet;
 		}
 
@@ -79,8 +113,7 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<bool> doesWalletExistsByUserId(string userId)
 		{
-			var wallets = await ListWallets();
-			var wallet = wallets.Where(w => userId.Equals(w.UserId.ToString())).FirstOrDefault();
+			var wallet = GetWalletByUserId(userId);
 			if (wallet == null)
 			{
 				return false;
@@ -123,7 +156,7 @@ namespace CryptoSim_API.Lib.Services
 			{
 				return false;
 			}
-			return false;
+			return true;
 		}
 
 		public async Task DecreaseUserBalance(string userID, double cost)
@@ -132,7 +165,7 @@ namespace CryptoSim_API.Lib.Services
 			if (await doesUserHasBalance(userID, cost))
 			{
 				Wallet wallet = await GetWalletByUserId(userID);
-				wallet.Balance -= (decimal) cost;
+				wallet.Balance -=  cost;
 				await UpdateWallet(wallet);
 			}
 		}
@@ -143,7 +176,7 @@ namespace CryptoSim_API.Lib.Services
 			if (await doesUserHasBalance(userID, cost))
 			{
 				Wallet wallet = await GetWalletByUserId(userID);
-				wallet.Balance += (decimal)cost;
+				wallet.Balance += cost;
 				await UpdateWallet(wallet);
 			}
 		}
@@ -153,7 +186,13 @@ namespace CryptoSim_API.Lib.Services
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				_dbContext.Wallets.Update(wallet);
+				var existingWallet = await _dbContext.Wallets.FirstOrDefaultAsync(w => w.Id == wallet.Id);
+
+				if (existingWallet == null) throw new Exception("Wallet not found.");
+
+				_dbContext.Entry(existingWallet).CurrentValues.SetValues(wallet);
+
+				//_dbContext.Wallets.Update(wallet);
 				await _dbContext.SaveChangesAsync();
 				_cache.Remove("wallets");
 				await transaction.CommitAsync();
@@ -161,7 +200,7 @@ namespace CryptoSim_API.Lib.Services
 			catch (Exception ex)
 			{
 				await transaction.RollbackAsync();
-				throw new Exception("Error while updating Wallet:", ex);
+				throw new Exception($"Error while updating Wallet: {ex}");
 			}
 			await transaction.DisposeAsync();
 		}
@@ -332,8 +371,13 @@ namespace CryptoSim_API.Lib.Services
 			Wallet wallet = new Wallet
 			{
 				Id = Guid.NewGuid(),
-				UserId = userId,
 				Balance = 10000
+			};
+
+			UserWallet userWallet = new UserWallet
+			{
+				UserId = userId,
+				WalletId = wallet.Id
 			};
 
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
@@ -341,6 +385,9 @@ namespace CryptoSim_API.Lib.Services
 			{
 				await _dbContext.Wallets.AddAsync(wallet);
 				await _dbContext.SaveChangesAsync();
+				await _dbContext.UserWallets.AddAsync(userWallet);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("userWallets");
 				_cache.Remove("wallets");
 				await transaction.CommitAsync();
 			}

@@ -1,4 +1,5 @@
-﻿using CryptoSim_Lib.Models;
+﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+using CryptoSim_Lib.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
@@ -8,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace CryptoSim_API.Lib.Services
 {
-	public class TransactionManagerService
+	public class TransactionManagerService : ITransactionService
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;

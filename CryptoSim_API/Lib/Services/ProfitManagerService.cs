@@ -45,6 +45,10 @@ namespace CryptoSim_API.Lib.Services
 			userProfit.UserName = await userManager.getUserName(userId);
 
 			var ci = await walletManager.getCryptoItems(userId);
+			if (ci == null || !ci.Any())
+			{
+				throw new Exception("No crypto items found for the user");
+			}
 			foreach (var cryptoItem in ci)
 			{
 				var cryptoExists = await cryptoManager.doesCryptoExists(cryptoItem.CryptoId.ToString());

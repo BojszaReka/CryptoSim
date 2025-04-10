@@ -38,4 +38,8 @@
     <ProjectReference Include="..\CryptoSim_Lib\CryptoSim_Lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

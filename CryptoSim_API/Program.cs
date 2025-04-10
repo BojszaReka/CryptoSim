@@ -43,15 +43,7 @@ namespace CryptoSim_API
 			var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(timeoutOptions.MediumLivedTimeInSeconds));
 
 			
-			builder.Services.AddScoped<DataSeederService>();
-			builder.Services.AddScoped<CryptoManagerService>();
-            builder.Services.AddScoped<PriceFlowManagerBackService>();
-            builder.Services.AddScoped<ProfitManagerService>();
-            builder.Services.AddScoped<TradeManagerService>();
-            builder.Services.AddScoped<TransactionManagerService>();
-            builder.Services.AddScoped<UserManagerService>();
-            builder.Services.AddScoped<WalletManagerService>();
-			builder.Services.AddScoped<IUnitOfWork, ProductionUnitOfWork>();
+			builder.Services.AddLocalServices();
 
 			// Update the following code block to ensure the Newtonsoft.Json package is used correctly
 			builder.Services.AddControllers().AddNewtonsoftJson(options =>{	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;});

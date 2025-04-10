@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
+using CryptoSim_API.Lib.Interfaces.RepositoryIntefaces;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace CryptoSim_API.Lib.Repositories

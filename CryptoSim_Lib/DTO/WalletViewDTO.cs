@@ -10,7 +10,7 @@ namespace CryptoSim_Lib.DTO
     {
 		public string UserName { get; set; }
 		public Guid WalletId { get; set; }
-		public decimal Balance { get; set; }
+		public double Balance { get; set; }
 		public List<string> Cryptos { get; set; } = new List<string>();
 	}
 }

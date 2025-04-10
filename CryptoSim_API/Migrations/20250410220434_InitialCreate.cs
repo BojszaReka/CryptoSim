@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CryptoSim_API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialSetup : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,6 +20,7 @@ namespace CryptoSim_API.Migrations
                     StartingRate = table.Column<double>(type: "float", nullable: false),
                     CurrentPrice = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
                     PriceHistory = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -32,13 +33,25 @@ namespace CryptoSim_API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Wallets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Balance = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Wallets", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,32 +84,14 @@ namespace CryptoSim_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Wallets",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Wallets", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Wallets_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CryptoItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WalletId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CryptoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<double>(type: "float", nullable: false)
+                    Quantity = table.Column<double>(type: "float", nullable: false),
+                    BoughtAtRate = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,7 +106,31 @@ namespace CryptoSim_API.Migrations
                         name: "FK_CryptoItems_Wallets_WalletId",
                         column: x => x.WalletId,
                         principalTable: "Wallets",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserWallets",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WalletId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserWallets", x => new { x.UserId, x.WalletId });
+                    table.ForeignKey(
+                        name: "FK_UserWallets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserWallets_Wallets_WalletId",
+                        column: x => x.WalletId,
+                        principalTable: "Wallets",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -136,9 +155,9 @@ namespace CryptoSim_API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Wallets_UserId1",
-                table: "Wallets",
-                column: "UserId1");
+                name: "IX_UserWallets_WalletId",
+                table: "UserWallets",
+                column: "WalletId");
         }
 
         /// <inheritdoc />
@@ -151,13 +170,16 @@ namespace CryptoSim_API.Migrations
                 name: "Transactions");
 
             migrationBuilder.DropTable(
-                name: "Wallets");
+                name: "UserWallets");
 
             migrationBuilder.DropTable(
                 name: "Cryptos");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Wallets");
         }
     }
 }
