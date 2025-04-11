@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net.WebSockets;
@@ -7,17 +8,18 @@ using System.Net.WebSockets;
 
 namespace CryptoSim_API.Lib.Services
 {
-	public class ProfitManagerService
+	public class ProfitManagerService : IProfitService
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
 
-		
+		private readonly IServiceScopeFactory _scopeFactory;
 
-		public ProfitManagerService(CryptoContext dbContext, IMemoryCache cache)
+		public ProfitManagerService(CryptoContext dbContext, IMemoryCache cache, IServiceScopeFactory scopeFactory)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
+			_scopeFactory = scopeFactory;
 		}
 
 		public async Task<UserProfitDTO> GetUserProfit(string userId)
@@ -37,27 +39,28 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<DetailedUserProfitDTO> GetDetailedUserProfit(string userId)
 		{
-			UserManagerService userManager = new UserManagerService(_dbContext, _cache);
-			WalletManagerService walletManager = new WalletManagerService(_dbContext, _cache);
-			CryptoManagerService cryptoManager = new CryptoManagerService(_dbContext, _cache);
+			using var scope = _scopeFactory.CreateScope();
+			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
 
 			DetailedUserProfitDTO userProfit = new DetailedUserProfitDTO();
-			userProfit.UserName = await userManager.getUserName(userId);
+			userProfit.UserName = await _userManager.getUserName(userId);
 
-			var ci = await walletManager.getCryptoItems(userId);
+			var ci = await _walletManager.getCryptoItems(userId);
 			if (ci == null || !ci.Any())
 			{
 				throw new Exception("No crypto items found for the user");
 			}
 			foreach (var cryptoItem in ci)
 			{
-				var cryptoExists = await cryptoManager.doesCryptoExists(cryptoItem.CryptoId.ToString());
+				var cryptoExists = await _cryptoManager.doesCryptoExists(cryptoItem.CryptoId.ToString());
 				if (cryptoExists) {
-					double currentrate = await cryptoManager.GetCurrentRate(cryptoItem.CryptoId);
+					double currentrate = await _cryptoManager.GetCurrentRate(cryptoItem.CryptoId);
 					if (currentrate != 0)
 					{
 						ProfitItem pi = new ProfitItem();
-						pi.CryptoName = await cryptoManager.GetCryptoName(cryptoItem.Id);
+						pi.CryptoName = await _cryptoManager.GetCryptoName(cryptoItem.Id);
 						pi.Profit = (currentrate - cryptoItem.BoughtAtRate) * cryptoItem.Quantity;
 						userProfit.Profits.Add(pi);
 					}

@@ -16,9 +16,8 @@ namespace CryptoSim_API.Lib.UnitOfWork
 			services.AddScoped<ITradeService, TradeManagerService>();
 			services.AddScoped<DataSeederService>();
 			services.AddScoped<PriceFlowManagerBackService>();
-			services.AddScoped<ProfitManagerService>();
+			services.AddScoped<IProfitService, ProfitManagerService>();
 			services.AddScoped<IUnitOfWork, ProductionUnitOfWork>();
-			//TODO: Add other services as needed
 		}
 	}
 }

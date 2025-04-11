@@ -11,22 +11,20 @@ namespace CryptoSim_API.Lib.Services
 {
 	public class TradeManagerService : ITradeService
 	{
-		private readonly IUserService _userManager;
-		private readonly ICryptoService _cryptoManager;
-		private readonly IWalletService _walletManager;
-		private readonly ITransactionService _transactionManager;
+		private readonly IServiceScopeFactory _scopeFactory;
 
-		public TradeManagerService(IUserService userManager, ICryptoService cryptoManager, IWalletService walletManager, ITransactionService transactionManager)
+		public TradeManagerService(IServiceScopeFactory scopeFactory)
 		{
-			_userManager = userManager;
-			_cryptoManager = cryptoManager;
-			_walletManager = walletManager;
-			_transactionManager = transactionManager;
+			_scopeFactory = scopeFactory;
 		}
-		//TODO: implement this method in the other services as well
 
 		public async Task<string> BuyCrypto(TradeRequestDTO tradeRequest)
 		{
+			using var scope = _scopeFactory.CreateScope();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
+			var _transactionManager = scope.ServiceProvider.GetRequiredService<TransactionManagerService>();
 
 			if (await _cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
 			{
@@ -65,6 +63,11 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<string> SellCrypto(TradeRequestDTO tradeRequest)
 		{
+			using var scope = _scopeFactory.CreateScope();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
+			var _transactionManager = scope.ServiceProvider.GetRequiredService<TransactionManagerService>();
 
 			if (await _cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
 			{
@@ -98,6 +101,9 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task<UserPortfolioDTO> getUserPortfolio(string userId)
 		{
+			using var scope = _scopeFactory.CreateScope();
+			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
 
 			if (!await _userManager.doesUserExists(userId)) throw new Exception("The user with the provided ID does not exist");
 			UserPortfolioDTO userPortfolio = new UserPortfolioDTO();

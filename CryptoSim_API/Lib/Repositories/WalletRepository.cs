@@ -1,4 +1,5 @@
 ﻿using CryptoSim_API.Lib.Interfaces.RepositoryIntefaces;
+using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 
@@ -10,12 +11,12 @@ namespace CryptoSim_API.Lib.Repositories
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
-		WalletManagerService _walletManager;
-		public WalletRepository(CryptoContext dbContext, IMemoryCache cache)
+		IWalletService _walletManager;
+		public WalletRepository(CryptoContext dbContext, IMemoryCache cache, IWalletService walletService)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
-			_walletManager = new WalletManagerService(_dbContext, _cache);
+			_walletManager = walletService;
 		}
 		public async Task<string> DeleteWallet(string userId)
 		{

@@ -15,10 +15,9 @@ namespace CryptoSim_API.Lib.Services
 			_scopeFactory = scopeFactory;
 		}
 
-		//TODO: Implement price flow manager back service
 		protected override async Task ExecuteAsync(CancellationToken stopToken)
 		{
-
+			Console.WriteLine("Background service started...");
 			while (!stopToken.IsCancellationRequested)
 			{
 				try
@@ -26,14 +25,18 @@ namespace CryptoSim_API.Lib.Services
 					using var scope = _scopeFactory.CreateScope();
 					var cryptoManagerService = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
 
-					//decimal percentageChange = (decimal)(_random.NextDouble() * 2 - 1) * 0.05m; // ±5%
-					//decimal newPrice = Math.Max(0.01m, crypto.CurrentPrice * (1 + percentageChange));
-
-
+					var cryptos = await cryptoManagerService.ListCryptos();
+					foreach (var crypto in cryptos)
+					{
+						Console.WriteLine($"Updating price for {crypto.Name} ({crypto.Id})...");
+						double percentageChange = (double)(_random.NextDouble() * 2 - 1) * 0.05d; // ±5%
+						double newPrice = Math.Max(0.01d, crypto.CurrentPrice * (1 + percentageChange));
+						await cryptoManagerService.UpdateCryptoPrice(crypto.Id.ToString(), newPrice);
+					}
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine(ex.Message);
+					Console.WriteLine("Error in background service:"+ex.Message);
 				}
 
 				await Task.Delay(TimeSpan.FromSeconds(45), stopToken);

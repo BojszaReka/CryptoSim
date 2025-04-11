@@ -102,7 +102,7 @@ namespace CryptoSim_API.Lib.Services
 			await transaction.DisposeAsync();
 		}
 
-		internal async Task DeleteUserTransactions(string userId)
+		public async Task DeleteUserTransactions(string userId)
 		{
 			var transactions = await ListTransactions();
 			var userTransactions = transactions.Where(t => t.UserId.Equals(userId));

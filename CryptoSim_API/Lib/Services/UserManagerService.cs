@@ -12,10 +12,14 @@ namespace CryptoSim_API.Lib.Services
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
-		public UserManagerService(CryptoContext dbContext, IMemoryCache cache)
+
+		private readonly IServiceScopeFactory _scopeFactory;
+
+		public UserManagerService(CryptoContext dbContext, IMemoryCache cache, IServiceScopeFactory scopeFactory)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
+			_scopeFactory = scopeFactory;
 		}
 
 		public IQueryable<User> getUsersCache()
@@ -73,10 +77,11 @@ namespace CryptoSim_API.Lib.Services
 			return false;
 		}
 
-		internal async Task<string> DeleteUser(string userId)
+		public async Task<string> DeleteUser(string userId)
 		{
-			WalletManagerService _walletManager = new WalletManagerService(_dbContext, _cache);
-			TransactionManagerService _transactionManager = new TransactionManagerService(_dbContext, _cache);
+			using var scope = _scopeFactory.CreateScope();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
+			var _transactionManager = scope.ServiceProvider.GetRequiredService<TransactionManagerService>();
 
 			if (await doesUserExists(userId))
 			{
@@ -105,7 +110,7 @@ namespace CryptoSim_API.Lib.Services
 			throw new Exception($"User with id: {userId} not found");
 		}
 
-		internal async Task<UserViewDTO> GetUserViewDTO(string userId)
+		public async Task<UserViewDTO> GetUserViewDTO(string userId)
 		{
 			var user = await getUser(userId);
 			if (user == null)
@@ -116,15 +121,13 @@ namespace CryptoSim_API.Lib.Services
 			{
 				Id = user.Id,
 				UserName = user.UserName,
-				Email = user.Email,
-				Password = user.Password //TODO: remove password later
+				Email = user.Email
 			};
 			return userViewDTO;
 		}
 
-		internal async Task<string> Register(string username, string email, string password)
+		public async Task<string> Register(string username, string email, string password)
 		{
-
 			var unique = await isEmailFree(email);
 			if (unique)
 			{ 
@@ -136,8 +139,6 @@ namespace CryptoSim_API.Lib.Services
 
 		private async Task<Guid> CreateUser(string username, string email, string password)
 		{
-			WalletManagerService walletManager = new WalletManagerService(_dbContext, _cache);
-
 			User u = new User
 			{
 				Id = Guid.NewGuid(),
@@ -183,7 +184,7 @@ namespace CryptoSim_API.Lib.Services
 			return false;
 		}
 
-		internal async Task<string> UpdateUser(string userId, string password)
+		public async Task<string> UpdateUser(string userId, string password)
 		{
 			if (await doesUserExists(userId))
 			{
@@ -208,7 +209,7 @@ namespace CryptoSim_API.Lib.Services
 			throw new Exception($"User with id: {userId} not found");
 		}
 
-		internal async Task<string?> Login(string email, string password)
+		public async Task<string?> Login(string email, string password)
 		{
 			var users = await ListUsers();
 			var user = users.FirstOrDefault(u => u.Email == email);

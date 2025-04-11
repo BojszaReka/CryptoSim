@@ -63,14 +63,14 @@ namespace CryptoSim_API.Lib.Services
 			return cryptoItems;
 		}
 
-		internal async Task<IEnumerable<CryptoItem>> GetItemsWith(string walletId)
+		public async Task<IEnumerable<CryptoItem>> GetItemsWith(string walletId)
 		{
 			var cryptoItems = await ListCryptoItems();
 			var filteredItems = cryptoItems.Where(c => c.WalletId.ToString() == walletId);
 			return filteredItems.OrderBy(c => c.Id).ToList();
 		}
 
-		internal async Task UpdateCryptoItem(CryptoItem cryptoItem)
+		public async Task UpdateCryptoItem(CryptoItem cryptoItem)
 		{
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
@@ -94,7 +94,7 @@ namespace CryptoSim_API.Lib.Services
 			await transaction.DisposeAsync();
 		}
 
-		internal async Task DeleteCryptoItemsByWalletId(string walletId)
+		public async Task DeleteCryptoItemsByWalletId(string walletId)
 		{
 			var items = await GetItemsWith(walletId);
 			var transaction = await _dbContext.Database.BeginTransactionAsync();

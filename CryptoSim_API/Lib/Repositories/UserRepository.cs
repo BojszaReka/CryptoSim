@@ -1,4 +1,5 @@
 ﻿using CryptoSim_API.Lib.Interfaces.RepositoryIntefaces;
+using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -9,12 +10,12 @@ namespace CryptoSim_API.Lib.Repositories
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
-		UserManagerService _userManager;
-		public UserRepository(CryptoContext dbContext, IMemoryCache cache)
+		IUserService _userManager;
+		public UserRepository(CryptoContext dbContext, IMemoryCache cache, IUserService userservice)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
-			_userManager = new UserManagerService(_dbContext, _cache);
+			_userManager = userservice;
 		}
 
 		public async Task<string> DeleteUser(string UserId)

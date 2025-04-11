@@ -173,7 +173,6 @@ namespace CryptoSim_API.Lib.Services
 			if (crypto == null)
 			{
 				return false;
-				//return !crypto.isDeleted;
 			}
 			return !crypto.isDeleted;
 		}
