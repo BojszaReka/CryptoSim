@@ -7,5 +7,7 @@ namespace CryptoSim_API.Lib.Interfaces.ServiceInterfaces
 	{
 		Task CreateTransaction(NewTransactionDTO nt);
 		Task DeleteUserTransactions(string userId);
+		Task<TransactionDetailsDTO> GetTransactionDetailsDTO(string transactionId);
+		Task<UserTransactionsDTO> GetUserTransactionsDTO(string userId);
 	}
 }

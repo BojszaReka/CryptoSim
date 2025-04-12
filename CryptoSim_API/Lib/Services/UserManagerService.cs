@@ -80,8 +80,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<string> DeleteUser(string userId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
-			var _transactionManager = scope.ServiceProvider.GetRequiredService<TransactionManagerService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
+			var _transactionManager = scope.ServiceProvider.GetRequiredService<ITransactionService>();
 
 			if (await doesUserExists(userId))
 			{

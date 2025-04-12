@@ -128,8 +128,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<IEnumerable<CryptoItem>> getCryptoItems(string walletId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
 
 			if (await doesWalletExists(walletId))
 			{
@@ -210,8 +210,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task AddCryptoToUserWallet(string userId, string cryptoID, int quantity)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
 
 			if (!await _cryptoManager.doesCryptoExists(cryptoID)) throw new Exception("The crypto currency with the provided ID does not exist");
 			if(!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
@@ -239,8 +239,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task RemoveCryptoFromUserWallet(string userId, string cryptoID, int quantity)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
 
 			if (!await _cryptoManager.doesCryptoExists(cryptoID)) throw new Exception("The crypto currency with the provided ID does not exist");
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
@@ -261,8 +261,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<List<PortfolioItem>> getUserWalletAsPortfolioList(string userId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
 
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
@@ -284,7 +284,7 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<string> DeleteWalletData(string userId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
 
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
@@ -299,7 +299,7 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<string> DeleteWallet(string userId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
 
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
@@ -333,9 +333,9 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<WalletViewDTO> GetWalletViewDTO(string userId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
-			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
 
 			if (!await doesWalletExistsByUserId(userId)) throw new Exception("The user with the provided ID does not have a wallet");
 			var wallet = await GetWalletByUserId(userId);
@@ -362,7 +362,7 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<bool> doesUserHasCryptoBalance(string userId, string cryptoId, int quantity)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<CryptoItemManagerService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
 
 			var wallet = await GetWalletByUserId(userId);
 			if (wallet == null) throw new Exception("The wallet with the provided ID does not exist");

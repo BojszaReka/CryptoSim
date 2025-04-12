@@ -9,15 +9,15 @@ namespace CryptoSim_API.Lib.UnitOfWork
 	{
 		public static void AddLocalServices(this IServiceCollection services)
 		{
+			services.AddScoped<DataSeederService>();
 			services.AddScoped<ICryptoService,CryptoManagerService>();
 			services.AddScoped<IUserService,UserManagerService>();
 			services.AddScoped<IWalletService, WalletManagerService>();
 			services.AddScoped<ITransactionService, TransactionManagerService>();
 			services.AddScoped<ITradeService, TradeManagerService>();
-			services.AddScoped<DataSeederService>();
-			services.AddScoped<PriceFlowManagerBackService>();
 			services.AddScoped<IProfitService, ProfitManagerService>();
 			services.AddScoped<IUnitOfWork, ProductionUnitOfWork>();
+			services.AddHostedService<PriceFlowManagerBackService>();
 		}
 	}
 }

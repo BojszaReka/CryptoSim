@@ -8,25 +8,31 @@ namespace CryptoSim_API.Lib.Repositories
 {
 	public class TradeRepository : ITradeRepository
 	{
-		private readonly CryptoContext _dbContext;
-		private readonly IMemoryCache _cache;
-		ITradeService _tradeManager;
-		public TradeRepository(CryptoContext dbContext, IMemoryCache cache, ITradeService tradeService)
+		private readonly IServiceScopeFactory _scopeFactory;
+		public TradeRepository(IServiceScopeFactory scopeFactory)
 		{
-			_dbContext = dbContext;
-			_cache = cache;
-			_tradeManager = tradeService;
+			_scopeFactory = scopeFactory;
+		}
+
+		private ITradeService GetService()
+		{
+			var scope = _scopeFactory.CreateScope();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ITradeService>();
+			return _cryptoManager;
 		}
 		public async Task<string> BuyCrypto(TradeRequestDTO tradeRequest)
 		{
+			var _tradeManager = GetService();
 			return await _tradeManager.BuyCrypto(tradeRequest);
 		}
 		public async Task<string> SellCrypto(TradeRequestDTO tradeRequest)
 		{
+			var _tradeManager = GetService();
 			return await _tradeManager.SellCrypto(tradeRequest);
 		}
 		public async Task<UserPortfolioDTO> getUserPortfolio(string userId)
 		{
+			var _tradeManager = GetService();
 			return await _tradeManager.getUserPortfolio(userId);
 		}
 	

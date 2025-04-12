@@ -8,38 +8,46 @@ namespace CryptoSim_API.Lib.Repositories
 {
 	public class UserRepository : IUserRepository
 	{
-		private readonly CryptoContext _dbContext;
-		private readonly IMemoryCache _cache;
-		IUserService _userManager;
-		public UserRepository(CryptoContext dbContext, IMemoryCache cache, IUserService userservice)
+		private readonly IServiceScopeFactory _scopeFactory;
+		public UserRepository(IServiceScopeFactory scopeFactory)
 		{
-			_dbContext = dbContext;
-			_cache = cache;
-			_userManager = userservice;
+			_scopeFactory = scopeFactory;
+		}
+
+		private IUserService GetService()
+		{
+			var scope = _scopeFactory.CreateScope();
+			var _manager = scope.ServiceProvider.GetRequiredService<IUserService>();
+			return _manager;
 		}
 
 		public async Task<string> DeleteUser(string UserId)
 		{
+			var _userManager = GetService();
 			return await _userManager.DeleteUser(UserId);
 		}
 
 		public async Task<UserViewDTO> GetUser(string UserId)
 		{
+			var _userManager = GetService();
 			return await _userManager.GetUserViewDTO(UserId);
 		}
 
 		public async Task<string?> Login(string email, string password)
 		{
+			var _userManager = GetService();
 			return await _userManager.Login(email, password);
 		}
 
 		public async Task<string> Register(string username, string email, string password)
 		{
+			var _userManager = GetService();
 			return await _userManager.Register(username, email, password);
 		}
 
 		public async Task<string> UpdateUser(string UserId, string password)
 		{
+			var _userManager = GetService();
 			return await _userManager.UpdateUser(UserId, password);
 		}
 	}

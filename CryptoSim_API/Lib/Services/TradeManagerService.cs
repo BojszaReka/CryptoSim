@@ -21,10 +21,10 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<string> BuyCrypto(TradeRequestDTO tradeRequest)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
-			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
-			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
-			var _transactionManager = scope.ServiceProvider.GetRequiredService<TransactionManagerService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
+			var _transactionManager = scope.ServiceProvider.GetRequiredService<ITransactionService>();
 
 			if (await _cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
 			{
@@ -64,10 +64,10 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<string> SellCrypto(TradeRequestDTO tradeRequest)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
-			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
-			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
-			var _transactionManager = scope.ServiceProvider.GetRequiredService<TransactionManagerService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
+			var _transactionManager = scope.ServiceProvider.GetRequiredService<ITransactionService>();
 
 			if (await _cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
 			{
@@ -102,8 +102,8 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<UserPortfolioDTO> getUserPortfolio(string userId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
-			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
 
 			if (!await _userManager.doesUserExists(userId)) throw new Exception("The user with the provided ID does not exist");
 			UserPortfolioDTO userPortfolio = new UserPortfolioDTO();

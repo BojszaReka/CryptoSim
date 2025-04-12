@@ -184,7 +184,7 @@ namespace CryptoSim_API.Lib.Services
 			return crypto;
 		}
 
-		private async Task UpdateCrypto(Crypto crypto)
+		public async Task UpdateCrypto(Crypto crypto)
 		{
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try

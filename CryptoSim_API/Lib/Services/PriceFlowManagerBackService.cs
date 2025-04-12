@@ -1,6 +1,7 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 
+using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace CryptoSim_API.Lib.Services
@@ -23,7 +24,16 @@ namespace CryptoSim_API.Lib.Services
 				try
 				{
 					using var scope = _scopeFactory.CreateScope();
-					var cryptoManagerService = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
+					var cryptoManagerService = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+					if (cryptoManagerService == null)
+					{
+						Console.WriteLine("CryptoManagerService is NOT registered in the DI container.");
+					}
+					else
+					{
+						Console.WriteLine("CryptoManagerService was successfully resolved.");
+					}
+
 
 					var cryptos = await cryptoManagerService.ListCryptos();
 					foreach (var crypto in cryptos)

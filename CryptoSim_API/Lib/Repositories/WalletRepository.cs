@@ -9,27 +9,33 @@ namespace CryptoSim_API.Lib.Repositories
 {
 	public class WalletRepository : IWalletRepository
 	{
-		private readonly CryptoContext _dbContext;
-		private readonly IMemoryCache _cache;
-		IWalletService _walletManager;
-		public WalletRepository(CryptoContext dbContext, IMemoryCache cache, IWalletService walletService)
+		private readonly IServiceScopeFactory _scopeFactory;
+		public WalletRepository(IServiceScopeFactory scopeFactory)
 		{
-			_dbContext = dbContext;
-			_cache = cache;
-			_walletManager = walletService;
+			_scopeFactory = scopeFactory;
+		}
+
+		private IWalletService GetService()
+		{
+			var scope = _scopeFactory.CreateScope();
+			var _manager = scope.ServiceProvider.GetRequiredService<IWalletService>();
+			return _manager;
 		}
 		public async Task<string> DeleteWallet(string userId)
 		{
+			var _walletManager = GetService();
 			return await _walletManager.DeleteWalletData(userId);
 		}
 
 		public async Task<WalletViewDTO> GetWallet(string userId)
 		{
+			var _walletManager = GetService();
 			return await _walletManager.GetWalletViewDTO(userId);
 		}
 
 		public async Task<string> UpdateWallet(WalletUpdateDTO wallet)
 		{
+			var _walletManager = GetService();
 			return await _walletManager.UpdateWallet(wallet);
 		}
 	}

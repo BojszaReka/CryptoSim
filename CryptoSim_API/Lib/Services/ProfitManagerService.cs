@@ -40,9 +40,9 @@ namespace CryptoSim_API.Lib.Services
 		public async Task<DetailedUserProfitDTO> GetDetailedUserProfit(string userId)
 		{
 			using var scope = _scopeFactory.CreateScope();
-			var _userManager = scope.ServiceProvider.GetRequiredService<UserManagerService>();
-			var _cryptoManager = scope.ServiceProvider.GetRequiredService<CryptoManagerService>();
-			var _walletManager = scope.ServiceProvider.GetRequiredService<WalletManagerService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
 
 			DetailedUserProfitDTO userProfit = new DetailedUserProfitDTO();
 			userProfit.UserName = await _userManager.getUserName(userId);

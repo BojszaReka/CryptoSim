@@ -18,6 +18,8 @@ namespace CryptoSim_API.Lib.UnitOfWork
 		private readonly IProfitService _profitManager;
 		private readonly ITradeService _tradeManager;
 
+		private readonly IServiceScopeFactory _scopeFactory;
+
 		public ICryptoRespository CryptoRepository { get; }
 		public IProfitRepository ProfitRepository { get; }
 		public ITradeRepository TradeRepository { get; }
@@ -25,7 +27,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 		public IWalletRepository WalletRepository { get; }
 		public IUserRepository UserRepository { get; }
 
-		public ProductionUnitOfWork(CryptoContext dbContext, IMemoryCache cache,ITradeService tradeManager ,IProfitService profitManager, IUserService userManager, ICryptoService cryptoManager, IWalletService walletManager, ITransactionService transactionManager)
+		public ProductionUnitOfWork(IServiceScopeFactory scopeFactory,CryptoContext dbContext, IMemoryCache cache,ITradeService tradeManager ,IProfitService profitManager, IUserService userManager, ICryptoService cryptoManager, IWalletService walletManager, ITransactionService transactionManager)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
@@ -37,12 +39,14 @@ namespace CryptoSim_API.Lib.UnitOfWork
 			_profitManager = profitManager;
 			_tradeManager = tradeManager;
 
-			CryptoRepository = new CryptoRepository(_dbContext, _cache);
-			ProfitRepository = new ProfitRepository(_dbContext, _cache, _profitManager);
-			TradeRepository = new TradeRepository(_dbContext, _cache, _tradeManager);
-			TransactionRepository = new TransactionRepository(_dbContext, _cache);
-			WalletRepository = new WalletRepository(_dbContext, _cache, _walletManager);
-			UserRepository = new UserRepository(_dbContext, cache, _userManager);
+			_scopeFactory = scopeFactory;
+
+			CryptoRepository = new CryptoRepository(_scopeFactory);
+			ProfitRepository = new ProfitRepository(_scopeFactory);
+			TradeRepository = new TradeRepository(_scopeFactory);
+			TransactionRepository = new TransactionRepository(_scopeFactory);
+			WalletRepository = new WalletRepository(_scopeFactory);
+			UserRepository = new UserRepository(_scopeFactory);
 		}
 		
 		public async Task Save()
