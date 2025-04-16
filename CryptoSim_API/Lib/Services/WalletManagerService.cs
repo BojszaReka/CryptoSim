@@ -146,7 +146,8 @@ namespace CryptoSim_API.Lib.Services
 			var wallet = await GetWalletByUserId(userId);
 			if (wallet == null) { scope.Dispose(); throw new Exception("The wallet with the provided ID does not exist"); }
 			var cryptoItems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
-			var cryptoItem = cryptoItems.Where(c => c.CryptoId.Equals(cryptoId)).FirstOrDefault();
+			if (cryptoItems == null) { scope.Dispose(); throw new Exception("The user does not have any crypto currency in their wallet"); }
+			var cryptoItem = cryptoItems.Where(c => c.CryptoId.ToString().Equals(cryptoId)).FirstOrDefault();
 			if (cryptoItem == null) { scope.Dispose(); throw new Exception("The user does not have the crypto currency in their wallet"); }
 			if (cryptoItem.Quantity >= quantity)
 			{
@@ -163,6 +164,12 @@ namespace CryptoSim_API.Lib.Services
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
+				var trackedWallet = _dbContext.Wallets.Local.FirstOrDefault(w => w.Id == wallet.Id);
+				if (trackedWallet != null)
+				{
+					_dbContext.Entry(trackedWallet).State = EntityState.Detached;
+				}
+
 				_dbContext.Wallets.Update(wallet);
 				await _dbContext.SaveChangesAsync();
 				_cache.Remove("wallets");

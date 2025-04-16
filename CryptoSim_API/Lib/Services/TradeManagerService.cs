@@ -1,5 +1,6 @@
 using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using CryptoSim_Lib.Enums;
+using CryptoSim_Lib.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
@@ -25,6 +26,7 @@ namespace CryptoSim_API.Lib.Services
 			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
 			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
 			var _transactionManager = scope.ServiceProvider.GetRequiredService<ITransactionService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
 
 			if (await _cryptoManager.doesCryptoExists(tradeRequest.CryptoId.ToString()))
 			{
@@ -40,8 +42,30 @@ namespace CryptoSim_API.Lib.Services
 					{
 						await _cryptoManager.DecreaseCryptoQuantity(tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
 						await _walletManager.DecreaseUserBalance(tradeRequest.UserId.ToString(), cost);
-						await _walletManager.AddCryptoToUserWallet(tradeRequest.UserId.ToString(), tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
-						
+						//await _walletManager.AddCryptoToUserWallet(tradeRequest.UserId.ToString(), tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
+
+						var wallet = await _walletManager.GetWalletByUserId(tradeRequest.UserId.ToString());
+						var cryptoItems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
+						var cryptoItem = cryptoItems.Where(c => c.CryptoId.ToString().Equals(tradeRequest.CryptoId.ToString())).FirstOrDefault();
+						if (cryptoItem != null)
+						{
+							cryptoItem.Quantity += tradeRequest.Quantity;
+							await _cryptoItemManager.UpdateCryptoItem(cryptoItem);
+						}
+						else
+						{
+							var rate = await _cryptoManager.GetCurrentRate(tradeRequest.CryptoId);
+							CryptoItem newCryptoItem = new CryptoItem
+							{
+								Id = Guid.NewGuid(),
+								CryptoId = tradeRequest.CryptoId,
+								WalletId = wallet.Id,
+								Quantity = tradeRequest.Quantity,
+								BoughtAtRate = rate
+							};
+							await _cryptoItemManager.CreateCryptoItem(newCryptoItem);
+						}
+
 						NewTransactionDTO nt = new NewTransactionDTO
 						{
 							UserId = tradeRequest.UserId,
@@ -111,5 +135,7 @@ namespace CryptoSim_API.Lib.Services
 			userPortfolio.Cryptos = await _walletManager.getUserWalletAsPortfolioList(userId);
 			return userPortfolio;
 		}
+
+		
 	}
 }

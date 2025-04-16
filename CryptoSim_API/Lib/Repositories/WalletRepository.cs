@@ -10,9 +10,13 @@ namespace CryptoSim_API.Lib.Repositories
 	public class WalletRepository : IWalletRepository
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
-		public WalletRepository(IServiceScopeFactory scopeFactory)
+		private readonly CryptoContext _dbContext;
+		private readonly IMemoryCache _cache;
+		public WalletRepository(IServiceScopeFactory scopeFactory, CryptoContext dbContext, IMemoryCache cache)
 		{
 			_scopeFactory = scopeFactory;
+			_dbContext = dbContext;
+			_cache = cache;
 		}
 
 		private IWalletService GetService()

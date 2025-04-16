@@ -10,9 +10,13 @@ namespace CryptoSim_API.Lib.Repositories
 	public class ProfitRepository : IProfitRepository
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
-		public ProfitRepository(IServiceScopeFactory scopeFactory)
+		private readonly CryptoContext _dbContext;
+		private readonly IMemoryCache _cache;
+		public ProfitRepository(IServiceScopeFactory scopeFactory, CryptoContext dbContext, IMemoryCache cache)
 		{
 			_scopeFactory = scopeFactory;
+			_dbContext = dbContext;
+			_cache = cache;
 		}
 		private IProfitService GetService()
 		{

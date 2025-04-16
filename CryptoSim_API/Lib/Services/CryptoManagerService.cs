@@ -204,6 +204,16 @@ namespace CryptoSim_API.Lib.Services
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
+				var cryptos = await ListCryptos();
+				foreach (var cp in cryptos)
+				{
+					var trackedEntity = _dbContext.Cryptos.Local.FirstOrDefault(c => c.Id == cp.Id);
+					if (trackedEntity != null)
+					{
+						_dbContext.Entry(trackedEntity).State = EntityState.Detached;
+					}
+				}
+
 
 				_dbContext.Update(crypto);
 				await _dbContext.SaveChangesAsync();
@@ -264,18 +274,17 @@ namespace CryptoSim_API.Lib.Services
 
 		public async Task RandomBulkUpgrade()
 		{
-			var cryptos = await ListCryptos();
-			foreach (var crypto in cryptos)
-			{
-				Console.WriteLine($"Updating price for {crypto.Name} ({crypto.Id})...");
-				double percentageChange = (double)(_random.NextDouble() * 2 - 1) * 0.05d; // ±5%
-				double newPrice = Math.Round(Math.Max(0.01d, crypto.CurrentPrice * (1 + percentageChange)), 2);
-				crypto.PriceHistory.Add(crypto.CurrentPrice);
-				crypto.CurrentPrice = newPrice;
-			}
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
+				var cryptos = await ListCryptos();
+				foreach (var crypto in cryptos)
+				{
+					double percentageChange = (double)(_random.NextDouble() * 2 - 1) * 0.1d; // ±10%
+					double newPrice = Math.Round(Math.Max(0.01d, crypto.CurrentPrice * (1 + percentageChange)), 2);
+					crypto.PriceHistory.Add(crypto.CurrentPrice);
+					crypto.CurrentPrice = newPrice;
+				}
 				_dbContext.UpdateRange(cryptos);
 				await _dbContext.SaveChangesAsync();
 				_cache.Remove("cryptos");

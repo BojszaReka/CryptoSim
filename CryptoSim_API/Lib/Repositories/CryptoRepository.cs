@@ -9,9 +9,14 @@ namespace CryptoSim_API.Lib.Repositories
 	public class CryptoRepository : ICryptoRespository
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
-		public CryptoRepository(IServiceScopeFactory scopeFactory)
+		private readonly CryptoContext _dbContext;
+		private readonly IMemoryCache _cache;
+
+		public CryptoRepository(IServiceScopeFactory scopeFactory, CryptoContext dbContext, IMemoryCache cache)
 		{
 			_scopeFactory = scopeFactory;
+			_cache = cache;
+			_dbContext = dbContext;
 		}
 
 		private ICryptoService GetService()

@@ -8,9 +8,13 @@ namespace CryptoSim_API.Lib.Repositories
 	public class TransactionRepository : ITransactionRepository
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
-		public TransactionRepository(IServiceScopeFactory scopeFactory)
+		private readonly CryptoContext _dbContext;
+		private readonly IMemoryCache _cache;
+		public TransactionRepository(IServiceScopeFactory scopeFactory, CryptoContext dbContext, IMemoryCache cache)
 		{
 			_scopeFactory = scopeFactory;
+			_dbContext = dbContext;
+			_cache = cache;
 		}
 
 		private ITransactionService GetService()

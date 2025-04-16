@@ -10,6 +10,7 @@ namespace CryptoSim_API.Lib.Services
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
 		private static readonly Random _random = new();
+		private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
 		public PriceFlowManagerBackService(IServiceScopeFactory scopeFactory)
 		{
@@ -22,6 +23,7 @@ namespace CryptoSim_API.Lib.Services
 			await Task.Delay(TimeSpan.FromSeconds(15), stopToken);
 			while (!stopToken.IsCancellationRequested)
 			{
+				await _semaphore.WaitAsync(stopToken);
 				try
 				{
 					using var scope = _scopeFactory.CreateScope();
@@ -42,6 +44,10 @@ namespace CryptoSim_API.Lib.Services
 				catch (Exception ex)
 				{
 					throw new Exception("Error in background service:"+ex.Message);
+				}
+				finally
+				{
+					_semaphore.Release();
 				}
 
 				await Task.Delay(TimeSpan.FromSeconds(45), stopToken);

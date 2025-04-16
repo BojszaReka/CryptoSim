@@ -9,9 +9,13 @@ namespace CryptoSim_API.Lib.Repositories
 	public class TradeRepository : ITradeRepository
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
-		public TradeRepository(IServiceScopeFactory scopeFactory)
+		private readonly CryptoContext _dbContext;
+		private readonly IMemoryCache _cache;
+		public TradeRepository(IServiceScopeFactory scopeFactory, CryptoContext dbContext, IMemoryCache cache)
 		{
 			_scopeFactory = scopeFactory;
+			_dbContext = dbContext;
+			_cache = cache;
 		}
 
 		private ITradeService GetService()

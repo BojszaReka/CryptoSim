@@ -9,15 +9,18 @@ namespace CryptoSim_API.Lib.Repositories
 	public class UserRepository : IUserRepository
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
-		public UserRepository(IServiceScopeFactory scopeFactory)
+		private readonly CryptoContext _dbContext;
+		private readonly IMemoryCache _cache;
+		public UserRepository(IServiceScopeFactory scopeFactory, CryptoContext dbContext, IMemoryCache cache)
 		{
 			_scopeFactory = scopeFactory;
+			_dbContext = dbContext;
+			_cache = cache;
 		}
 
 		private IUserService GetService()
 		{
-			var scope = _scopeFactory.CreateScope();
-			var _manager = scope.ServiceProvider.GetRequiredService<IUserService>();
+			UserManagerService _manager = new UserManagerService(_dbContext, _cache, _scopeFactory);
 			return _manager;
 		}
 

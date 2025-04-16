@@ -4,7 +4,7 @@
 
 namespace CryptoSim_API.Lib.UnitOfWork
 {
-	public interface IUnitOfWork
+	public interface IUnitOfWork : IDisposable
 	{
 		ICryptoRespository CryptoRepository { get; }
 		IProfitRepository ProfitRepository { get; }

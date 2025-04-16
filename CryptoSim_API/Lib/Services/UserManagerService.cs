@@ -22,6 +22,7 @@ namespace CryptoSim_API.Lib.Services
 			_scopeFactory = scopeFactory;
 		}
 
+
 		public IQueryable<User> getUsersCache()
 		{
 			var cachedUsers = _cache.Get("users");
@@ -95,7 +96,6 @@ namespace CryptoSim_API.Lib.Services
 					UserWallet uw = await _walletManager.GetUserWalletByUserId(u.Id.ToString());
 					var transactions = await _transactionManager.GetUserTransactions(u.Id.ToString());
 					var cryptoitems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
-
 
 					_dbContext.Transactions.RemoveRange(transactions);
 					_dbContext.CryptoItems.RemoveRange(cryptoitems);
