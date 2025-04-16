@@ -242,7 +242,7 @@ namespace CryptoSim_API.Lib.Services
 			if (!await doesWalletExistsByUserId(userId)) { scope.Dispose(); throw new Exception("The user with the provided ID does not have a wallet"); }
 			var wallet = await GetWalletByUserId(userId);
 			var cryptoItems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
-			var cryptoItem = cryptoItems.Where(c => c.CryptoId.Equals(cryptoID)).FirstOrDefault();
+			var cryptoItem = cryptoItems.Where(c => c.CryptoId.ToString().Equals(cryptoID)).FirstOrDefault();
 			if (cryptoItem != null)
 			{
 				cryptoItem.Quantity += quantity;
