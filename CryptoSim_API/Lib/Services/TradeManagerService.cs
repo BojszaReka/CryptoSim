@@ -1,4 +1,4 @@
-﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using CryptoSim_Lib.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -30,12 +30,12 @@ namespace CryptoSim_API.Lib.Services
 			{
 				if(await _userManager.doesUserExists(tradeRequest.UserId.ToString()))
 				{
-					var crypto = await _cryptoManager.GetCrypto(tradeRequest.CryptoId.ToString());
-					if(crypto.Quantity < tradeRequest.Quantity)
+					if(!await _cryptoManager.isEnoughCrypto(tradeRequest.CryptoId.ToString(), tradeRequest.Quantity))
 					{
 						throw new Exception("Not enough crypto in the market");
 					}
-					double cost = tradeRequest.Quantity * crypto.CurrentPrice;
+					var current = await _cryptoManager.GetCurrentRate(tradeRequest.CryptoId);
+					double cost = tradeRequest.Quantity * current;
 					if (await _walletManager.doesUserHasBalance(tradeRequest.UserId.ToString(), cost))
 					{
 						await _cryptoManager.DecreaseCryptoQuantity(tradeRequest.CryptoId.ToString(), tradeRequest.Quantity);
@@ -47,7 +47,7 @@ namespace CryptoSim_API.Lib.Services
 							UserId = tradeRequest.UserId,
 							CryptoId = tradeRequest.CryptoId,
 							Quantity = tradeRequest.Quantity,
-							Price = crypto.CurrentPrice,
+							Price = current,
 							Type = ETransactionType.Buy
 						};
 						await _transactionManager.CreateTransaction(nt);

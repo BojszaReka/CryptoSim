@@ -12,8 +12,10 @@ namespace CryptoSim_API.Lib.Interfaces.ServiceInterfaces
 		Task<string> DeleteWalletData(string userId);
 		Task<bool> doesUserHasBalance(string v, double cost);
 		Task<bool> doesUserHasCryptoBalance(string v1, string v2, int quantity);
-		Task<IEnumerable<CryptoItem>> getCryptoItems(string userId);
+		Task<bool> doesWalletExists(string walletId);
 		Task<List<PortfolioItem>> getUserWalletAsPortfolioList(string userId);
+		Task<UserWallet> GetUserWalletByUserId(string userId);
+		Task<Wallet> GetWalletByUserId(string userId);
 		Task<WalletViewDTO> GetWalletViewDTO(string userId);
 		Task IncreaseUserBalance(string v, double cost);
 		Task RemoveCryptoFromUserWallet(string v1, string v2, int quantity);

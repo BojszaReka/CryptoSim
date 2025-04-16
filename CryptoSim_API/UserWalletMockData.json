@@ -1,0 +1,14 @@
+[
+  {
+    "UserId": "c2f7f2c5-12ae-4b56-b8ae-123456789abc",
+    "WalletId": "3c9d87fc-0cfa-4c12-97b5-1b57ce542b80"
+  },
+  {
+    "UserId": "a1b2c3d4-5678-90ab-cdef-0987654321ff",
+    "WalletId": "eae9c4c3-b8d7-4977-9ce0-36114301df8b"
+  },
+  {
+    "UserId": "deadbeef-9876-4321-baaa-ffeeddccbbaa",
+    "WalletId": "5c2b7d5e-6fd3-489e-9a3b-3ae4f94a3b9e"
+  }
+]

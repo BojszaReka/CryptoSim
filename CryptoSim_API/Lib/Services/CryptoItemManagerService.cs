@@ -75,21 +75,15 @@ namespace CryptoSim_API.Lib.Services
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				var existingCryptoItem = await _dbContext.CryptoItems.FindAsync(cryptoItem.Id);
-				if (existingCryptoItem != null)
-				{
-					existingCryptoItem.Quantity = cryptoItem.Quantity;
-					existingCryptoItem.BoughtAtRate = cryptoItem.BoughtAtRate;
-					await _dbContext.SaveChangesAsync();
-					_cache.Remove("cryptoItems");
-					await transaction.CommitAsync();
-					
-				}
+				_dbContext.CryptoItems.Update(cryptoItem);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("cryptoItems");
+				await transaction.CommitAsync();
 			}
 			catch (Exception ex)
 			{
 				await transaction.RollbackAsync();
-				throw new Exception("Error updating CryptoItem", ex);
+				throw new Exception($"Error updating CryptoItem: {ex}");
 			}
 			await transaction.DisposeAsync();
 		}

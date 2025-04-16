@@ -18,8 +18,10 @@ namespace CryptoSim_API.Lib.Interfaces.ServiceInterfaces
 		Task<double> GetCurrentRate(Guid cryptoId);
 		Task<PriceHistoryDTO> GetPriceHistory(string cryptoId);
 		Task IncreaseCryptoQuantity(string v, int quantity);
+		Task<bool> isEnoughCrypto(string cryptoId, int quantity);
 		Task<IEnumerable<Crypto>> ListCryptos();
 		Task<IEnumerable<CryptoDTO>> ListCryptosDTO();
+		Task RandomBulkUpgrade();
 		Task<string> UpdateCryptoPrice(string cryptoId, double price);
 	}
 }

@@ -19,6 +19,11 @@ namespace CryptoSim_API
             var builder = WebApplication.CreateBuilder(args);
 			Program.ConnectionString = builder.Configuration.GetConnectionString("SQL");
 
+			builder.Services.AddControllers().AddNewtonsoftJson(options =>
+			{
+				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+			});
+
 			builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -35,7 +40,7 @@ namespace CryptoSim_API
 				});
 			});
 
-			builder.Services.AddDbContext<CryptoContext>(options =>options.UseSqlServer(Program.ConnectionString));
+			builder.Services.AddDbContext<CryptoContext>(options => options.UseSqlServer(Program.ConnectionString));
 			builder.Services.AddMemoryCache();
 
 			var timeoutOptions = new CacheTimeoutOptions();
@@ -46,7 +51,7 @@ namespace CryptoSim_API
 			builder.Services.AddLocalServices();
 
 			// Update the following code block to ensure the Newtonsoft.Json package is used correctly
-			builder.Services.AddControllers().AddNewtonsoftJson(options =>{	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;});
+			
 
 			var app = builder.Build();
 

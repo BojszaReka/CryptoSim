@@ -4,7 +4,7 @@ namespace CryptoSim_API.Lib.Interfaces.RepositoryIntefaces
 {
 	public interface ITransactionRepository
 	{
-		Task<UserTransactionsDTO> GetUserTransactionsDTO(string userId);
+		Task<IEnumerable<UserTransactionsDTO>?> GetUserTransactionsDTO(string userId);
 		Task<TransactionDetailsDTO> GetTransactionDetailsDTO(string transactionId);
 	}
 }

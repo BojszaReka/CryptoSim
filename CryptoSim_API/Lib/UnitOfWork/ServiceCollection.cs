@@ -11,6 +11,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 		{
 			services.AddScoped<DataSeederService>();
 			services.AddScoped<ICryptoService,CryptoManagerService>();
+			services.AddScoped<ICryptoItemService,CryptoItemManagerService>();
 			services.AddScoped<IUserService,UserManagerService>();
 			services.AddScoped<IWalletService, WalletManagerService>();
 			services.AddScoped<ITransactionService, TransactionManagerService>();

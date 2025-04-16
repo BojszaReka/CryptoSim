@@ -8,7 +8,9 @@ namespace CryptoSim_Lib.Models
 		[Required, Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
 		public double Balance { get; set; } = 10000;
+		[NotMapped, JsonIgnore]
 		public List<CryptoItem>? Cryptos { get; set; } = new List<CryptoItem>();
-		public List<UserWallet>? UserWallets { get; set; } = new List<UserWallet>();
+		[NotMapped, JsonIgnore]
+		public List<UserWallet>? UserWallets { get; set; } 
 	}
 }

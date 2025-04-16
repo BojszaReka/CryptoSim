@@ -1,4 +1,5 @@
 ﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+using CryptoSim_Lib.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
@@ -43,11 +44,37 @@ namespace CryptoSim_API.Lib.Services
 			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
 			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
 			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
 
 			DetailedUserProfitDTO userProfit = new DetailedUserProfitDTO();
 			userProfit.UserName = await _userManager.getUserName(userId);
 
-			var ci = await _walletManager.getCryptoItems(userId);
+			List<CryptoItem> ci = new List<CryptoItem>();
+
+			Wallet wallet = await _walletManager.GetWalletByUserId(userId);
+			var walletId = wallet.Id.ToString();
+			if (await _walletManager.doesWalletExists(walletId))
+			{
+				var cryptoItems = await _cryptoItemManager.GetItemsWith(walletId);
+				List<CryptoItem> cryptoItemsList = new List<CryptoItem>();
+				foreach (var cryptoItem in cryptoItems)
+				{
+					var crypto = await _cryptoManager.GetCrypto(cryptoItem.CryptoId.ToString());
+					if (!crypto.isDeleted)
+					{
+						cryptoItemsList.Add(cryptoItem);
+					}
+
+				}
+				ci = cryptoItemsList;
+			}
+			else
+			{
+				scope.Dispose();
+				throw new Exception("The user's wallet does not exists");
+			}
+
+
 			if (ci == null || !ci.Any())
 			{
 				throw new Exception("No crypto items found for the user");
@@ -60,9 +87,9 @@ namespace CryptoSim_API.Lib.Services
 					if (currentrate != 0)
 					{
 						ProfitItem pi = new ProfitItem();
-						pi.CryptoName = await _cryptoManager.GetCryptoName(cryptoItem.Id);
+						pi.CryptoName = await _cryptoManager.GetCryptoName(cryptoItem.CryptoId); 
 						pi.Profit = (currentrate - cryptoItem.BoughtAtRate) * cryptoItem.Quantity;
-						userProfit.Profits.Add(pi);
+						userProfit.Profits.Add(pi); 
 					}
 					else
 					{
@@ -70,6 +97,7 @@ namespace CryptoSim_API.Lib.Services
 					}
 				}
 			}
+			scope.Dispose();
 			return userProfit;
 		}
 	}

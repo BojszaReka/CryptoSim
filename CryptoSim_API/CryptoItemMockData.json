@@ -1,0 +1,67 @@
+[
+  {
+    "Id": "9a2b13f5-d5d1-4df7-b83d-05b8bc11b001",
+    "WalletId": "3c9d87fc-0cfa-4c12-97b5-1b57ce542b80",
+    "CryptoId": "e1f7e5cd-01d4-48f6-8b6f-90e210e12c91",
+    "Quantity": 1.5,
+    "BoughtAtRate": 29500.0
+  },
+  {
+    "Id": "2e8d4bc1-3c87-4fd2-95b7-1d4d7d301002",
+    "WalletId": "3c9d87fc-0cfa-4c12-97b5-1b57ce542b80",
+    "CryptoId": "5a491f10-2c27-4d09-a478-9fc7f54c0e0f",
+    "Quantity": 3.0,
+    "BoughtAtRate": 2025.0
+  },
+  {
+    "Id": "be3c61f0-435b-45c4-802b-114a2f4f0103",
+    "WalletId": "3c9d87fc-0cfa-4c12-97b5-1b57ce542b80",
+    "CryptoId": "8b0a8ed1-c1b7-4b39-84f3-90856063ed12",
+    "Quantity": 1500.0,
+    "BoughtAtRate": 152.0
+  },
+
+  {
+    "Id": "486f5ea7-2231-49b7-8cb3-aba3a2280104",
+    "WalletId": "eae9c4c3-b8d7-4977-9ce0-36114301df8b",
+    "CryptoId": "53d5b84f-e0a5-4ff9-b91c-d8c481dbb84f",
+    "Quantity": 10.0,
+    "BoughtAtRate": 260.0
+  },
+  {
+    "Id": "694a0c3b-f6f6-4348-bd9d-64ae22c80105",
+    "WalletId": "eae9c4c3-b8d7-4977-9ce0-36114301df8b",
+    "CryptoId": "dc154d82-d9b9-4cc9-a0e7-46eb70d4e5bb",
+    "Quantity": 1000.0,
+    "BoughtAtRate": 155.0
+  },
+  {
+    "Id": "3f34aaf0-1d57-4ae5-88b7-18e9d5b40106",
+    "WalletId": "eae9c4c3-b8d7-4977-9ce0-36114301df8b",
+    "CryptoId": "ebfca7a7-2a62-4e25-b760-1e0450e07bc4",
+    "Quantity": 25.0,
+    "BoughtAtRate": 198.0
+  },
+
+  {
+    "Id": "90cc3a22-3ad0-4f48-9610-f603bf5e0107",
+    "WalletId": "5c2b7d5e-6fd3-489e-9a3b-3ae4f94a3b9e",
+    "CryptoId": "6dc2e228-dba7-4028-9a75-b8db3be9a2ce",
+    "Quantity": 100.0,
+    "BoughtAtRate": 118.0
+  },
+  {
+    "Id": "bcfa91ce-b13c-47cb-968f-06119d270108",
+    "WalletId": "5c2b7d5e-6fd3-489e-9a3b-3ae4f94a3b9e",
+    "CryptoId": "7e40be03-2c84-4a2e-9e7f-b2ec7bcf3c6c",
+    "Quantity": 50.0,
+    "BoughtAtRate": 134.0
+  },
+  {
+    "Id": "3af0cf35-6eb3-4975-8239-3c3ec6610109",
+    "WalletId": "5c2b7d5e-6fd3-489e-9a3b-3ae4f94a3b9e",
+    "CryptoId": "9d0eaf94-2e41-46d4-8f12-bf8f64dfd8cb",
+    "Quantity": 3000.0,
+    "BoughtAtRate": 112.0
+  }
+]

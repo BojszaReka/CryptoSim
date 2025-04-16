@@ -12,7 +12,7 @@ namespace CryptoSim_Lib.DTO
 		public string CryptoName { get; set; }
 		public double Quantity { get; set; }
 		public double Price { get; set; }
-		public ETransactionType Type { get; set; }
+		public string Type { get; set; }
 		public DateTime Date { get; set; }
 	}
 }

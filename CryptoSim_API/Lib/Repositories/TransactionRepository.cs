@@ -19,16 +19,17 @@ namespace CryptoSim_API.Lib.Repositories
 			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ITransactionService>();
 			return _cryptoManager;
 		}
+
+		public async Task<IEnumerable<UserTransactionsDTO>?> GetUserTransactionsDTO(string userId)
+		{
+			var _transactionManager = GetService();
+			return await _transactionManager.GetUserTransactionsDTO(userId);
+		}
+
 		public async Task<TransactionDetailsDTO> GetTransactionDetailsDTO(string transactionId)
 		{
 			var _transactionManager = GetService();
 			return await _transactionManager.GetTransactionDetailsDTO(transactionId);
-		}
-
-		public async Task<UserTransactionsDTO> GetUserTransactionsDTO(string userId)
-		{
-			var _transactionManager = GetService();
-			return await _transactionManager.GetUserTransactionsDTO(userId);
 		}
 	}
 }

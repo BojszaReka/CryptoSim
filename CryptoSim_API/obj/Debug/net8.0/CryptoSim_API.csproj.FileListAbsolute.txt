@@ -192,3 +192,7 @@ C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\CryptoItemMockData.json
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\UserMockData.json
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\UserWalletMockData.json
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\WalletMockData.json

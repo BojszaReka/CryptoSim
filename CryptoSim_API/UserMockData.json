@@ -1,0 +1,20 @@
+[
+  {
+    "Id": "c2f7f2c5-12ae-4b56-b8ae-123456789abc",
+    "UserName": "cryptoMaster01",
+    "Email": "crypto.master01@example.com",
+    "Password": "SecurePass123!"
+  },
+  {
+    "Id": "a1b2c3d4-5678-90ab-cdef-0987654321ff",
+    "UserName": "blockchainFanatic",
+    "Email": "blockchain.fan@example.com",
+    "Password": "Blockchain2025@"
+  },
+  {
+    "Id": "deadbeef-9876-4321-baaa-ffeeddccbbaa",
+    "UserName": "hodlQueen",
+    "Email": "hodl.queen@example.com",
+    "Password": "Hodl4Life!!"
+  }
+]

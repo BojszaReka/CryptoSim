@@ -9,7 +9,7 @@ namespace CryptoSim_Lib.DTO
     public class DetailedUserProfitDTO
     {
         public string UserName { get; set; }
-        public List<ProfitItem> Profits { get; set; }
+        public List<ProfitItem> Profits { get; set; } = new List<ProfitItem>();
     }
 
     public class ProfitItem {

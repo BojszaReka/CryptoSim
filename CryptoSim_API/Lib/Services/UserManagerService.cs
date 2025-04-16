@@ -82,6 +82,8 @@ namespace CryptoSim_API.Lib.Services
 			using var scope = _scopeFactory.CreateScope();
 			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
 			var _transactionManager = scope.ServiceProvider.GetRequiredService<ITransactionService>();
+			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
+
 
 			if (await doesUserExists(userId))
 			{
@@ -89,24 +91,39 @@ namespace CryptoSim_API.Lib.Services
 				try
 				{
 					User u = await getUser(userId);
-					_dbContext.Users.Remove(u);
-					await _dbContext.SaveChangesAsync();
-					_cache.Remove("users");
+					Wallet wallet = await _walletManager.GetWalletByUserId(u.Id.ToString());
+					UserWallet uw = await _walletManager.GetUserWalletByUserId(u.Id.ToString());
+					var transactions = await _transactionManager.GetUserTransactions(u.Id.ToString());
+					var cryptoitems = await _cryptoItemManager.GetItemsWith(wallet.Id.ToString());
 
-					await _walletManager.DeleteWallet(userId);
-					await _transactionManager.DeleteUserTransactions(userId);
+
+					_dbContext.Transactions.RemoveRange(transactions);
+					_dbContext.CryptoItems.RemoveRange(cryptoitems);
+					_dbContext.UserWallets.Remove(uw);
+					_dbContext.Users.Remove(u);
+					_dbContext.Wallets.Remove(wallet);
+					
+					await _dbContext.SaveChangesAsync();
+
+					_cache.Remove("users");
+					_cache.Remove("wallets");
+					_cache.Remove("userwallets");
+					_cache.Remove("transactions");
+					_cache.Remove("cryptoitems");
 
 					await transaction.CommitAsync();
 				}
 				catch (Exception ex)
 				{
 					await transaction.RollbackAsync();
-					throw new Exception("Error deleting User:", ex);
+					scope.Dispose();
+					throw new Exception($"Error deleting User:{ex}");
 				}
 				await transaction.DisposeAsync();
-
+				scope.Dispose();
 				return $"User with id: {userId} deleted successfully";
 			}
+			scope.Dispose();
 			throw new Exception($"User with id: {userId} not found");
 		}
 
@@ -153,12 +170,20 @@ namespace CryptoSim_API.Lib.Services
 				Balance = 10000
 			};
 
+			UserWallet userWallet = new UserWallet
+			{
+				UserId = u.Id,
+				WalletId = wallet.Id
+			};
+
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
 				await _dbContext.Users.AddAsync(u);
 				await _dbContext.SaveChangesAsync();
 				await _dbContext.Wallets.AddAsync(wallet);
+				await _dbContext.SaveChangesAsync();
+				await _dbContext.UserWallets.AddAsync(userWallet);
 				await _dbContext.SaveChangesAsync();
 				_cache.Remove("users");
 				_cache.Remove("wallets");

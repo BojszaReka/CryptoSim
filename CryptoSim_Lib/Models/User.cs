@@ -13,7 +13,9 @@ namespace CryptoSim_Lib.Models
 		public string Email { get; set; }
 		[StringLength(70, MinimumLength = 10)]
 		public string Password { get; set; }
-        public List<Transaction>? Transactions { get; set; } = new List<Transaction>();
+		[NotMapped, JsonIgnore]
+		public List<Transaction>? Transactions { get; set; } = new List<Transaction>();
+		[NotMapped, JsonIgnore]
 		public List<UserWallet>? UserWallets { get; set; } = new List<UserWallet>();
 	}
 }

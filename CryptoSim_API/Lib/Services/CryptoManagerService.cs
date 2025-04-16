@@ -1,8 +1,11 @@
 ﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+using CryptoSim_Lib.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
+using System;
+
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
@@ -12,6 +15,8 @@ namespace CryptoSim_API.Lib.Services
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
+		private static readonly Random _random = new();
+
 		public CryptoManagerService(CryptoContext dbContext, IMemoryCache cache)
 		{
 			_dbContext = dbContext;
@@ -34,7 +39,7 @@ namespace CryptoSim_API.Lib.Services
 			var cryptosfFromDb = await _dbContext.Cryptos.OrderBy(c => c.Id).ToListAsync();
 			var serializedData = JsonConvert.SerializeObject(cryptosfFromDb);
 			_cache.Set("cryptos", serializedData);
-			return _dbContext.Cryptos.OrderBy(c => c.Id).Include(c => c.Transactions);
+			return _dbContext.Cryptos.OrderBy(c => c.Id);
 		}
 
 		public async Task<string> UpdateCryptoPrice(string cryptoId, double price)
@@ -164,7 +169,7 @@ namespace CryptoSim_API.Lib.Services
 			{
 				throw new Exception($"The crypto currency with the provided ID ({Id}) does not exist");
 			}
-			
+
 		}
 
 		public async Task<bool> doesCryptoExists(string Id)
@@ -184,11 +189,22 @@ namespace CryptoSim_API.Lib.Services
 			return crypto;
 		}
 
+		public async Task<bool> isEnoughCrypto(string cryptoId, int quantity)
+		{
+			var crypto = await GetCrypto(cryptoId);
+			if(crypto.Quantity >= quantity)
+			{
+				return true;
+			}
+			return false;
+		}
+
 		public async Task UpdateCrypto(Crypto crypto)
 		{
 			var transaction = await _dbContext.Database.BeginTransactionAsync();
 			try
 			{
+
 				_dbContext.Update(crypto);
 				await _dbContext.SaveChangesAsync();
 				_cache.Remove("cryptos");
@@ -197,8 +213,8 @@ namespace CryptoSim_API.Lib.Services
 			catch (Exception ex)
 			{
 				await transaction.RollbackAsync();
-				throw new Exception("Error updating Crypto currency", ex);
-			}			
+				throw new Exception($"Error updating Crypto currency: {ex}");
+			}
 			await transaction.DisposeAsync();
 		}
 
@@ -244,6 +260,33 @@ namespace CryptoSim_API.Lib.Services
 			var crypto = await GetCrypto(cryptoID);
 			crypto.Quantity += quantity;
 			await UpdateCrypto(crypto);
+		}
+
+		public async Task RandomBulkUpgrade()
+		{
+			var cryptos = await ListCryptos();
+			foreach (var crypto in cryptos)
+			{
+				Console.WriteLine($"Updating price for {crypto.Name} ({crypto.Id})...");
+				double percentageChange = (double)(_random.NextDouble() * 2 - 1) * 0.05d; // ±5%
+				double newPrice = Math.Round(Math.Max(0.01d, crypto.CurrentPrice * (1 + percentageChange)), 2);
+				crypto.PriceHistory.Add(crypto.CurrentPrice);
+				crypto.CurrentPrice = newPrice;
+			}
+			var transaction = await _dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				_dbContext.UpdateRange(cryptos);
+				await _dbContext.SaveChangesAsync();
+				_cache.Remove("cryptos");
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				await transaction.RollbackAsync();
+				throw new Exception("Error updating Crypto currency", ex);
+			}
+			await transaction.DisposeAsync();
 		}
 	}
 }

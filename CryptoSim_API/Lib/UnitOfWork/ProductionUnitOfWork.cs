@@ -8,16 +8,6 @@ namespace CryptoSim_API.Lib.UnitOfWork
 {
 	public class ProductionUnitOfWork : IUnitOfWork
 	{
-		private readonly CryptoContext _dbContext;
-		private readonly IMemoryCache _cache;
-
-		private readonly IUserService _userManager;
-		private readonly ICryptoService _cryptoManager;
-		private readonly IWalletService _walletManager;
-		private readonly ITransactionService _transactionManager;
-		private readonly IProfitService _profitManager;
-		private readonly ITradeService _tradeManager;
-
 		private readonly IServiceScopeFactory _scopeFactory;
 
 		public ICryptoRespository CryptoRepository { get; }
@@ -27,18 +17,8 @@ namespace CryptoSim_API.Lib.UnitOfWork
 		public IWalletRepository WalletRepository { get; }
 		public IUserRepository UserRepository { get; }
 
-		public ProductionUnitOfWork(IServiceScopeFactory scopeFactory,CryptoContext dbContext, IMemoryCache cache,ITradeService tradeManager ,IProfitService profitManager, IUserService userManager, ICryptoService cryptoManager, IWalletService walletManager, ITransactionService transactionManager)
+		public ProductionUnitOfWork(IServiceScopeFactory scopeFactory)
 		{
-			_dbContext = dbContext;
-			_cache = cache;
-
-			_userManager = userManager;
-			_cryptoManager = cryptoManager;
-			_walletManager = walletManager;
-			_transactionManager = transactionManager;
-			_profitManager = profitManager;
-			_tradeManager = tradeManager;
-
 			_scopeFactory = scopeFactory;
 
 			CryptoRepository = new CryptoRepository(_scopeFactory);
@@ -49,12 +29,6 @@ namespace CryptoSim_API.Lib.UnitOfWork
 			UserRepository = new UserRepository(_scopeFactory);
 		}
 		
-		public async Task Save()
-		{
-			var transaction = _dbContext.Database.BeginTransaction();
-			await _dbContext.SaveChangesAsync();
-			transaction.Commit();
-		}
 	}
 	
 }

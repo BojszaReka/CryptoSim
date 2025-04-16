@@ -19,6 +19,7 @@ namespace CryptoSim_API.Lib.Services
 		protected override async Task ExecuteAsync(CancellationToken stopToken)
 		{
 			Console.WriteLine("Background service started...");
+			await Task.Delay(TimeSpan.FromSeconds(15), stopToken);
 			while (!stopToken.IsCancellationRequested)
 			{
 				try
@@ -27,26 +28,20 @@ namespace CryptoSim_API.Lib.Services
 					var cryptoManagerService = scope.ServiceProvider.GetRequiredService<ICryptoService>();
 					if (cryptoManagerService == null)
 					{
-						Console.WriteLine("CryptoManagerService is NOT registered in the DI container.");
+						throw new Exception("CryptoManagerService is NOT registered in the DI container.");
 					}
 					else
 					{
 						Console.WriteLine("CryptoManagerService was successfully resolved.");
 					}
 
-
-					var cryptos = await cryptoManagerService.ListCryptos();
-					foreach (var crypto in cryptos)
-					{
-						Console.WriteLine($"Updating price for {crypto.Name} ({crypto.Id})...");
-						double percentageChange = (double)(_random.NextDouble() * 2 - 1) * 0.05d; // ±5%
-						double newPrice = Math.Max(0.01d, crypto.CurrentPrice * (1 + percentageChange));
-						await cryptoManagerService.UpdateCryptoPrice(crypto.Id.ToString(), newPrice);
-					}
+					await cryptoManagerService.RandomBulkUpgrade();
+					scope.Dispose();
+					
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("Error in background service:"+ex.Message);
+					throw new Exception("Error in background service:"+ex.Message);
 				}
 
 				await Task.Delay(TimeSpan.FromSeconds(45), stopToken);

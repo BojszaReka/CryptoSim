@@ -13,10 +13,12 @@ namespace CryptoSim_API.Lib.Services
 	{
 		private readonly CryptoContext _dbContext;
 		private readonly IMemoryCache _cache;
-		public TransactionManagerService(CryptoContext dbContext, IMemoryCache cache)
+		private readonly IServiceScopeFactory _scopeFactory;
+		public TransactionManagerService(CryptoContext dbContext, IMemoryCache cache, IServiceScopeFactory scopeFactory)
 		{
 			_dbContext = dbContext;
 			_cache = cache;
+			_scopeFactory = scopeFactory;
 		}
 		private IQueryable<Transaction> getTransactionsCache()
 		{
@@ -47,26 +49,53 @@ namespace CryptoSim_API.Lib.Services
 			return transactions;
 		}
 		
-		public async Task<UserTransactionsDTO?> GetUserTransactionsDTO(string userId)
+		public async Task<IEnumerable<UserTransactionsDTO>?> GetUserTransactionsDTO(string userId)
 		{
 			var transactions = await ListTransactions();
-			return transactions
-				.Where(t => t.UserId.Equals(userId))
+			var filtered = transactions.Where( t => userId.Equals(t.UserId.ToString())).ToList();
+			if(filtered == null)
+			{
+				throw new Exception("The user does not have any transactions");
+			}
+
+			var scope = _scopeFactory.CreateScope();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+			foreach (var transaction in filtered) { 
+				transaction.Crypto = await _cryptoManager.GetCrypto(transaction.CryptoId.ToString());
+			}
+			scope.Dispose();
+
+			return filtered
 				.Select(t => new UserTransactionsDTO
 				{
-					Type = t.Type,
+					TransactionId = t.Id,
+					Type = t.Type.ToString(),
 					CryptoName = t.Crypto.Name,
 					Quantity = t.Quantity
-				}).FirstOrDefault();
+				});
 		}
 
 		public async Task<TransactionDetailsDTO> GetTransactionDetailsDTO(string transactionId)
 		{
 			var transactions = await ListTransactions();
-			var t = transactions.Where(t => t.Id.Equals(transactionId)).FirstOrDefault();
+
+			//todo: ellenorizni h letezik-e a tranzakcio
+			
+			var scope = _scopeFactory.CreateScope();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+			foreach (var transaction in transactions) {
+				transaction.Crypto = await _cryptoManager.GetCrypto(transaction.CryptoId.ToString());
+				transaction.User = await _userManager.getUser(transaction.UserId.ToString());
+			}
+			scope.Dispose();
+
+			var t = transactions.Where(t => t.Id.ToString().Equals(transactionId)).FirstOrDefault();
+
 			return new TransactionDetailsDTO {
-				Type = t.Type,
-				CryptoName = t.Crypto.Name,
+				Type = t.Type.ToString(),
+				CryptoName = t.Crypto.Name, //TODO: nulll reference!
 				UserName = t.User.UserName,
 				Quantity = t.Quantity,
 				Price = t.Price,
@@ -124,6 +153,13 @@ namespace CryptoSim_API.Lib.Services
 				throw new Exception("Error deleting user's Transaction:", ex);
 			}
 			await transaction.DisposeAsync();
+		}
+
+		public async Task<IEnumerable<Transaction>> GetUserTransactions(string userId)
+		{
+			var transactions = await ListTransactions();
+			var usertrans = transactions.Where(t => userId.Equals(t.UserId.ToString())).ToList();
+			return usertrans;
 		}
 	}
 }
