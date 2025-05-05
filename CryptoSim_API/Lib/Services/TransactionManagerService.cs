@@ -92,6 +92,10 @@ namespace CryptoSim_API.Lib.Services
 			scope.Dispose();
 
 			var t = transactions.Where(t => t.Id.ToString().Equals(transactionId)).FirstOrDefault();
+			if (t == null)
+			{
+				throw new Exception("Transaction not found");
+			}
 
 			return new TransactionDetailsDTO {
 				Type = t.Type.ToString(),

@@ -1,0 +1,83 @@
+[
+  {
+    "Id": "d9b3d19b-e0bb-4b70-b8f3-24959085fe92",
+    "UserId": "c2f7f2c5-12ae-4b56-b8ae-123456789abc",
+    "CryptoId": "e1f7e5cd-01d4-48f6-8b6f-90e210e12c91",
+    "Quantity": 1.5,
+    "Price": 29500.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "7bfc2f92-5cf0-4e62-b3c5-c0eeb2c3d401",
+    "UserId": "c2f7f2c5-12ae-4b56-b8ae-123456789abc",
+    "CryptoId": "5a491f10-2c27-4d09-a478-9fc7f54c0e0f",
+    "Quantity": 3.0,
+    "Price": 2025.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "d32d7c94-f6cd-44d4-a928-b28cd8051c47",
+    "UserId": "c2f7f2c5-12ae-4b56-b8ae-123456789abc",
+    "CryptoId": "8b0a8ed1-c1b7-4b39-84f3-90856063ed12",
+    "Quantity": 1500.0,
+    "Price": 152.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "f5f47674-8e42-4659-9be6-b4b8a9d63d6d",
+    "UserId": "a1b2c3d4-5678-90ab-cdef-0987654321ff",
+    "CryptoId": "53d5b84f-e0a5-4ff9-b91c-d8c481dbb84f",
+    "Quantity": 10.0,
+    "Price": 260.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "5a8363b7-37a2-4d42-bb62-b38a10e7da70",
+    "UserId": "a1b2c3d4-5678-90ab-cdef-0987654321ff",
+    "CryptoId": "dc154d82-d9b9-4cc9-a0e7-46eb70d4e5bb",
+    "Quantity": 1000.0,
+    "Price": 155.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "d1bc2de7-c5b5-4000-853e-fd73e61b44ba",
+    "UserId": "a1b2c3d4-5678-90ab-cdef-0987654321ff",
+    "CryptoId": "ebfca7a7-2a62-4e25-b760-1e0450e07bc4",
+    "Quantity": 25.0,
+    "Price": 198.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "cf220a34-b123-4f9b-b7c6-917a1a98db62",
+    "UserId": "deadbeef-9876-4321-baaa-ffeeddccbbaa",
+    "CryptoId": "6dc2e228-dba7-4028-9a75-b8db3be9a2ce",
+    "Quantity": 100.0,
+    "Price": 118.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "e2235fba-f90e-4971-869b-d9463c14d19f",
+    "UserId": "deadbeef-9876-4321-baaa-ffeeddccbbaa",
+    "CryptoId": "7e40be03-2c84-4a2e-9e7f-b2ec7bcf3c6c",
+    "Quantity": 50.0,
+    "Price": 134.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  },
+  {
+    "Id": "7e303e83-3de5-4ef2-a1ad-ec9a982da94b",
+    "UserId": "deadbeef-9876-4321-baaa-ffeeddccbbaa",
+    "CryptoId": "9d0eaf94-2e41-46d4-8f12-bf8f64dfd8cb",
+    "Quantity": 3000.0,
+    "Price": 112.0,
+    "Type": "Buy",
+    "Date": "2025-05-05T00:00:00"
+  }
+]

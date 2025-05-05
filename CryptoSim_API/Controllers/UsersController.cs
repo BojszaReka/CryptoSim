@@ -29,6 +29,7 @@ namespace CryptoSim_API.Controllers
 			{
 				response.StatusCode = 200;
 				response.Message = await _unitOfWork.UserRepository.Register(username, email, password);
+				return Ok(response);
 			}
 			catch (Exception e)
 			{
@@ -52,6 +53,7 @@ namespace CryptoSim_API.Controllers
 			{
 				response.StatusCode = 200;
 				response.Message = await _unitOfWork.UserRepository.Login(email, password);
+				return Ok(response);
 			}
 			catch (Exception e)
 			{
@@ -74,6 +76,7 @@ namespace CryptoSim_API.Controllers
 			{
 				response.StatusCode = 200;
 				response.Data = await _unitOfWork.UserRepository.GetUser(UserId);
+				return Ok(response);
 			}
 			catch (Exception e)
 			{
@@ -97,6 +100,7 @@ namespace CryptoSim_API.Controllers
 			{
 				response.StatusCode = 200;
 				response.Message = await _unitOfWork.UserRepository.UpdateUser(UserId, newPassword);
+				return Ok(response);
 			}
 			catch (Exception e)
 			{
@@ -119,6 +123,7 @@ namespace CryptoSim_API.Controllers
 			{
 				response.StatusCode = 200;
 				response.Message = await _unitOfWork.UserRepository.DeleteUser(UserId);
+				return Ok(response);
 			}
 			catch (Exception e)
 			{

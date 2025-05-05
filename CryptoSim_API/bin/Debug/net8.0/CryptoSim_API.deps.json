@@ -18,6 +18,7 @@
           "Microsoft.EntityFrameworkCore": "9.0.3",
           "Microsoft.EntityFrameworkCore.Design": "9.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.3",
+          "Microsoft.EntityFrameworkCore.Tools": "8.0.15",
           "Newtonsoft.Json": "13.0.3",
           "Swashbuckle.AspNetCore": "8.0.0",
           "Swashbuckle.AspNetCore.SwaggerGen": "8.0.0",
@@ -635,6 +636,11 @@
             "assemblyVersion": "9.0.3.0",
             "fileVersion": "9.0.325.11202"
           }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Tools/8.0.15": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "9.0.3"
         }
       },
       "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
@@ -1532,6 +1538,13 @@
       "sha512": "sha512-poKK0h5fldiBkpk/L/xq9Scd4FpnnZPj0SAKArnykqSMVJErd9iKtmCG5CjCpSPHrSdEyk8Uc4WUIWJ55i4JFg==",
       "path": "microsoft.entityframeworkcore.sqlserver/9.0.3",
       "hashPath": "microsoft.entityframeworkcore.sqlserver.9.0.3.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Tools/8.0.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wJXtK7IpA3tujDW4gpy21WLciPyP24Y5CaBeWxjbyPhUOvvDeVbjFb5ZoTJI80MELWjcD1ONlJ1WR6OlTTU5gA==",
+      "path": "microsoft.entityframeworkcore.tools/8.0.15",
+      "hashPath": "microsoft.entityframeworkcore.tools.8.0.15.nupkg.sha512"
     },
     "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
       "type": "package",
