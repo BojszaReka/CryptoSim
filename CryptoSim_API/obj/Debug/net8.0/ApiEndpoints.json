@@ -128,6 +128,27 @@
   },
   {
     "ContainingType": "CryptoSim_API.Controllers.TradeController",
+    "Method": "GiftAcceptance",
+    "RelativePath": "api/Trade/accept/{giftId}/{accepted}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "giftId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "accepted",
+        "Type": "System.Boolean",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CryptoSim_API.Controllers.TradeController",
     "Method": "BuyCrypto",
     "RelativePath": "api/Trade/buy",
     "HttpMethod": "POST",
@@ -137,6 +158,22 @@
       {
         "Name": "tradeRequest",
         "Type": "CryptoSim_Lib.DTO.TradeRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CryptoSim_API.Controllers.TradeController",
+    "Method": "GiftCrypto",
+    "RelativePath": "api/Trade/gift",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CryptoSim_Lib.DTO.GiftRequestDTO",
         "IsRequired": true
       }
     ],
@@ -176,6 +213,22 @@
   },
   {
     "ContainingType": "CryptoSim_API.Controllers.TransactionsController",
+    "Method": "ChangeFeeRate",
+    "RelativePath": "api/Transactions/ChangeFeeRate/fees",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "NewFee",
+        "Type": "System.Double",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CryptoSim_API.Controllers.TransactionsController",
     "Method": "GetTransationDetails",
     "RelativePath": "api/Transactions/GetTransationDetails/{TransactionId}",
     "HttpMethod": "GET",
@@ -184,6 +237,22 @@
     "Parameters": [
       {
         "Name": "TransactionId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CryptoSim_API.Controllers.TransactionsController",
+    "Method": "GetUserTransactionFees",
+    "RelativePath": "api/Transactions/GetUserTransactionFees/fees/{UserId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserId",
         "Type": "System.String",
         "IsRequired": true
       }

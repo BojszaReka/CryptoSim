@@ -17,6 +17,7 @@ namespace CryptoSim_Lib.Models
 		public double Quantity { get; set; }
 		[Range(0, double.MaxValue)]
 		public double Price { get; set; }
+		public double Fee { get; set; } 
 		public ETransactionType Type { get; set; }
 		public DateTime Date { get; set; } = DateTime.Now;
 	}

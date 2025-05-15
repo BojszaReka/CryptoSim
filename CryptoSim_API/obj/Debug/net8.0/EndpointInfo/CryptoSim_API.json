@@ -305,6 +305,79 @@
         }
       }
     },
+    "/api/Trade/gift": {
+      "post": {
+        "tags": [
+          "Trade"
+        ],
+        "summary": "Sends cryptocurrency as a gift from one user to another.  \r\nThis operation is executed at the current market price and does not incur any transaction fee.  \r\nThe gifted amount is deducted from the sender’s wallet and (optionally) added to the receiver’s wallet.  \r\nIf the system requires manual acceptance, the gift will initially be pending.",
+        "description": "POST /api/trade/gift  \r\n- The sender must have enough balance to complete the gift.  \r\n- The quantity must be greater than 0.  \r\n- No transaction fee is applied.",
+        "requestBody": {
+          "description": "A CryptoSim_Lib.DTO.GiftRequestDTO containing sender and receiver IDs, crypto ID, and the amount to gift.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GiftRequestDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GiftRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GiftRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GiftRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Trade/accept/{giftId}/{accepted}": {
+      "put": {
+        "tags": [
+          "Trade"
+        ],
+        "summary": "Accepts or rejects a pending crypto gift.  \r\nOnly the receiver of the gift is authorized to accept or decline it.  \r\nUpon acceptance, the crypto is added to the receiver’s wallet.",
+        "description": "PUT /api/trade/accept/{giftId}/{accepted}  \r\n- Only the intended receiver should be allowed to perform this action.  \r\n- If accepted, crypto is transferred to the receiver’s wallet.  \r\n- If rejected, the gift is canceled and the crypto is returned to the sender.",
+        "parameters": [
+          {
+            "name": "giftId",
+            "in": "path",
+            "description": "The unique identifier of the gift to be accepted or rejected.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accepted",
+            "in": "path",
+            "description": "Boolean flag indicating whether the gift is accepted (true) or rejected (false).",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Transactions/GetUserTransactions/{UserId}": {
       "get": {
         "tags": [
@@ -349,6 +422,78 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Transactions/GetUserTransactionFees/fees/{UserId}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Retrieves a transaction fee report for a specific user.",
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "path",
+            "description": "The user's unique identifier (GUID).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the transaction fee report."
+          },
+          "400": {
+            "description": "An error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/api/Transactions/ChangeFeeRate/fees": {
+      "put": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Updates the global transaction fee percentage used for future transactions.",
+        "requestBody": {
+          "description": "The new fee percentage expressed as a percent value.\r\nFor example, pass `0.2` to set the fee to 0.2%. \r\nMust be a number between 0 and 50.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The transaction fee percentage was successfully updated."
+          },
+          "400": {
+            "description": "An error occurred while updating the fee percentage."
           }
         }
       }
@@ -586,6 +731,33 @@
   },
   "components": {
     "schemas": {
+      "GiftRequestDTO": {
+        "required": [
+          "cryptoId",
+          "receiverUserId",
+          "senderUserId"
+        ],
+        "type": "object",
+        "properties": {
+          "senderUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "receiverUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cryptoId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "NewCrypto": {
         "type": "object",
         "properties": {

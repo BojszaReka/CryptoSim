@@ -59,5 +59,64 @@ namespace CryptoSim_API.Controllers
 			}
 			return BadRequest(response);
 		}
+
+		/// <summary>
+		/// Retrieves a transaction fee report for a specific user.
+		/// </summary>
+		/// <param name="UserId">The user's unique identifier (GUID).</param>
+		/// <returns>
+		/// A <see cref="TransactionFeeReportDTO"/> containing the total fees, 
+		/// daily breakdown, and individual transaction fee details.
+		/// </returns>
+		/// <response code="200">Successfully retrieved the transaction fee report.</response>
+		/// <response code="400">An error occurred while processing the request.</response>
+		[HttpGet("fees/{UserId}")]
+		public async Task<IActionResult> GetUserTransactionFees([FromRoute] string UserId)
+		{
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Data = await _unitOfWork.TransactionRepository.GetUserTransactionReport(UserId);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
+		}
+
+		/// <summary>
+		/// Updates the global transaction fee percentage used for future transactions.
+		/// </summary>
+		/// <param name="NewFee">
+		/// The new fee percentage expressed as a percent value.
+		/// For example, pass <c>0.2</c> to set the fee to 0.2%. 
+		/// Must be a number between 0 and 50.
+		/// </param>
+		/// <returns>
+		/// A confirmation message indicating that the fee was successfully updated.
+		/// </returns>
+		/// <response code="200">The transaction fee percentage was successfully updated.</response>
+		/// <response code="400">An error occurred while updating the fee percentage.</response>
+		[HttpPut("fees")]
+		public async Task<IActionResult> ChangeFeeRate([FromBody] double NewFee)
+		{
+			ApiResponse response = new ApiResponse();
+			try
+			{
+				response.StatusCode = 200;
+				response.Message = await _unitOfWork.TransactionRepository.ChangeFeeRate(NewFee);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				response.StatusCode = 400;
+				response.Message = e.Message;
+			}
+			return BadRequest(response);
+		}
 	}
 }

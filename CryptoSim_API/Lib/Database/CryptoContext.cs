@@ -13,6 +13,8 @@ namespace CryptoSim_API.Lib.Database
 		public DbSet<Wallet> Wallets { get; set; }
 		public DbSet<CryptoItem> CryptoItems { get; set; }
 		public DbSet<UserWallet> UserWallets { get; set; }
+		public DbSet<Fee> Fees { get; set; }
+		public DbSet<Gift> Gifts { get; set; }
 
 		public CryptoContext(DbContextOptions<CryptoContext> options) : base(options)
 		{
@@ -26,6 +28,8 @@ namespace CryptoSim_API.Lib.Database
 			modelBuilder.Entity<Wallet>().HasKey(u => u.Id);
 			modelBuilder.Entity<CryptoItem>().HasKey(u => u.Id);
 			modelBuilder.Entity<UserWallet>().HasKey(uw => new { uw.UserId, uw.WalletId });
+			modelBuilder.Entity<Fee>().HasKey(f => f.Id);
+			modelBuilder.Entity<Gift>().HasKey(g => g.Id);
 
 			modelBuilder.Entity<Crypto>().ToTable("Cryptos");
 			modelBuilder.Entity<CryptoItem>().ToTable("CryptoItems");
@@ -33,6 +37,8 @@ namespace CryptoSim_API.Lib.Database
 			modelBuilder.Entity<User>().ToTable("Users");
 			modelBuilder.Entity<Wallet>().ToTable("Wallets");
 			modelBuilder.Entity<UserWallet>().ToTable("UserWallets");
+			modelBuilder.Entity<Fee>().ToTable("Fees");
+			modelBuilder.Entity<Gift>().ToTable("Gifts");
 		}
 	}
 }

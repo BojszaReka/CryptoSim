@@ -4,6 +4,7 @@ using CryptoSim_API.Lib.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoSim_API.Migrations
 {
     [DbContext(typeof(CryptoContext))]
-    partial class CryptoContextModelSnapshot : ModelSnapshot
+    [Migration("20250515103829_FeeEntity")]
+    partial class FeeEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,44 +94,6 @@ namespace CryptoSim_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Fees", (string)null);
-                });
-
-            modelBuilder.Entity("CryptoSim_Lib.Models.Gift", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CryptoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("GiftDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("PriceAtGift")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<Guid>("ReceiverUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SenderUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CryptoId");
-
-                    b.HasIndex("ReceiverUserId");
-
-                    b.HasIndex("SenderUserId");
-
-                    b.ToTable("Gifts", (string)null);
                 });
 
             modelBuilder.Entity("CryptoSim_Lib.Models.Transaction", b =>
@@ -217,33 +182,6 @@ namespace CryptoSim_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Wallets", (string)null);
-                });
-
-            modelBuilder.Entity("CryptoSim_Lib.Models.Gift", b =>
-                {
-                    b.HasOne("CryptoSim_Lib.Models.Crypto", "Crypto")
-                        .WithMany()
-                        .HasForeignKey("CryptoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CryptoSim_Lib.Models.User", "ReceiverUser")
-                        .WithMany()
-                        .HasForeignKey("ReceiverUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CryptoSim_Lib.Models.User", "SenderUser")
-                        .WithMany()
-                        .HasForeignKey("SenderUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Crypto");
-
-                    b.Navigation("ReceiverUser");
-
-                    b.Navigation("SenderUser");
                 });
 
             modelBuilder.Entity("CryptoSim_Lib.Models.Transaction", b =>

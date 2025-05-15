@@ -1,3 +1,4 @@
+using CryptoSim_API.Lib.Interfaces.Service;
 using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using CryptoSim_Lib.Enums;
 using CryptoSim_Lib.Models;
@@ -19,7 +20,7 @@ namespace CryptoSim_API.Lib.Services
 			_scopeFactory = scopeFactory;
 		}
 
-		public async Task<string> BuyCrypto(TradeRequestDTO tradeRequest)
+		public async Task<Guid> BuyCrypto(TradeRequestDTO tradeRequest)
 		{
 			using var scope = _scopeFactory.CreateScope();
 			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
@@ -52,8 +53,8 @@ namespace CryptoSim_API.Lib.Services
 							Price = current,
 							Type = ETransactionType.Buy
 						};
-						await _transactionManager.CreateTransaction(nt);
-						return "Trade created successfully";
+						Guid id = await _transactionManager.CreateTransaction(nt);
+						return id;
 					}
 					else { throw new Exception($"The user does not have enough balance, required: {cost}"); }
 				}
@@ -63,7 +64,7 @@ namespace CryptoSim_API.Lib.Services
 			
 		}
 
-		public async Task<string> SellCrypto(TradeRequestDTO tradeRequest)
+		public async Task<Guid> SellCrypto(TradeRequestDTO tradeRequest)
 		{
 			using var scope = _scopeFactory.CreateScope();
 			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
@@ -93,8 +94,8 @@ namespace CryptoSim_API.Lib.Services
 						Price = crypto.CurrentPrice,
 						Type = ETransactionType.Sell
 					};
-					await _transactionManager.CreateTransaction(nt);
-					return "Trade created successfully";
+					Guid id = await _transactionManager.CreateTransaction(nt);
+					return id;
 				}
 				else { throw new Exception("The user with the provided ID does not exist"); }
 			}
@@ -114,6 +115,50 @@ namespace CryptoSim_API.Lib.Services
 			return userPortfolio;
 		}
 
-		
+		public async Task<string> giftCrypto(GiftRequestDTO request)
+		{
+			using var scope = _scopeFactory.CreateScope();
+			var _giftManager = scope.ServiceProvider.GetRequiredService<IGiftService>();
+			return await _giftManager.createGift(request);
+		}
+
+		public async Task<string> proceddGiftCryptoAccepted(string giftId)
+		{
+			using var scope = _scopeFactory.CreateScope();
+			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
+			var _userManager = scope.ServiceProvider.GetRequiredService<IUserService>();
+			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
+			var _giftManager = scope.ServiceProvider.GetRequiredService<IGiftService>();
+
+			if(! await _giftManager.doesGiftExists(giftId)) throw new Exception("The gift with the provided ID does not exist");
+
+			Gift gift = await _giftManager.getGift(giftId);
+			if( gift.Status != EGiftStatus.Pending) throw new Exception("The gift is not in the pending status, it cannot be accepted");
+
+			if (! await _userManager.doesUserExists(gift.SenderUserId.ToString())) throw new Exception("The sender user with the provided ID does not exist");
+			if (!await _userManager.doesUserExists(gift.ReceiverUserId.ToString())) throw new Exception("The receiver user with the provided ID does not exist");
+			if (!await _cryptoManager.doesCryptoExists(gift.CryptoId.ToString())) throw new Exception("The crypto currency with the provided ID does not exist");
+			if (!await _walletManager.doesUserHasCryptoBalance(gift.SenderUserId.ToString(), gift.CryptoId.ToString(), (int)gift.Quantity)) throw new Exception("The sender user does not have enough of the crypto currency to gift");
+			if (gift.Quantity <= 0) throw new Exception("The quantity must be greater than 0");
+
+			await _walletManager.RemoveCryptoFromUserWallet(gift.SenderUserId.ToString(), gift.CryptoId.ToString(), (int)gift.Quantity);
+			await _walletManager.AddCryptoToUserWallet(gift.ReceiverUserId.ToString(), gift.CryptoId.ToString(), (int)gift.Quantity);
+			await _giftManager.UpdateGiftStatus(giftId, EGiftStatus.Accepted);
+
+			return "The crypto currency has been gifted successfully";
+		}
+
+		public async Task<string> proceddGiftCryptoRejected(string giftId)
+		{
+			using var scope = _scopeFactory.CreateScope();
+			var _giftManager = scope.ServiceProvider.GetRequiredService<IGiftService>();
+			if (!await _giftManager.doesGiftExists(giftId)) throw new Exception("The gift with the provided ID does not exist");
+
+			Gift gift = await _giftManager.getGift(giftId);
+			if (gift.Status != EGiftStatus.Pending) throw new Exception("The gift is not in the pending status, it cannot be rejected");
+
+			await _giftManager.UpdateGiftStatus(giftId, EGiftStatus.Rejected);
+			return "The gift has been rejected successfully";
+		}
 	}
 }

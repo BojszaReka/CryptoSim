@@ -5,8 +5,11 @@ namespace CryptoSim_API.Lib.Interfaces.ServiceInterfaces
 {
 	public interface ITradeService
 	{
-		Task<string> BuyCrypto(TradeRequestDTO tradeRequest);
+		Task<Guid> BuyCrypto(TradeRequestDTO tradeRequest);
 		Task<UserPortfolioDTO> getUserPortfolio(string userId);
-		Task<string> SellCrypto(TradeRequestDTO tradeRequest);
+		Task<string> giftCrypto(GiftRequestDTO request);
+		Task<string?> proceddGiftCryptoAccepted(string giftId);
+		Task<string?> proceddGiftCryptoRejected(string giftId);
+		Task<Guid> SellCrypto(TradeRequestDTO tradeRequest);
 	}
 }

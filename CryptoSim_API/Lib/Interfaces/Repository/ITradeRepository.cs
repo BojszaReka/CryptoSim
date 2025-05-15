@@ -4,8 +4,10 @@ namespace CryptoSim_API.Lib.Interfaces.RepositoryIntefaces
 {
 	public interface ITradeRepository
 	{
-		Task<string> BuyCrypto(TradeRequestDTO tradeRequest);
-		Task<string> SellCrypto(TradeRequestDTO tradeRequest);
+		Task<Guid> BuyCrypto(TradeRequestDTO tradeRequest);
+		Task<Guid> SellCrypto(TradeRequestDTO tradeRequest);
 		Task<UserPortfolioDTO> getUserPortfolio(string userId);
+		Task<string> giftCrypto(GiftRequestDTO request);
+		Task<string?> GiftAcceptance(string giftId, bool accepted);
 	}
 }

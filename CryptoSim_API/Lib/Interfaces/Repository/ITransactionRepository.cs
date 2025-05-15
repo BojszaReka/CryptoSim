@@ -6,5 +6,7 @@ namespace CryptoSim_API.Lib.Interfaces.RepositoryIntefaces
 	{
 		Task<IEnumerable<UserTransactionsDTO>?> GetUserTransactionsDTO(string userId);
 		Task<TransactionDetailsDTO> GetTransactionDetailsDTO(string transactionId);
+		Task<TransactionFeeReportDTO> GetUserTransactionReport(string userId);
+		Task<string> ChangeFeeRate(double newFee);
 	}
 }

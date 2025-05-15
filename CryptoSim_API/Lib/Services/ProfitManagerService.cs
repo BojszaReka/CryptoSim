@@ -1,4 +1,5 @@
-﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+﻿using CryptoSim_API.Lib.Interfaces.Service;
+using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 using CryptoSim_Lib.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -45,6 +46,7 @@ namespace CryptoSim_API.Lib.Services
 			var _cryptoManager = scope.ServiceProvider.GetRequiredService<ICryptoService>();
 			var _walletManager = scope.ServiceProvider.GetRequiredService<IWalletService>();
 			var _cryptoItemManager = scope.ServiceProvider.GetRequiredService<ICryptoItemService>();
+			var _giftManager = scope.ServiceProvider.GetRequiredService<IGiftService>();
 
 			DetailedUserProfitDTO userProfit = new DetailedUserProfitDTO();
 			userProfit.UserName = await _userManager.getUserName(userId);
@@ -82,13 +84,14 @@ namespace CryptoSim_API.Lib.Services
 			foreach (var cryptoItem in ci)
 			{
 				var cryptoExists = await _cryptoManager.doesCryptoExists(cryptoItem.CryptoId.ToString());
+				double giftedQuantity = await _giftManager.GetGiftedQuantity(cryptoItem.CryptoId.ToString(), userId);
 				if (cryptoExists) {
 					double currentrate = await _cryptoManager.GetCurrentRate(cryptoItem.CryptoId);
 					if (currentrate != 0)
 					{
 						ProfitItem pi = new ProfitItem();
 						pi.CryptoName = await _cryptoManager.GetCryptoName(cryptoItem.CryptoId); 
-						pi.Profit = (currentrate - cryptoItem.BoughtAtRate) * cryptoItem.Quantity;
+						pi.Profit = (currentrate - cryptoItem.BoughtAtRate) * (cryptoItem.Quantity - giftedQuantity);
 						userProfit.Profits.Add(pi); 
 					}
 					else

@@ -196,3 +196,4 @@ C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\UserMockDa
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\UserWalletMockData.json
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\WalletMockData.json
 C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\bin\Debug\net8.0\TransactionMockData.json
+C:\ADATOK\Egyetem\HaladoProg\CryptoSim\CryptoSim_API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

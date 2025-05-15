@@ -1,4 +1,5 @@
-﻿using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
+﻿using CryptoSim_API.Lib.Interfaces.Service;
+using CryptoSim_API.Lib.Interfaces.ServiceInterfaces;
 
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -18,6 +19,7 @@ namespace CryptoSim_API.Lib.UnitOfWork
 			services.AddScoped<ITradeService, TradeManagerService>();
 			services.AddScoped<IProfitService, ProfitManagerService>();
 			services.AddScoped<IUnitOfWork, ProductionUnitOfWork>();
+			services.AddScoped<IGiftService, GiftManagerService>();
 			services.AddHostedService<PriceFlowManagerBackService>();
 		}
 	}
